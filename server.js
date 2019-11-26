@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const iplocate = require('node-iplocate')
 const helmet = require('helmet')
-const chalk = require('chalk');
+const chalk = require('chalk')
 
 console.clear()
 console.log(chalk.green('\n  Starting server'));
