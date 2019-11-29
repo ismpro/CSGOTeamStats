@@ -23,7 +23,6 @@ exports.ApiControler = class {
 
     fetchAllTeams() {
         let response = await fetch("https://api.fitbit.com/oauth2/token", {
-            body: `clientId=${this.clientId}&grant_type=authorization_code&redirect_uri=${encodeURI(this.callBackURL)}&code=${code}`,
             headers: {
                 Authorization: `Bearer ${this.api_key}`
             },

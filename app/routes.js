@@ -5,7 +5,7 @@ const functions = require('./functions.js')
 module.exports = function (app) {
 
     app.get('/', function (req, res) {
-        res.status(501).send('Not Implemented')
+        res.status(200).sendFile(path.join(global.appRoot, 'views', 'index.html'))
     })
 
     app.get('/getresquestlogs', function (req, res) {
@@ -15,15 +15,6 @@ module.exports = function (app) {
         } else {
             res.status(403).send('Unauthorized')
         }
-    })
-
-    //Remove the next line if you want to server .ico files
-    app.get('*.ico', function (req, res, next) {
-        res.status(501).send('Not Implemented')
-        next({
-            status: 501,
-            message: 'ICO FILES DISABLED'
-        })
     })
 
     app.get('*', function (req, res) {

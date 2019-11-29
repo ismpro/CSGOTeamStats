@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const iplocate = require('node-iplocate')
 const helmet = require('helmet')
+const mongoose = require('mongoose')
 const chalk = require('chalk')
 
 console.clear()
@@ -24,6 +25,19 @@ app.set("pin", process.env.PIN || 1234);
 global.appRoot = path.resolve(__dirname);
 global.NODE_MODE = Boolean(process.env.NODE_DEV === 'true');
 console.log(chalk.green(`  Node Mode: ${(global.NODE_MODE ? 'DEV' : 'PRD')}`));
+
+//MongoDB
+mongoose.set('useFindAndModify', false);
+mongoose.connect(process.env.DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    console.log(chalk.green('\n  MongoDB Connected'));
+    //fitbit.execute().catch(() => console.log('Error on first execute'))
+});
 
 //Disabling things for security
 app.disable('x-powered-by');
