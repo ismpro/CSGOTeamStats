@@ -21,15 +21,49 @@ exports.ApiControler = class {
         });
     }
 
-    fetchAllTeams() {
-        let response = await fetch("https://api.fitbit.com/oauth2/token", {
+    async fetchData(link, parameters) {
+        let strParameters = "";
+        if (parameters) {
+            strParameters += '?';
+            for (let key in parameters) {
+                if (strParameters != "?") {
+                    strParameters += "&";
+                }
+                strParameters += key + "=" + encodeURIComponent(parameters[key]);
+            }
+        }
+        let response = await fetch(`${this.endpoint}${this.game}/${link}${strParameters}`, {
             headers: {
                 Authorization: `Bearer ${this.api_key}`
-            },
-            method: "GET"
+            }
         })
+        console.log(response)
+        var headers = await response.headers
+        console.log(headers)
         let data = await response.json()
-        return data
+        return {
+            data: data,
+            hasNext: false
+        }
+    }
+
+    async fetchAllTeams() {
+
+        let allDat = []
+        let hasNext = true
+        let page = 1
+
+        do {
+            let response = await this.fetchData('teams', {
+                page: page,
+                per_page: 100
+            })
+            hasNext = response.hasNext
+            page++
+        }
+        while (hasNext)
+
+        console.log(allDat)
     }
 
     fetchOneTeamById() {

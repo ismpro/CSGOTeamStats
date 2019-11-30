@@ -11,12 +11,14 @@ const iplocate = require('node-iplocate')
 const helmet = require('helmet')
 const mongoose = require('mongoose')
 const chalk = require('chalk')
+const ApiControler = require('./app/config/ApiControler.js')
 
 console.clear()
 console.log(chalk.green('\n  Starting server'));
 
 //Config
 const app = express()
+app.use(helmet())
 dotenv.config()
 
 //Some varibles
@@ -25,6 +27,11 @@ app.set("pin", process.env.PIN || 1234);
 global.appRoot = path.resolve(__dirname);
 global.NODE_MODE = Boolean(process.env.NODE_DEV === 'true');
 console.log(chalk.green(`  Node Mode: ${(global.NODE_MODE ? 'DEV' : 'PRD')}`));
+
+//Panda Score API
+let api = new ApiControler({
+    api_key: process.env.API_KEY
+});
 
 //MongoDB
 mongoose.set('useFindAndModify', false);
@@ -36,7 +43,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
-    //fitbit.execute().catch(() => console.log('Error on first execute'))
+    api.fetchAllTeams(link)
 });
 
 //Disabling things for security
