@@ -15,6 +15,10 @@ let playersSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Teams'
     }
+}, { collection: 'Players' });
+
+playersSchema.virtual('fullName').get(function () {
+    return this.first_name + ' ' + this.last_name;
 });
 
 module.exports = mongoose.model('Players', playersSchema);

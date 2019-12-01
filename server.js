@@ -43,7 +43,6 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
-    api.fetchAllTeams(link)
 });
 
 //Disabling things for security
@@ -131,7 +130,7 @@ app.use((req, res, next) => {
 });
 
 //Adding Routes
-require('./app/routes.js')(app)
+require('./app/routes.js')(app, api)
 
 //Handling erros inside of server
 app.use(function (err, req, res) {
