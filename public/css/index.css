@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    background-color: rgba(22, 160, 133,0.7);
+}
+
+.header {
+    height: 60px;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    background-color: rgb(53, 53, 53);
+}
+
+.hamburguer {
+    width: 35px;
+    height: 40px;
+    float: left;
+}
+
+.logo_title {    
+    display: inline-block;
+    width: 270px;
+    height: 40px;
+}
+
+.logo_image {
+    width: 40px;
+    height: 40px;
+}
+
+/* BOTÃO DE LOGIN */
+.loginButton {
+    background-color: #16a085;
+    color: black;
+    border: 2px solid black;
+    border-radius: 10%;
+    text-align:center;
+    text-decoration: none;
+    font-size: 16px;
+    width: 100px;
+    height: 30px;
+    float: right;
+    transition: 0.5s;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    padding: 5px;
+  }
+.loginButton:hover {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 700px) {
+    .logo_title {    
+        display: none;
+    }
+}
