@@ -4,29 +4,75 @@ const functions = require('./functions.js')
 const Teams = require('./models/Teams')
 const Players = require('./models/Players')
 const Match = require('./models/Match')
+const User = require('./models/User.js')
 
 module.exports = function (app, api) {
 
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'index.html'))
     })
+    app.get('/login', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'views', 'login.html'))
+    })
 
-    app.post('/authentication/login', function (req, res) {
+    app.post('/auth/login', function (req, res) {
         let data = req.body;
         User.findOne({
             'email': data.email
         }, function (err, user) {
-            if (!err && user) {
-                let sessionId = functions.createid(64)
-                req.session.userid = user._id
-                req.session.sessionId = sessionId
-                user.atribuitesessionid = sessionId
-                user.save()
-                req.session.save(() => {
-                    res.status(200).send('/home')
-                })
+            if (!err) {
+                if (user) {
+                    if (user.validPassword(data.password)) {
+                        let sessionId = functions.createid(64)
+                        req.session.userid = user._id
+                        req.session.sessionId = sessionId
+                        user.atribuitesessionid = sessionId
+                        let userSave = user.save()
+                        let sessionSave = req.session.save()
+                        Promise.all([userSave, sessionSave]).then(() => {
+                            res.status(220).send('Email or password invalid')
+                        }).catch(() => {
+                            res.status(500).send('Error on server! Try again later!')
+                        })
+                    } else {
+                        res.status(221).send('Email or password invalid')
+                    }
+                } else {
+                    res.status(221).send('Email or password invalid')
+                }
             } else {
-                res.status(200).send(false)
+                res.status(500).send('Error on server! Try again later!')
+            }
+        });
+    })
+
+    app.post('/auth/register', function (req, res) {
+        let data = req.body;
+        User.findOne({
+            email: data.email
+        }, function (err, user) {
+            if (!err) {
+                if (!user) {
+                    let newUser = new User();
+                    newUser.email = data.email;
+                    newUser.firstName = data.firstName
+                    newUser.lastName = data.lastName
+                    newUser.password = newUser.generateHash(data.password);
+                    newUser.creationDate = new Date();
+                    newUser.atribuitesessionid = 'expired';
+                    newUser.save(function (err, user) {
+                        if (!err && user) {
+                            res.status(230).send(true);
+                        } else {
+                            console.log(err)
+                            res.status(500).send('Error on resgisting on server');
+                        }
+                    });
+                } else {
+                    res.status(231).send('Email already in use!');
+                }
+            } else {
+                res.status(231).send('Email already in use!');
             }
         });
     })

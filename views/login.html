@@ -5,11 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/all.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/static/scripts/all.js"></script>
+    <script src="/static/scripts/login.js"></script>
+    <title>Login</title>
 </head>
 
-<body>
-
+<body onload="loadPage()">
+    <noscript>Javascript must be active for this page to work!</noscript>
+    <div id="loader" class="loader-wrapper">
+        <div class="loader">
+            <img src="/static/images/loader.svg" alt="loader">
+        </div>
+    </div>
+    <div id="page" style="display: none;">
+        <header class="header">
+            <div style="width: 100%; margin: auto; text-align: center;">
+                <!-- hambúrger -->
+                <img src="/static/images/dropdown.png" class="hamburguer">
+                <!-- logo -->
+                <img src="/static/images/logo-title.png" class="logo_title">
+                <img src="/static/images/logo-image.png" class="logo_image">
+                <!-- botão de login -->
+                <a href="http://localhost:3001/login" class="loginButton">Log in</a>
+            </div>
+        </header>
+        <div class="title">
+            <div>CSGOTeam<span>Stats</span><img src="/static/images/logo-image.png" width="38" height="58"
+                    alt="BonecoCsgo"></div>
+        </div>
+        <br>
+        <div class="login" id="login">
+            <div id="login_form" style="display: block;">
+                <form onclick="loginSubmit(event)">
+                    <input type="email" placeholder="Email..." id="email_login"><br>
+                    <input type="password" placeholder="Password..." id="password_login"><br>
+                    <input type="button" value="Login"><br />
+                </form>
+                <button onclick="changeMode()" class="button_a">Don't have an account? Sign Up</button>
+            </div>
+            <div id="register_form" style="display: none;">
+                <form onclick="registerSubmit(event)">
+                    <input type="text" placeholder="Email..." id="email_register"><br>
+                    <input type="text" placeholder="First Name..." id="first_name_register"><br>
+                    <input type="text" placeholder="Name..." id="last_name_register"><br>
+                    <input type="password" placeholder="Password..." id="password_register"><br>
+                    <input type="button" value="Register"><br />
+                </form>
+                <button onclick="changeMode()" class="button_a">Have an account? Sign In</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -11,6 +11,26 @@
             "color": "#00ff00"
         },
         {
+            "code": 220,
+            "message": "Request Login Authorized",
+            "color": "#00ff00"
+        },
+        {
+            "code": 221,
+            "message": "Request Login Denied",
+            "color": "#cc0000"
+        },
+        {
+            "code": 230,
+            "message": "Request Register Authorized",
+            "color": "#00ff00"
+        },
+        {
+            "code": 231,
+            "message": "Request Register Denied",
+            "color": "#cc0000"
+        },
+        {
             "code": 304,
             "message": "Request Not Modified",
             "color": "#ffff00"
