@@ -43,6 +43,11 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
+    /* api.fetchAllMatches().then(data => {
+        data.forEach(element => {
+            console.log(element)
+        });
+    }) */
 });
 
 //Disabling things for security
@@ -77,6 +82,7 @@ app.use(session({
 
 //Logger
 app.use((req, res, next) => {
+    let startTime = new Date().getTime()
     res.on('finish', () => {
         const fileLocation = path.join(global.appRoot, 'db', 'logs', 'requests.json')
         let ip = req.headers['x-forwarded-for'] || req.ip
@@ -98,7 +104,8 @@ app.use((req, res, next) => {
                 results.ip === '0000:0000:0000:0000:0000:0000:0000:0001'
             );
             let localion = isLocalhost ? 'localhost' : results.country + (results.city ? ' - ' + results.city : '')
-            console.log(`\nRequest ${req.method} -> ${req.path} : ${isLocalhost ? 'localhost' : `${results.ip} - ${localion}`} ${(req.session.name ? 'by ' + req.session.name : '')}`)
+            let endTime = new Date().getTime()
+            console.log(`\nRequest ${req.method} -> ${req.path} : ${isLocalhost ? 'localhost' : `${results.ip} - ${localion}`} ${(req.session.name ? 'by ' + req.session.name : '')} Time: ${endTime - startTime} ms`)
             console.log(`Code: ${chalk.hex(code.color)(code.code)} -> ${code.message}`);
             if (!global.NODE_MODE) {
                 functions.jsonReader(fileLocation, function (err, object) {
