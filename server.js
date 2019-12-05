@@ -51,7 +51,7 @@ db.once('open', function () {
             await Players.deleteMany({})
             await Match.deleteMany({})
 
-            let allInfo = await api.fetchAllInfo(10)
+            let allInfo = await api.fetchAllInfo(1)
             let teamsRes = await Teams.collection.insertMany(allInfo.teams);
             let playersRes = await Players.collection.insertMany(allInfo.players);
             let matchRes = await Match.collection.insertMany(allInfo.matches);
@@ -67,7 +67,6 @@ db.once('open', function () {
 
         } catch (error) {
             console.log(error.stack)
-            res.status(500).send(error)
         }
     }
     test()
