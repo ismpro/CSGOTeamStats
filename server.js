@@ -28,10 +28,8 @@ global.appRoot = path.resolve(__dirname);
 global.NODE_MODE = Boolean(process.env.NODE_DEV === 'true');
 console.log(chalk.green(`  Node Mode: ${(global.NODE_MODE ? 'DEV' : 'PRD')}`));
 
-//Panda Score API
-let api = new ApiControler({
-    api_key: process.env.API_KEY
-});
+//Hltv API
+let api = new ApiControler();
 
 //MongoDB
 mongoose.set('useFindAndModify', false);
@@ -43,11 +41,36 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
-    /* api.fetchAllMatches().then(data => {
-        data.forEach(element => {
-            console.log(element)
-        });
-    }) */
+    const Teams = require('./app/models/Teams')
+    const Players = require('./app/models/Players')
+    const Match = require('./app/models/Match')
+    async function test() {
+        try {
+            var startDate = new Date();
+            await Teams.deleteMany({})
+            await Players.deleteMany({})
+            await Match.deleteMany({})
+
+            let allInfo = await api.fetchAllInfo(10)
+            let teamsRes = await Teams.collection.insertMany(allInfo.teams);
+            let playersRes = await Players.collection.insertMany(allInfo.players);
+            let matchRes = await Match.collection.insertMany(allInfo.matches);
+
+            var endDate = new Date();
+            var seconds = endDate.getTime() - startDate.getTime();
+            console.log(
+                `DB Reseted
+                Teams Inserted: ${teamsRes.insertedCount}
+                Players Inserted: ${ playersRes.insertedCount}
+                Match Inserted: ${matchRes.insertedCount}
+                Runtime: ${seconds} ms`)
+
+        } catch (error) {
+            console.log(error.stack)
+            res.status(500).send(error)
+        }
+    }
+    test()
 });
 
 //Disabling things for security

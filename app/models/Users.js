@@ -52,6 +52,8 @@ var userSchema = mongoose.Schema({
             ref: 'Teams'
         }]
     }
+}, {
+    collection: 'Users'
 });
 
 userSchema.methods.generateHash = function (password) {

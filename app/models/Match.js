@@ -2,84 +2,120 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
-let matchSchema = Schema({
+let playerStats = Schema({
+    id: Number,
     name: String,
-    begin: Date,
-    isDetailed: Boolean,
-    draw: Boolean,
-    end: Date,
-    forfeit: Boolean,
-    games: [{
-        begin: Date,
-        isDetailed: Boolean,
-        end: Date,
-        finished: Boolean,
-        forfeit: Boolean,
-        id: Number,
-        length: Number,
-        position: Number,
-        status: String,
-        video_url: String,
-        winner: {
-            type: Schema.Types.ObjectId,
-            ref: 'Teams'
-        }
-    }],
-    apiId: Number,
-    league: {
-        apiId: Number,
-        image_url: String,
+    kills: Number,
+    hsKills: Number,
+    assists: Number,
+    flashAssists: Number,
+    deaths: Number,
+    KAST: Number,
+    killDeathsDifference: Number,
+    ADR: Number,
+    firstKillsDifference: Number,
+    rating: Number
+})
+
+let matchSchema = Schema({
+    id: Number,
+    statsId: Number,
+    team1: {
         name: String,
-        slug: String,
-        url: String
+        id: Number
     },
-    live: {
-        opens_at: Date,
-        supported: Boolean,
-        url: String
-    },
-    match_type: String,
-    modified: Date,
-    number_of_games: Number,
-    opponents: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Players'
-    }],
-    results: [{
-        score: Number,
-        team: {
-            type: Schema.Types.ObjectId,
-            ref: 'Teams'
-        }
-    }],
-    scheduled_at: String,
-    serie: {
-        begin: Date,
-        description: String,
-        end: Date,
-        full_name: String,
-        id: Number,
-        modified: Date,
+    team2: {
         name: String,
-        slug: String,
-        winner_id: Number,
-        winner_type: String,
-        year: Number
+        id: Number
     },
-    serie_id: Number,
-    slug: String,
+    winnerTeam: {
+        name: String,
+        id: Number
+    },
+    date: Date,
+    format: String,
+    additionalInfo: String,
+    event: String,
+    maps: [{
+        name: String,
+        result: String,
+        statsId: Number
+    }],
+    players: {
+        team1: [{
+            name: String,
+            id: Number
+        }],
+        team2: [{
+            name: String,
+            id: Number
+        }]
+    },
+    streams: [{
+        name: String,
+        link: String,
+        viewers: Number
+    }],
+    live: Boolean,
     status: String,
-    tournament: {
-        begin: Date,
-        end: Date,
-        id: Number,
-        live_supported: Boolean,
-        modified: Date,
+    title: String,
+    hasScorebot: Boolean,
+    highlightedPlayer: {
         name: String,
-        prizepool: String,
-        slug: String,
+        id: Number
     },
-    winner: String
+    vetoes: [{
+        team: {
+            name: String,
+            id: Number
+        },
+        map: String,
+        type: String
+    }],
+    highlights: [{
+        link: String,
+        title: String
+    }],
+    demos: [{
+        name: String,
+        link: String
+    }],
+    overview: {
+        mostKills: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostDamage: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostAssists: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostAWPKills: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostFirstKills: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        bestRating: {
+            id: Number,
+            name: String,
+            value: Number
+        }
+    },
+    playerStats: {
+        team1: [playerStats],
+        team2: [playerStats]
+    }
 }, {
     collection: 'Matches'
 });

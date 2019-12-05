@@ -39,7 +39,7 @@
         <br>
         <div class="login" id="login">
             <div id="login_form" style="display: block;">
-                <form onclick="loginSubmit(event)">
+                <form onsubmit="loginSubmit(event)">
                     <input type="email" placeholder="Email..." id="email_login"><br>
                     <input type="password" placeholder="Password..." id="password_login"><br>
                     <input type="button" value="Login"><br />
@@ -47,7 +47,7 @@
                 <button onclick="changeMode()" class="button_a">Don't have an account? Sign Up</button>
             </div>
             <div id="register_form" style="display: none;">
-                <form onclick="registerSubmit(event)">
+                <form onsubmit="registerSubmit(event)">
                     <input type="text" placeholder="Email..." id="email_register"><br>
                     <input type="text" placeholder="First Name..." id="first_name_register"><br>
                     <input type="text" placeholder="Name..." id="last_name_register"><br>

@@ -4,7 +4,7 @@ const functions = require('./functions.js')
 const Teams = require('./models/Teams')
 const Players = require('./models/Players')
 const Match = require('./models/Match')
-const User = require('./models/User.js')
+const User = require('./models/Users.js')
 
 module.exports = function (app, api) {
 
@@ -86,25 +86,22 @@ module.exports = function (app, api) {
                 await Players.deleteMany({})
                 await Match.deleteMany({})
 
-                let allTeams = await api.fetchAllTeams()
-                let teamsRes = await Teams.collection.insertMany(allTeams);
-
-                let allPlayers = await api.fetchAllPlayers()
-                let playersRes = await Players.collection.insertMany(allPlayers);
-
-                let allMatch = await api.fetchAllMatches()
-                let matchRes = await Match.collection.insertMany(allMatch);
+                let allInfo = await api.fetchAllInfo(1)
+                let teamsRes = await Teams.collection.insertMany(allInfo.teams);
+                let playersRes = await Players.collection.insertMany(allInfo.players);
+                let matchRes = await Match.collection.insertMany(allInfo.matches);
 
                 var endDate = new Date();
                 var seconds = endDate.getTime() - startDate.getTime();
-                res.status(200).send(
-                    `<h2>DB Reseted</h2>
-                <p>Teams Inserted: ${teamsRes.insertedCount}</p> 
-                <p>Players Inserted: ${ playersRes.insertedCount}</p>
-                <p>Match Inserted: ${matchRes.insertedCount}</p>
-                <p>Runtime: ${seconds} ms`)
+                console.log(
+                    `DB Reseted
+                Teams Inserted: ${teamsRes.insertedCount}
+                Players Inserted: ${ playersRes.insertedCount}
+                Match Inserted: ${matchRes.insertedCount}
+                Runtime: ${seconds} ms`)
+
             } catch (error) {
-                console.log(error)
+                console.log(error.stack)
                 res.status(500).send(error)
             }
         } else {
