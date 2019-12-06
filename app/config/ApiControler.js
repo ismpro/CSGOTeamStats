@@ -5,6 +5,9 @@ const chalk = require('chalk')
 const {
     HLTV
 } = require('hltv')
+const Teams = require('../models/Teams')
+const Players = require('../models/Players')
+const Match = require('../models/Match')
 
 class ApiControler {
     constructor() {
@@ -27,13 +30,19 @@ class ApiControler {
         results = results.map(result => result.id)
         let matches = []
         let matchIt = 0
+        let matchCount = 0
         for (const id of results) {
             try {
                 matchIt++
+                matchCount++
+                if (matchCount === 3) {
+                    //await functions.sleep(3000)
+                    matchCount = 0
+                }
                 console.log('Match: ' + matchIt)
                 let match = await this.fetchMatchById(id)
                 let matchStats = await this.fetchMatchesStatsById(match.statsId)
-                matches.push({
+                let parsedMatch = {
                     id: match.id,
                     statsId: match.statsId,
                     team1: match.team1,
@@ -63,7 +72,10 @@ class ApiControler {
                         bestRating: matchStats.overview.bestRating
                     },
                     playerStats: matchStats.playerStats
-                })
+                }
+                let newMatch = new Match(parsedMatch)
+                await newMatch.save()
+                matches.push(parsedMatch)
             } catch (error) {
                 console.log(error.message)
             }
@@ -75,12 +87,18 @@ class ApiControler {
         teamids = teamids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
         let teams = []
         let teamsIt = 0
+        let teamsCount = 0
         for (const id of teamids) {
             try {
                 teamsIt++
+                teamsCount++
+                if (teamsCount === 3) {
+                    //await functions.sleep(3000)
+                    teamsCount = 0
+                }
                 console.log('Team: ' + teamsIt)
                 let team1 = await this.fetchTeamById(id)
-                teams.push({
+                let parsedTeam = {
                     id: team1.id,
                     name: team1.name,
                     logo: team1.logo,
@@ -90,7 +108,10 @@ class ApiControler {
                     rank: team1.rank,
                     players: team1.players,
                     recentResults: team1.recentResults
-                })
+                }
+                let newTeam = new Teams(parsedTeam)
+                await newTeam.save()
+                teams.push(parsedTeam)
             } catch (error) {
                 console.log(error.message)
             }
@@ -104,11 +125,19 @@ class ApiControler {
         playersids = playersids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
         let players = []
         let playersIt = 0
+        let playersCount = 0
         for (const id of playersids) {
             try {
                 playersIt++
+                playersCount++
+                if (playersCount === 3) {
+                    //await functions.sleep(3000)
+                    playersCount = 0
+                }
                 console.log('Player: ' + playersIt)
                 let player = await this.fetchPlayerById(id)
+                let newPlayer = new Players(player)
+                await newPlayer.save()
                 players.push(player)
             } catch (error) {
                 console.log(error.message)

@@ -44,6 +44,7 @@ exports.jsonReader = function (filePath, cb) {
                 const object = JSON.parse(fileData)
                 return cb && cb(null, object)
             } catch (err) {
+                console.log(err.message)
                 return cb && cb(err)
             }
         })
@@ -87,7 +88,7 @@ function average(data) {
     return avg;
 }
 
-function minuteToHourConvert(n) {
+exports.minuteToHourConvert = function (n) {
     var mins_num = parseFloat(n, 10); // don't forget the second param
     var hours = Math.floor(mins_num / 60);
     var minutes = Math.floor((mins_num - ((hours * 3600)) / 60));
@@ -105,10 +106,10 @@ function minuteToHourConvert(n) {
 exports.getMonday = function (d = new Date()) {
     var day = d.getDay(),
         diff = d.getDate() - day + (day == 0 ? -6 : 1)
-    return formatDate(new Date(d.setDate(diff)));
+    return exports.formatDate(new Date(d.setDate(diff)));
 }
 
-function formatDate(date) {
+exports.formatDate = function (date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -135,4 +136,7 @@ exports.standardDeviation = function (values) {
 
     var stdDev = Math.sqrt(avgSquareDiff);
     return [Math.round(stdDev), Math.round(avg)];
+}
+exports.sleep = function (time) {
+    return new Promise(resolve => setTimeout(resolve, time))
 }

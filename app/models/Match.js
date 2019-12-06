@@ -64,14 +64,7 @@ let matchSchema = Schema({
         name: String,
         id: Number
     },
-    vetoes: [{
-        team: {
-            name: String,
-            id: Number
-        },
-        map: String,
-        type: String
-    }],
+    vetoes: [Schema.Types.Mixed],
     highlights: [{
         link: String,
         title: String

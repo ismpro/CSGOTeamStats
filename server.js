@@ -46,24 +46,11 @@ db.once('open', function () {
     const Match = require('./app/models/Match')
     async function test() {
         try {
-            var startDate = new Date();
             await Teams.deleteMany({})
             await Players.deleteMany({})
             await Match.deleteMany({})
 
             let allInfo = await api.fetchAllInfo(1)
-            let teamsRes = await Teams.collection.insertMany(allInfo.teams);
-            let playersRes = await Players.collection.insertMany(allInfo.players);
-            let matchRes = await Match.collection.insertMany(allInfo.matches);
-
-            var endDate = new Date();
-            var seconds = endDate.getTime() - startDate.getTime();
-            console.log(
-                `DB Reseted
-                Teams Inserted: ${teamsRes.insertedCount}
-                Players Inserted: ${ playersRes.insertedCount}
-                Match Inserted: ${matchRes.insertedCount}
-                Runtime: ${seconds} ms`)
 
         } catch (error) {
             console.log(error.stack)
