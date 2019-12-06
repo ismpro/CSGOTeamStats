@@ -25,65 +25,57 @@ class ApiControler {
         });
     }
 
-    async fetchAllInfo(pages) {
-        let results = await this.fetchResultsByPages(pages)
-        results = results.map(result => result.id)
-        let matches = []
-        let matchIt = 0
-        let matchCount = 0
-        for (const id of results) {
-            try {
-                matchIt++
-                matchCount++
-                if (matchCount === 3) {
-                    //await functions.sleep(3000)
-                    matchCount = 0
-                }
-                console.log('Match: ' + matchIt)
-                let match = await this.fetchMatchById(id)
-                let matchStats = await this.fetchMatchesStatsById(match.statsId)
-                let parsedMatch = {
-                    id: match.id,
-                    statsId: match.statsId,
-                    team1: match.team1,
-                    team2: match.team2,
-                    winnerTeam: match.winnerTeam,
-                    date: new Date(match.date),
-                    format: match.format,
-                    additionalInfo: match.additionalInfo,
-                    event: match.event.name,
-                    maps: match.maps,
-                    players: match.players,
-                    streams: match.streams,
-                    live: match.live,
-                    status: match.status,
-                    title: match.title,
-                    hasScorebot: match.hasScorebot,
-                    highlightedPlayer: match.highlightedPlayer,
-                    vetoes: match.vetoes,
-                    highlights: match.highlights,
-                    demos: match.demos,
-                    overview: {
-                        mostKills: matchStats.overview.mostKills,
-                        mostDamage: matchStats.overview.mostDamage,
-                        mostAssists: matchStats.overview.mostAssists,
-                        mostAWPKills: matchStats.overview.mostAWPKills,
-                        mostFirstKills: matchStats.overview.mostFirstKills,
-                        bestRating: matchStats.overview.bestRating
-                    },
-                    playerStats: matchStats.playerStats
-                }
-                let newMatch = new Match(parsedMatch)
-                await newMatch.save()
-                matches.push(parsedMatch)
-            } catch (error) {
-                console.log(error.message)
-            }
+    async fetchAllInfoFromMatch(id) {
+        let match = await this.fetchMatchById(id)
+        let matchStats = await this.fetchMatchesStatsById(match.statsId)
+        let parsedMatch = {
+            id: match.id,
+            statsId: match.statsId,
+            team1: match.team1,
+            team2: match.team2,
+            winnerTeam: match.winnerTeam,
+            date: new Date(match.date),
+            format: match.format,
+            additionalInfo: match.additionalInfo,
+            event: match.event.name,
+            maps: match.maps,
+            players: match.players,
+            streams: match.streams,
+            live: match.live,
+            status: match.status,
+            title: match.title,
+            hasScorebot: match.hasScorebot,
+            highlightedPlayer: match.highlightedPlayer,
+            vetoes: match.vetoes,
+            highlights: match.highlights,
+            demos: match.demos,
+            overview: {
+                mostKills: matchStats.overview.mostKills,
+                mostDamage: matchStats.overview.mostDamage,
+                mostAssists: matchStats.overview.mostAssists,
+                mostAWPKills: matchStats.overview.mostAWPKills,
+                mostFirstKills: matchStats.overview.mostFirstKills,
+                bestRating: matchStats.overview.bestRating
+            },
+            playerStats: matchStats.playerStats
         }
+        let newMatch = new Match(parsedMatch)
+        await newMatch.save()
         let teamids = []
-        for (const match of matches) {
-            teamids.push(match.team1.id, match.team2.id)
+        let team1 = await Teams.findOne({
+            id: match.team1.id
+        })
+        let team2 = await Teams.findOne({
+            id: match.team2.id
+        })
+
+        if (!team1) {
+            teamids.push(match.team1.id)
         }
+        if (!team2) {
+            teamids.push(match.team2.id)
+        }
+
         teamids = teamids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
         let teams = []
         let teamsIt = 0
@@ -93,7 +85,7 @@ class ApiControler {
                 teamsIt++
                 teamsCount++
                 if (teamsCount === 3) {
-                    //await functions.sleep(3000)
+                    await functions.sleep(3000)
                     teamsCount = 0
                 }
                 console.log('Team: ' + teamsIt)
@@ -131,7 +123,7 @@ class ApiControler {
                 playersIt++
                 playersCount++
                 if (playersCount === 3) {
-                    //await functions.sleep(3000)
+                    await functions.sleep(3000)
                     playersCount = 0
                 }
                 console.log('Player: ' + playersIt)
@@ -144,10 +136,35 @@ class ApiControler {
             }
         }
         return {
-            matches: matches,
+            match: parsedMatch,
             teams: teams,
             players: players
         }
+
+    }
+
+    async fetchAllInfo(pages) {
+        let results = await this.fetchResultsByPages(pages)
+        results = results.map(result => result.id)
+        let info = []
+        let matchIt = 0
+        let matchCount = 0
+        for (const id of results) {
+            try {
+                matchIt++
+                matchCount++
+                if (matchCount === 3) {
+                    await functions.sleep(3000)
+                    matchCount = 0
+                }
+                console.log('Match: ' + matchIt)
+                let infoAll = await this.fetchAllInfoFromMatch(id)
+                info.push(infoAll)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        return info
     }
 
     fetchPlayerById(id) {

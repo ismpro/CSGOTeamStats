@@ -2,7 +2,12 @@
 function loadPage() {
     setTimeout(() => {
         fade(true, 'loader', 'page')
+        /* var myArray = ['red', 'blue', 'pink', 'green', 'yellow'];
+        setInterval(() => {
+            document.getElementById('body').style.backgroundColor = myArray[Math.floor(Math.random() * myArray.length)]
+        }, 50); */
     }, 100)
+
 }
 
 function fade(isOut, element1, element2) {

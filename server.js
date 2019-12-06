@@ -44,19 +44,12 @@ db.once('open', function () {
     const Teams = require('./app/models/Teams')
     const Players = require('./app/models/Players')
     const Match = require('./app/models/Match')
-    async function test() {
-        try {
-            await Teams.deleteMany({})
-            await Players.deleteMany({})
-            await Match.deleteMany({})
-
-            let allInfo = await api.fetchAllInfo(1)
-
-        } catch (error) {
-            console.log(error.stack)
-        }
+    /* async function test() {
+        console.log(await Match.findOne({
+            id: 2337983
+        }))
     }
-    test()
+    test() */
 });
 
 //Disabling things for security

@@ -79,30 +79,41 @@ module.exports = function (app, api) {
 
     app.get('/fetchAllInfo', async function (req, res) {
         let pin = req.query.pin;
+        let pages = req.query.pages;
         if (app.get('pin') === pin) {
+            res.status(200).send('Starting to reset')
             try {
-                var startDate = new Date();
                 await Teams.deleteMany({})
                 await Players.deleteMany({})
                 await Match.deleteMany({})
 
-                let allInfo = await api.fetchAllInfo(1)
-                let teamsRes = await Teams.collection.insertMany(allInfo.teams);
-                let playersRes = await Players.collection.insertMany(allInfo.players);
-                let matchRes = await Match.collection.insertMany(allInfo.matches);
-
-                var endDate = new Date();
-                var seconds = endDate.getTime() - startDate.getTime();
-                console.log(
-                    `DB Reseted
-                Teams Inserted: ${teamsRes.insertedCount}
-                Players Inserted: ${ playersRes.insertedCount}
-                Match Inserted: ${matchRes.insertedCount}
-                Runtime: ${seconds} ms`)
+                await api.fetchAllInfo(pages)
 
             } catch (error) {
-                console.log(error.stack)
-                res.status(500).send(error)
+                console.log(error.message)
+            }
+        } else {
+            res.status(403).send('Unauthorized')
+        }
+    })
+
+    app.get('/addMatch', async function (req, res) {
+        let pin = req.query.pin;
+        let id = req.query.id;
+        if (app.get('pin') === pin) {
+            let match = await Match.findOne({
+                id: id
+            })
+            if (match) {
+                res.status(200).send('Starting to add match')
+                try {
+                    await api.fetchAllInfoFromMatch(id)
+                    console.log('done')
+                } catch (error) {
+                    console.log(error.message)
+                }
+            } else {
+                res.status(200).send('Match already in db')
             }
         } else {
             res.status(403).send('Unauthorized')
@@ -116,6 +127,10 @@ module.exports = function (app, api) {
         } else {
             res.status(403).send('Unauthorized')
         }
+    })
+
+    app.get('/favicon.ico', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'public', 'images', 'favicon.ico'));
     })
 
     app.get('*', function (req, res) {

@@ -125,7 +125,7 @@
     margin: 5px;
 }
 
-.login input[type=button] {
+.login input[type=submit] {
     width: 260px;
     height: 35px;
     background: #fff;
