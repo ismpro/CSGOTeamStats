@@ -6,12 +6,31 @@ const Players = require('./models/Players')
 const Match = require('./models/Match')
 const User = require('./models/Users.js')
 
+//Redirect Functions - Protection layer
+const redirectHome = (req, res, next) => {
+    if (req.session.userid) {
+        User.findById(req.session.userid, (err, user) => {
+            if (err) {
+                res.status(500).send(err.message)
+            } else {
+                if (user && user.atribuitesessionid === req.session.sessionId) {
+                    res.status(200).redirect('/')
+                } else {
+                    next()
+                }
+            }
+        })
+    } else {
+        next()
+    }
+}
+
 module.exports = function (app, api) {
 
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'index.html'))
     })
-    app.get('/login', function (req, res) {
+    app.get('/login', redirectHome, function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'login.html'))
     })
 
