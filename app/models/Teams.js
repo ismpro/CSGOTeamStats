@@ -3,11 +3,27 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 let teamsSchema = Schema({
+    id: Number,
     name: String,
-    acronym: String,
-    apiId: Number,
-    image_url: String,
-    slug: String
-}, { collection: 'Teams' });
+    logo: String,
+    location: String,
+    facebook: String,
+    twitter: String,
+    rank: Number,
+    players: [{
+        name: String,
+        id: Number
+    }],
+    recentResults: [{
+        matchID: Number,
+        enemyTeam: {
+            id: Number,
+            name: String
+        },
+        result: String
+    }]
+}, {
+    collection: 'Teams'
+});
 
 module.exports = mongoose.model('Teams', teamsSchema);

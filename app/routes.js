@@ -4,17 +4,41 @@ const functions = require('./functions.js')
 const Teams = require('./models/Teams')
 const Players = require('./models/Players')
 const Match = require('./models/Match')
-const User = require('./models/User.js')
+const User = require('./models/Users.js')
+
+//Redirect Functions - Protection layer
+const redirectHome = (req, res, next) => {
+    if (req.session.userid) {
+        User.findById(req.session.userid, (err, user) => {
+            if (err) {
+                res.status(500).send(err.message)
+            } else {
+                if (user && user.atribuitesessionid === req.session.sessionId) {
+                    res.status(200).redirect('/')
+                } else {
+                    next()
+                }
+            }
+        })
+    } else {
+        next()
+    }
+}
 
 module.exports = function (app, api) {
 
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'index.html'))
     })
-    app.get('/login', function (req, res) {
+    app.get('/login', redirectHome, function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'login.html'))
     })
-
+    app.get('/player*', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'views', 'player.html'))
+    })
+    app.post('/player/:id', function (req, res) {
+        res.status(501).send('Not Implemented')
+    })
     app.post('/auth/login', function (req, res) {
         let data = req.body;
         User.findOne({
@@ -79,33 +103,41 @@ module.exports = function (app, api) {
 
     app.get('/fetchAllInfo', async function (req, res) {
         let pin = req.query.pin;
+        let pages = req.query.pages;
         if (app.get('pin') === pin) {
+            res.status(200).send('Starting to reset')
             try {
-                var startDate = new Date();
                 await Teams.deleteMany({})
                 await Players.deleteMany({})
                 await Match.deleteMany({})
 
-                let allTeams = await api.fetchAllTeams()
-                let teamsRes = await Teams.collection.insertMany(allTeams);
+                await api.fetchAllInfo(pages)
 
-                let allPlayers = await api.fetchAllPlayers()
-                let playersRes = await Players.collection.insertMany(allPlayers);
-
-                let allMatch = await api.fetchAllMatches()
-                let matchRes = await Match.collection.insertMany(allMatch);
-
-                var endDate = new Date();
-                var seconds = endDate.getTime() - startDate.getTime();
-                res.status(200).send(
-                    `<h2>DB Reseted</h2>
-                <p>Teams Inserted: ${teamsRes.insertedCount}</p> 
-                <p>Players Inserted: ${ playersRes.insertedCount}</p>
-                <p>Match Inserted: ${matchRes.insertedCount}</p>
-                <p>Runtime: ${seconds} ms`)
             } catch (error) {
-                console.log(error)
-                res.status(500).send(error)
+                console.log(error.message)
+            }
+        } else {
+            res.status(403).send('Unauthorized')
+        }
+    })
+
+    app.get('/addMatch', async function (req, res) {
+        let pin = req.query.pin;
+        let id = req.query.id;
+        if (app.get('pin') === pin) {
+            let match = await Match.findOne({
+                id: id
+            })
+            if (match) {
+                res.status(200).send('Starting to add match')
+                try {
+                    await api.fetchAllInfoFromMatch(id)
+                    console.log('done')
+                } catch (error) {
+                    console.log(error.message)
+                }
+            } else {
+                res.status(200).send('Match already in db')
             }
         } else {
             res.status(403).send('Unauthorized')
@@ -119,6 +151,10 @@ module.exports = function (app, api) {
         } else {
             res.status(403).send('Unauthorized')
         }
+    })
+
+    app.get('/favicon.ico', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'public', 'images', 'favicon.ico'));
     })
 
     app.get('*', function (req, res) {

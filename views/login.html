@@ -26,12 +26,8 @@
                 <!-- hambúrger -->
                 <img src="/static/images/dropdown.png" class="hamburguer">
                 <!-- logo -->
-                <a href="http://localhost:3001">
-                    <img src="/static/images/logo-title.png" class="logo_title">
-                    <img src="/static/images/logo-image.png" class="logo_image">
-                </a>
-                <!-- botão de login -->
-                <a href="http://localhost:3001/login" class="loginButton">Log in</a>
+                <img src="/static/images/logo-title.png" class="logo_title">
+                <img src="/static/images/logo-image.png" class="logo_image">
             </div>
         </header>
         <div class="title">
@@ -44,17 +40,17 @@
                 <form onsubmit="loginSubmit(event)">
                     <input type="email" placeholder="Email..." id="email_login"><br>
                     <input type="password" placeholder="Password..." id="password_login"><br>
-                    <input type="button" value="Login"><br />
+                    <input type="submit" value="Login"><br />
                 </form>
                 <button onclick="changeMode()" class="button_a">Don't have an account? Sign Up</button>
             </div>
             <div id="register_form" style="display: none;">
-                <form onclick="registerSubmit(event)">
+                <form onsubmit="registerSubmit(event)">
                     <input type="text" placeholder="Email..." id="email_register"><br>
                     <input type="text" placeholder="First Name..." id="first_name_register"><br>
-                    <input type="text" placeholder="Name..." id="last_name_register"><br>
+                    <input type="text" placeholder="Last Name..." id="last_name_register"><br>
                     <input type="password" placeholder="Password..." id="password_register"><br>
-                    <input type="button" value="Register"><br />
+                    <input type="submit" value="Register"><br />
                 </form>
                 <button onclick="changeMode()" class="button_a">Have an account? Sign In</button>
             </div>
