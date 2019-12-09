@@ -33,7 +33,12 @@ module.exports = function (app, api) {
     app.get('/login', redirectHome, function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'login.html'))
     })
-
+    app.get('/player*', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'views', 'player.html'))
+    })
+    app.post('/player/:id', function (req, res) {
+        res.status(501).send('Not Implemented')
+    })
     app.post('/auth/login', function (req, res) {
         let data = req.body;
         User.findOne({
