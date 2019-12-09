@@ -1,0 +1,32 @@
+.players {
+    background-color: rgba(53, 53, 53, 0.8);
+    display:inline-block;
+    width: 24%;
+    height: 700px;
+}
+
+.matches {
+    background-color: rgba(53, 53, 53, 0.8);
+    color: #16a085;
+    display: inline-block;
+    width: 50%;
+    height: 700px;
+    padding: 10px;
+}
+
+.matches .match {
+    display: flex;
+    border-style: outset;
+    border-color: #16a085;
+}
+
+.matches .match .result {
+    size: 20px;
+}
+
+.statistics {
+    background-color: rgba(53, 53, 53, 0.8);
+    display:inline-block;
+    width: 24%;
+    height: 700px;
+}
