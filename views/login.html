@@ -26,8 +26,10 @@
                 <!-- hambúrger -->
                 <img src="/static/images/dropdown.png" class="hamburguer">
                 <!-- logo -->
-                <img src="/static/images/logo-title.png" class="logo_title">
-                <img src="/static/images/logo-image.png" class="logo_image">
+                <a href="http://localhost:3001">
+                    <img src="/static/images/logo-title.png" class="logo_title">
+                    <img src="/static/images/logo-image.png" class="logo_image">
+                </a>
                 <!-- botão de login -->
                 <a href="http://localhost:3001/login" class="loginButton">Log in</a>
             </div>
@@ -39,7 +41,7 @@
         <br>
         <div class="login" id="login">
             <div id="login_form" style="display: block;">
-                <form onclick="loginSubmit(event)">
+                <form onsubmit="loginSubmit(event)">
                     <input type="email" placeholder="Email..." id="email_login"><br>
                     <input type="password" placeholder="Password..." id="password_login"><br>
                     <input type="button" value="Login"><br />
