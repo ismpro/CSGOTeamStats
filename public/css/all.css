@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #16a085b3;
+    background-color: #16a084;
 }
 
 .loader {
@@ -28,6 +28,7 @@ body {
     padding-top: 20px;
     padding-right: 30px;
     padding-left: 30px;
+    margin-bottom: 5px;
     background-color: rgb(53, 53, 53);
 }
 
