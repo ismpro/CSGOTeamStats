@@ -1,0 +1,22 @@
+.player_info {
+    position: absolute;
+    margin-top: 30px;
+    left: calc(50% - 90px);
+    height: 150px;
+    width: 350px;
+    padding: 10px;
+    z-index: 2;
+    max-width: 220px;
+}
+
+.tab-content {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 2px 2px 0 rgba(50, 50, 50, .25);
+    padding: 16px;
+    padding-top: 16px;
+    padding-top: 8px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 18px;
+}

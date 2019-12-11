@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/player.css">
     <link rel="stylesheet" href="/static/css/all.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -28,16 +29,40 @@
                 <img src="/static/images/logo-title.png" class="logo_title">
                 <img src="/static/images/logo-image.png" class="logo_image">
                 <!-- botão de login -->
-                <a href="http://localhost:3001/login" class="loginButton">Log in</a>
+                <a href="/login" class="loginButton">Log in</a>
             </div>
         </header>
-        <div>
+        <div class="player_info">
             <div>
-                <img id="player_image" src="/static/images/unimage-team.svg" alt="Player">
+                <img id="player_image" src="/static/images/personal.png" height="200" width="200" alt="Player">
             </div>
             <div>
-                <div id="player_slug"></div>
-                <div id="player_name"></div>
+                <h1 id="player_ign"></h1>
+                <div>
+                    <img src="https://www.countryflags.io/PT/shiny/24.png" alt="CountryFlag">
+                    <p id="player_name">Ismael Lourenço</p>
+                </div>
+                <div>
+                    <span>Age</span>
+                    <span id="player_age">22</span>
+                </div>
+                <div>
+                    <span>Current Team</span>
+                    <span>
+                        <img id="team_flag" src="https://static.hltv.org/images/team/logo/4608" height="16" width="16"
+                            alt="NAVI">
+                        <span id="team_name">NaVi</span>
+                    </span>
+                </div>
+                <div>
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-twitter-square"></i>
+                </div>
+            </div>
+            
+            <div class="tab-content">
+                s
             </div>
         </div>
     </div>

@@ -26,7 +26,6 @@ const redirectHome = (req, res, next) => {
 }
 
 module.exports = function (app, api) {
-
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'index.html'))
     })

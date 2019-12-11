@@ -1,9 +1,4 @@
 /* eslint-disable */
-const api = axios.create({
-    baseURL: window.location.origin,
-    withCredentials: true,
-});
-
 let mode = true;
 
 function loginSubmit(e) {

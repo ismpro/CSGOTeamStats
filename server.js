@@ -1,3 +1,4 @@
+/* eslint-disable */
 const express = require('express')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
@@ -19,6 +20,7 @@ app.use(helmet())
 dotenv.config()
 
 //Some varibles
+
 app.set("port", process.env.PORT || 3001);
 app.set("pin", process.env.PIN || 1234);
 global.appRoot = path.resolve(__dirname);
