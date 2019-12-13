@@ -36,3 +36,19 @@ function fade(isOut, element1, element2) {
         }
     })
 }
+let isOpen = false;
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+function sideNav(e) {
+    if (isOpen) {
+        e.classList.toggle("change");
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        document.getElementById("main").style.opacity = "1.0";
+    } else {
+        e.classList.toggle("change");
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+        document.getElementById("main").style.opacity = "0.4";
+    }
+    isOpen = !isOpen;
+}

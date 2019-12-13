@@ -22,47 +22,102 @@
     </div>
     <div id="page" style="display: none;">
         <header class="header">
-            <div style="width: 100%; margin: auto; text-align: center;">
-                <!-- hambúrger -->
-                <img src="/static/images/dropdown.png" class="hamburguer">
-                <!-- logo -->
-                <img src="/static/images/logo-title.png" class="logo_title">
-                <img src="/static/images/logo-image.png" class="logo_image">
-                <!-- botão de login -->
-                <a href="/login" class="loginButton">Log in</a>
+            <div id="mySidenav" class="sidenav">
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Clients</a>
+                <a href="#">Contact</a>
             </div>
+            <!-- hambúrger -->
+            <div class="bar" onclick="sideNav(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <!-- logo -->
+            <img src="/static/images/logo-title.png" class="logo_title">
+            <img src="/static/images/logo-image.png" class="logo_image">
+            <!-- botão de login -->
+            <a href="/login" class="loginButton">Log in</a>
         </header>
-        <div class="player_info">
-            <div>
-                <img id="player_image" src="/static/images/personal.png" height="200" width="200" alt="Player">
-            </div>
-            <div>
-                <h1 id="player_ign"></h1>
-                <div>
-                    <img src="https://www.countryflags.io/PT/shiny/24.png" alt="CountryFlag">
-                    <p id="player_name">Ismael Lourenço</p>
+        <div id="main">
+            <div class="player_info">
+                <div class="two_col_div">
+                    <div class="col_div img_prot">
+                        <img id="player_image"
+                            src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                            height="200" width="200" alt="Player">
+                    </div>
+                    <div>
+                        <h1 id="player_ign">Ismpro</h1>
+                        <div>
+                            <p id="player_name"><span><img src="https://www.countryflags.io/PT/shiny/24.png"
+                                        alt="CountryFlag"></span> Ismael Lourenço</p>
+                        </div>
+                        <div>
+                            <span>Age</span>
+                            <span id="player_age">22</span>
+                        </div>
+                        <div>
+                            <span>Current Team</span>
+                            <span>
+                                <img id="team_flag" src="https://static.hltv.org/images/team/logo/4608" height="16"
+                                    width="16" alt="NAVI">
+                                <span id="team_name">NaVi</span>
+                            </span>
+                        </div>
+                        <div>
+                            <a href="#" class="fa fa-facebook"></a>
+                            <a href="#" class="fa fa-twitch"></a>
+                            <a href="#" class="fa fa-twitter"></a>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span>Age</span>
-                    <span id="player_age">22</span>
+                <!-- Tabs info -->
+                <div class="tab">
+                    <button class="tablinks" id="defaultTab" onclick="changeTab(event, 'info')">Info</button>
+                    <button class="tablinks" onclick="changeTab(event, 'achiv')">Stati</button>
                 </div>
-                <div>
-                    <span>Current Team</span>
-                    <span>
-                        <img id="team_flag" src="https://static.hltv.org/images/team/logo/4608" height="16" width="16"
-                            alt="NAVI">
-                        <span id="team_name">NaVi</span>
-                    </span>
+
+                <div id="info" class="tabcontent">
+                    <h2 class="tab-headline" id="player_ign_stats">Ismpro statistics<span class=" stats-window">(Past 3
+                            months)</span></h2>
+                    <div class="two_col_div">
+                        <div class="col_div">
+                            <div class="cell_div">
+                                <b>Rating 2.0</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Kills per round</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Headshots</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                        </div>
+                        <div class="col_div">
+                            <div class="cell_div">
+                                <b>Maps played</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Deaths per round</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Rounds contributed</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <i class="fab fa-facebook"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-twitter-square"></i>
+
+                <div id="achiv" class="tabcontent">
+                    <h3>Paris</h3>
+                    <p>Paris is the capital of France.</p>
                 </div>
-            </div>
-            
-            <div class="tab-content">
-                s
             </div>
         </div>
     </div>

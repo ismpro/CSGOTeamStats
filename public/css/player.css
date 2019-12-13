@@ -1,22 +1,103 @@
 .player_info {
     position: absolute;
     margin-top: 30px;
-    left: calc(50% - 90px);
+    left: calc(50% - 300px);
     height: 150px;
-    width: 350px;
+    width: 600px;
     padding: 10px;
     z-index: 2;
     max-width: 220px;
 }
 
-.tab-content {
-    background-color: #fff;
-    border-top: 1px solid #ccc;
-    box-shadow: 0 2px 2px 0 rgba(50, 50, 50, .25);
-    padding: 16px;
-    padding-top: 16px;
-    padding-top: 8px;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 18px;
+.img_prot {
+    background-color: rgb(179, 179, 179);
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    width: inherit;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    width: inherit;
+}
+
+.tab-headline {
+    opacity: 1;
+    color: rgba(53, 53, 53, .65);
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between
+}
+
+.stats-window {
+    font-size: 10px;
+    float: right;
+    opacity: .65
+}
+
+.two_col_div {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 0 0 -1px -1px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: inherit;
+}
+
+.col_div {
+    -ms-flex: 1 1 50%;
+    flex: 1 1 50%;
+    min-width: 100px;
+}
+
+.col_div#topdiv {}
+
+.cell_div {
+    border-width: 1px;
+    border-radius: 4px;
+    border-left: none !important;
+    padding: 7px;
+}
+
+.cell_div:first-child {
+    border-top: 0;
+}
+
+.statsVal {
+    float: right;
+    width: 40px;
+    text-align: right;
 }
