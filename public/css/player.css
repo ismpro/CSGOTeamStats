@@ -37,7 +37,9 @@
     display: flex;
     overflow: hidden;
     -ms-grid-column: 1;
+    grid-column: 1;
     -ms-grid-row: 1;
+    grid-row: 1;
     -ms-grid-row-span: 5;
 }
 
@@ -46,6 +48,8 @@
     display: -ms-grid;
     -ms-grid-column: 2;
     -ms-grid-row: 1;
+    grid-column: 2;
+    grid-row: 1;
     -ms-grid-column-span: 3;
     -ms-grid-columns: 1fr;
     grid-template-columns: 1fr;
@@ -61,6 +65,8 @@
 .playerNick {
     -ms-grid-column: 1;
     -ms-grid-row: 1;
+    grid-column: 1;
+    grid-row: 1;
     grid-area: d;
     margin: 0;
     white-space: nowrap;
@@ -70,8 +76,10 @@
 
 .playerReal {
     -ms-grid-column: 1;
+    grid-column: 1;
     -ms-grid-column-span: 2;
     -ms-grid-row: 2;
+    grid-row: 2;
     grid-area: f;
     white-space: nowrap;
     overflow: hidden;
@@ -86,7 +94,9 @@
 
 .playerSocial {
     -ms-grid-column: 2;
+    grid-column: 2;
     -ms-grid-row: 1;
+    grid-row: 1;
     grid-area: e;
     color: #fff !important;
 }
@@ -103,8 +113,10 @@
     margin-top: 20px;
     margin-left: 16px;
     -ms-grid-column: 2;
+    grid-column: 2;
     -ms-grid-column-span: 3;
     -ms-grid-row: 2;
+    grid-row: 2;
     -ms-grid-row-span: 2;
 }
 
@@ -118,11 +130,13 @@
     justify-content: space-between;
     width: 100%;
     -ms-grid-column: 1;
+    grid-column: 1;
 }
 
 .playerAge {
     grid-area: g;
     -ms-grid-row: 1;
+    grid-row: 1;
     -ms-grid-column-span: 3;
 }
 
@@ -142,6 +156,7 @@
 .playerTeam {
     grid-area: h;
     -ms-grid-row: 2;
+    grid-row: 2;
     -ms-grid-column-span: 3;
 }
 
