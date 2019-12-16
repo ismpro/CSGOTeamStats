@@ -51,6 +51,12 @@ function sideNav(e) {
         document.getElementById("mySidenav").style.width = "250px";
         document.getElementById("main").style.marginLeft = "250px";
         document.getElementById("main").style.opacity = "0.4";
+        let tabs = document.getElementsByClassName("details")
+        if(tabs) {
+            for (const tab of tabs) {
+                tab.style.maxHeight = null;
+            }
+        }
     }
     isOpen = !isOpen;
 }

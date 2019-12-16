@@ -70,7 +70,8 @@
 .details .team1 .team1_players {
    float: left;
    text-align: left;
-   padding-left: 50px;
+   /*padding-left: 50px;*/
+   min-width: 50px;
 }
 
 .details .team1 .logo {
