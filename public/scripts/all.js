@@ -6,7 +6,9 @@ const api = axios.create({
 
 function loadPage() {
     pageLoad(() => {
-        setTimeout(fade(true, 'loader', 'page'), 100)
+        setTimeout(() => {
+            fade(true, 'loader', 'page')
+        }, 100)
     })
 }
 
