@@ -26,8 +26,8 @@
 }
 
 .matches {
-    background-color: rgb(53, 53, 53);
-    border: 2px solid black;
+    background-color: white;
+    /*border: 2px solid black;*/
     display:inline-block;
     color: #16a085;
     padding-left: 10px;
@@ -39,7 +39,8 @@
 
 .matches .match {
     display: block;
-    background-color: rgb(211, 211, 211);
+     background-color: gray;
+    /* background-image: linear-gradient(to right, white, gray, white); */
     color: black;
     font-size: 15px;
     border-collapse: separate;
@@ -58,10 +59,10 @@
 }
 
 .details {
-    background-color: gray;
+    background-color: rgb(53, 53, 53);
     max-height: 0;
     overflow: hidden;
-    color: white;
+    color: #16a085;
     font-size: 15px;
     box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.7);
     transition: max-height 0.2s ease-out;
@@ -70,17 +71,17 @@
 .details .team1 .team1_players {
    float: left;
    text-align: left;
-   /*padding-left: 50px;*/
-   min-width: 50px;
+   padding-left: 50px;
+   min-width: 150px;
 }
 
 .details .team1 .logo {
     padding-top: 10px;
     width: 80px;
     height: 80px;
-    opacity: 0.2;
+    opacity: 0.7;
     float: left;
-    padding-left: 70px;
+    padding-left: 0px;
 }
 
 .details .team2 .team2_players {
@@ -93,9 +94,9 @@
     padding-top: 10px;
     width: 80px;
     height: 80px;
-    opacity: 0.2;
+    opacity: 0.7;
     float: left;
-    padding-left: 70px;
+    padding-left: 100px;
 }
 
 .details .maps {
@@ -118,4 +119,14 @@
     width: 740px;
     height: 700px;
     margin: 5px;
+}
+
+
+.teste {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    float: right;
 }
