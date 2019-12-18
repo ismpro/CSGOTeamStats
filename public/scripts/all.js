@@ -52,11 +52,41 @@ function sideNav(e) {
         document.getElementById("main").style.marginLeft = "250px";
         document.getElementById("main").style.opacity = "0.4";
         let tabs = document.getElementsByClassName("details")
-        if(tabs) {
+        if (tabs) {
             for (const tab of tabs) {
                 tab.style.maxHeight = null;
             }
         }
     }
     isOpen = !isOpen;
+}
+
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    if (seconds < 20) {
+        return 'just now'
+    }
+    var interval = Math.floor(seconds / 31536000);
+    if (interval > 1) {
+        return interval + " years";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + " hours";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + " minutes";
+    }
+    return seconds + " seconds";
 }
