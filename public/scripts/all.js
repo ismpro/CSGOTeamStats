@@ -1,13 +1,15 @@
 /* eslint-disable */
-function loadPage() {
-    setTimeout(() => {
-        fade(true, 'loader', 'page')
-        /* var myArray = ['red', 'blue', 'pink', 'green', 'yellow'];
-        setInterval(() => {
-            document.getElementById('body').style.backgroundColor = myArray[Math.floor(Math.random() * myArray.length)]
-        }, 50); */
-    }, 100)
+const api = axios.create({
+    baseURL: window.location.origin,
+    withCredentials: true,
+});
 
+function loadPage() {
+    pageLoad(() => {
+        setTimeout(() => {
+            fade(true, 'loader', 'page')
+        }, 100)
+    })
 }
 
 function fade(isOut, element1, element2) {
@@ -35,4 +37,56 @@ function fade(isOut, element1, element2) {
             reject(err)
         }
     })
+}
+let isOpen = false;
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+function sideNav(e) {
+    if (isOpen) {
+        e.classList.toggle("change");
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        document.getElementById("main").style.opacity = "1.0";
+    } else {
+        e.classList.toggle("change");
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+        document.getElementById("main").style.opacity = "0.4";
+        let tabs = document.getElementsByClassName("details")
+        if (tabs) {
+            for (const tab of tabs) {
+                tab.style.maxHeight = null;
+            }
+        }
+    }
+    isOpen = !isOpen;
+}
+
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    if (seconds < 20) {
+        return 'just now'
+    }
+    var interval = Math.floor(seconds / 31536000);
+    if (interval > 1) {
+        return interval + " years";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + " hours";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + " minutes";
+    }
+    return seconds + " seconds";
 }

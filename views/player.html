@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/player.css">
     <link rel="stylesheet" href="/static/css/all.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -21,21 +22,153 @@
     </div>
     <div id="page" style="display: none;">
         <header class="header">
-            <div style="width: 100%; margin: auto; text-align: center;">
-                <!-- hambúrger -->
-                <img src="/static/images/dropdown.png" class="hamburguer">
-                <!-- logo -->
-                <img src="/static/images/logo-title.png" class="logo_title">
-                <img src="/static/images/logo-image.png" class="logo_image">
-                <!-- botão de login -->
-                <a href="http://localhost:3001/login" class="loginButton">Log in</a>
+            <div id="mySidenav" class="sidenav">
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Clients</a>
+                <a href="#">Contact</a>
             </div>
+            <!-- hambúrger -->
+            <div class="bar" onclick="sideNav(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <!-- logo -->
+            <img src="/static/images/logo-title.png" class="logo_title">
+            <img src="/static/images/logo-image.png" class="logo_image">
+            <!-- botão de login -->
+            <a href="/login" class="loginButton">Log in</a>
         </header>
-        <div>
-            <div id="player_image"></div>
-            <div>
-                <div id="player_slug"></div>
-                <div id="player_name"></div>
+        <div id="main">
+            <div class="player_info">
+                <div class="playerContainer">
+                    <div class="img_prot">
+                        <img id="player_image"
+                            src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                            class="playerImg" alt="Player">
+                    </div>
+                    <div class="playerName">
+                        <h1 id="player_ign" class="playerNick">Ismpro</h1>
+                        <div class="playerReal">
+                            <img class="flag" src="https://www.countryflags.io/PT/shiny/24.png" alt="CountryFlag">
+                            Ismael Lourenço
+                        </div>
+                        <div class="playerSocial">
+                            <a href="#" class="fa fa-facebook"></a>
+                            <a href="#" class="fa fa-twitch"></a>
+                            <a href="#" class="fa fa-twitter"></a>
+                        </div>
+
+                    </div>
+                    <div class="playerFav">
+                        <div class="clickFav">
+                            <span class="fa star fa-star-o"></span>
+                            <p id="fav_text" class="info">&nbsp;Added!</p>
+                        </div>
+                    </div>
+                    <div class="playerInfo">
+                        <div class="playerAge">
+                            <span class="left">Age</span>
+                            <span class="right" id="player_age">22</span>
+                        </div>
+                        <div class="playerTeam">
+                            <span class="left">Current Team</span>
+                            <span class="right">
+                                <img id="team_flag" src="https://static.hltv.org/images/team/logo/4608" height="16"
+                                    width="16" alt="NAVI">
+                                <span id="team_name">NaVi</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabs info -->
+                <div class="tab">
+                    <button class="tablinks" id="defaultTab" onclick="changeTab(event, 'info')">Information</button>
+                    <button class="tablinks" onclick="changeTab(event, 'achiv')">Achievements</button>
+                </div>
+                <div id="info" class="tabcontent">
+                    <h2 class="tab-headline" id="player_ign_stats">Ismpro statistics<span class=" stats-window">(Past 3
+                            months)</span></h2>
+                    <div class="two_col_div">
+                        <div class="col_div">
+                            <div class="cell_div">
+                                <b>Rating 2.0</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Kills per round</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Headshots</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                        </div>
+                        <div class="col_div">
+                            <div class="cell_div">
+                                <b>Maps played</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Deaths per round</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                            <div class="cell_div">
+                                <b>Rounds contributed</b>
+                                <span class="statsVal">1.03</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="achiv" class="tabcontent">
+                    <h2 class="tab-headline">Achievements for ismpro <span class="stats-window">Past 15 games</span>
+                    </h2>
+                    <table class="achivTable">
+                        <thead>
+                            <tr>
+                                <th>Placement</th>
+                                <th>Tournament</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div><i class="fa fa-trophy "></i>1st</div>
+                                </td>
+                                <td>StarLadder Major Berlin 2019</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div><i class="fa fa-trophy "></i>2st</div>
+                                </td>
+                                <td>IEM Katowice 2019</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div><i class="fa fa-trophy "></i>3st</div>
+                                </td>
+                                <td>FACEIT Major 2018</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Group stage
+                                </td>
+                                <td>ELEAGUE Major 2018</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="comments_heading">Comments:</h3>
+                <div class="comments_area">
+                    <textarea placeholder="Write your comment here..." id="comment_text"></textarea>
+                    <div>
+                        Anonymous? <input type="checkbox" id="anonymous_check">
+                        <button id="comment_button">Comment</button>
+                    </div>
+                </div>
+                <ul id="comments" class="comments"></ul>
             </div>
         </div>
     </div>

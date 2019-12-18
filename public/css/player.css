@@ -1,0 +1,425 @@
+* {
+    transition: all 0.5s ease;
+}
+
+.player_info {
+    position: absolute;
+    margin-top: 30px;
+    left: calc(50% - 350px);
+    height: 150px;
+    width: 600px;
+    padding: 10px;
+    z-index: 2;
+}
+
+.playerContainer {
+    box-shadow: 0 1px 2px 0 rgba(50, 50, 50, .4);
+    background-color: #fff;
+    transition: .2s ease;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    grid-template-rows: 72px 31px 31px 31px 31px;
+    grid-template-areas: "a b b k""a c c c""a c c c""a c c c""a c c c";
+    margin-bottom: 10px;
+    max-height: 196px;
+    padding-right: 16px;
+}
+
+.img_prot {
+    width: 100%;
+    height: 100%;
+    align-self: flex-end;
+    max-width: 192px;
+    margin: 0 auto;
+    z-index: 4;
+    grid-area: a;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    background-color: rgb(182, 182, 182);
+}
+
+.playerImg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    align-self: flex-end;
+    max-width: 192px;
+    margin: 0 auto;
+    z-index: 4;
+}
+
+.playerName {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+    grid-template-areas: "d d e""f f f";
+    grid-area: b;
+    padding-top: 16px;
+    margin-left: 20px;
+    z-index: 3
+}
+
+.playerNick {
+    grid-area: d;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.playerReal {
+    grid-area: f;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.flag {
+    height: 15px;
+    width: 15px;
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.playerSocial {
+    grid-area: e;
+    color: #fff !important;
+}
+
+.playerFav {
+    grid-area: k;
+    position: relative;
+    align-self: center;
+    margin-left: 70px;
+}
+
+.clickFav {
+    font-size: 33px;
+    color: rgba(0, 0, 0, .5);
+    width: 38px;
+    height: 38px;
+    margin: 0 auto;
+    cursor: pointer;
+    position: relative;
+    z-index: auto;
+}
+
+.click span {
+    z-index: 999 !important;
+    position: absolute;
+}
+
+span:hover {
+    opacity: 0.8;
+}
+
+span:active {
+    transform: scale(0.93, 0.93) translateY(2px)
+}
+
+.fa-star {
+    color: gold;
+}
+
+.info {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: grey;
+    position: relative;
+    top: -10px;
+    left: -3px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.info-tog {
+    color: #F5CC27;
+    position: relative;
+    top: 2px;
+    opacity: 1;
+}
+
+.playerInfo {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: 31px 31px;
+    grid-template-areas: "g g g""h h h";
+    grid-area: c;
+    margin-top: 20px;
+    margin-left: 16px;
+}
+
+.playerAge,
+.playerTeam {
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.playerAge {
+    grid-area: g;
+}
+
+.playerAge .left {
+    align-self: center;
+    font-weight: 700;
+}
+
+.playerAge .right {
+    align-self: center;
+}
+
+.playerTeam {
+    grid-area: h;
+}
+
+.playerTeam .left {
+    align-self: center;
+    font-weight: 700;
+}
+
+.playerTeam .right {
+    align-self: center;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    width: inherit;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 2px solid rgb(180, 180, 180);
+    border-top: none;
+}
+
+.tab-headline {
+    opacity: 1;
+    color: rgba(53, 53, 53, .65);
+    display: flex;
+    justify-content: space-between
+}
+
+.stats-window {
+    font-size: 10px;
+    float: right;
+    opacity: .65
+}
+
+.two_col_div {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 -1px -1px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: inherit;
+}
+
+.col_div {
+    flex: 1 1 50%;
+    min-width: 100px;
+}
+
+.cell_div {
+    border: 1px solid #ccc;
+    border-left: none !important;
+    padding: 7px;
+}
+
+.cell_div:first-child {
+    border-top: 0;
+}
+
+.statsVal {
+    float: right;
+    width: 40px;
+    text-align: right;
+}
+
+.achivTable {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.achivTable thead {
+    text-align: left;
+}
+
+.achivTable tbody tr td {
+    min-width: 150px;
+    height: 35px;
+}
+
+.comments_heading {
+    margin-top: 30px;
+}
+
+.comments_area {
+    width: 100%;
+}
+
+.comments_area textarea {
+    width: 100%;
+    padding: 15px;
+    height: 150px;
+    resize: none;
+    overflow: auto;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px 0 rgba(50, 50, 50, .4);
+}
+
+
+.comments_area div {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.comments_area button {
+
+    float: right;
+    width: 150px;
+    height: 30px;
+    background: rgb(199, 199, 199);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 4px;
+    margin: 5px;
+}
+
+.comments_area button:hover {
+    background: rgb(134, 134, 134);
+}
+
+.comments_area input[type=checkbox] {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 4px;
+    margin: 5px;
+}
+
+.comments {
+    border-top: 1px solid rgb(153, 153, 153);
+    clear: both;
+    list-style: none;
+    margin-top: 40px;
+    padding-top: 10px;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.comments-bubble {
+    position: relative;
+    background: #c0c0c0;
+    border: 1px solid #bebebe;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 75px;
+    padding: 15px 10px 10px 15px;
+}
+
+.comments-bubble:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 39px solid transparent;
+    border-right-color: #c0c0c0;
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -19.5px;
+    margin-left: -39px;
+}
+
+.comments_odd {
+    background: #e2e6ec;
+}
+
+.comments_odd:after {
+    border-right-color: #e2e6ec;
+}
+
+.comments_bubble_text {
+    padding: 0;
+    min-height: 0;
+    width: 100%;
+}
+
+.comments_madeby {
+    font-size: 10px;
+    line-height: 18px;
+}
+
+.comments_buttons_group {
+    bottom: 5px;
+    position: absolute;
+    right: 5px;
+}
+
+.comments_buttons {
+    float: right;
+    margin-right: 10px;
+}
+
+.comments_buttons button {
+    background: transparent;
+    color: grey;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.comments_buttons button:active {
+    color: blue;
+}
+
+.editable {
+    background-color: #d1d1d1;
+    outline: 0;
+}
+
+.editableButtons {
+    font-size: 30px;
+}
+
+.editableButtons buttons {
+    font-size: 30px;
+}
