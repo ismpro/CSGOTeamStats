@@ -158,15 +158,6 @@ function deleteComment(id) {
 function editComment(id) {
     const saveComment = () => () => {
         let textTag = document.getElementById(`comment_text_${id}`);
-        let buttonsTag = document.getElementById(`comment_buttons_${id}`);
-
-        textTag.classList.remove('editable')
-        textTag.contentEditable = 'false'
-        buttonsTag.classList.remove('editableButtons')
-        buttonsTag.innerHTML = `<button id="comment_edit_${id}">edit</button>|<button id="comment_delete_${id}">delete</button>`
-
-        document.getElementById(`comment_delete_${id}`).onclick = deleteComment(id)
-        document.getElementById(`comment_edit_${id}`).onclick = editComment(id)
 
         var index = comments.findIndex((comment) => comment.id === id);
         if (index !== -1) {
