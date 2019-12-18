@@ -63,33 +63,27 @@ function pageLoad(cb) {
         }
     })
     loadComments()
-    return cb()
+    /* axios.post('123123').then(res => {
+        console.log(res.data)
+        document.getElementById('player_ign').innerHTML = res.data.name
+        
+    }) */
+    cb()
 }
 
 function changeTab(e, tabName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
+    var i;
+    let tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
+    let tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks-down");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-
-    // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     e.currentTarget.className += " active";
 }
@@ -105,8 +99,13 @@ function loadComments() {
         if (comment.hasEdit) {
             html += 'Edit '
         }
-        html += timeSince(comment.date)
-        html += ' ago by '
+        let timeString = timeSince(comment.date)
+        if (timeString === 'just now') {
+            html += 'Just now by '
+        } else {
+            html += `${timeString} ago by `
+        }
+
         if (comment.hasEdit) {
             html += `<a href="#">${comment.editBy.name}</a> / Made by: `
         }

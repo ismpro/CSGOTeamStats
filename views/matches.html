@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/static/css/all.css">
+    <link rel="stylesheet" href="/static/css/matches.css">
+    <script src="/static/scripts/all.js"></script>
+    <script src="/static/scripts/matches.js"></script>
+    <title>Players</title>
+</head>
+
+<body onload="loadPage()">
+    <noscript>Javascript must be active for this page to work!</noscript>
+    <div id="loader" class="loader-wrapper">
+        <div class="loader">
+            <img src="/static/images/loader.svg" alt="loader">
+        </div>
+    </div>
+    <div id="page" style="display: none;">
+        <header class="header">
+            <div id="mySidenav" class="sidenav">
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Clients</a>
+                <a href="#">Contact</a>
+            </div>
+            <!-- hambúrger -->
+            <div class="bar" onclick="sideNav(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <!-- logo -->
+            <img src="/static/images/logo-title.png" class="logo_title">
+            <img src="/static/images/logo-image.png" class="logo_image">
+            <!-- botão de login -->
+            <a href="/login" class="loginButton">Log in</a>
+        </header>
+        <div id="main">
+
+        </div>
+    </div>
+</body>
+
+</html>

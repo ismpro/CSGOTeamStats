@@ -35,8 +35,17 @@ module.exports = function (app, api) {
     app.get('/player*', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'player.html'))
     })
+    app.get('/team*', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'views', 'team.html'))
+    })
+    app.get('/match*', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'views', 'matches.html'))
+    })
     app.post('/player/:id', function (req, res) {
-        res.status(501).send('Not Implemented')
+
+        res.status(200).send({
+            id: req.params.id
+        })
     })
     app.post('/auth/login', function (req, res) {
         let data = req.body;
