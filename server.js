@@ -78,6 +78,12 @@ app.use(session({
 //Logger
 app.use(logger())
 
+//Shameless Plug
+app.use((req, res, next) => {
+    res.setHeader('X-Authors', 'Ismael Lourenço e Alexendre Oliveira')
+    next()
+})
+
 //Adding Routes
 require('./app/routes.js')(app, api)
 
