@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="/static/css/all.css">
-    <link rel="stylesheet" href="/static/css/team.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/team.css">
     <script src="/static/scripts/all.js"></script>
     <script src="/static/scripts/team.js"></script>
     <title>Players</title>
@@ -41,9 +41,33 @@
             <a href="/login" class="loginButton">Log in</a>
         </header>
         <div id="main">
-            
+            <div class="team_page">
+                <div class="teamContainer">
+                    <div class="teamName">
+                        <h1 id="team_name" class="teamName">Astralis</h1>
+                        <div id="team_country" class="teamCountry">
+                            <img class="flag" src="https://www.countryflags.io/PT/shiny/24.png" alt="CountryFlag">
+                            Ismael Lourenço
+                        </div>
+                    </div>
+                    <div class="teamSocial">
+                        <a href="#" class="fa fa-facebook"></a>
+                        <a href="#" class="fa fa-twitter"></a>
+                    </div>
+                    <br>
+                    <br>
+                    <h3 class="comments_heading">Comments:</h3>
+                    <div class="comments_area">
+                        <textarea placeholder="Write your comment here..." id="comment_text"></textarea>
+                        <div>
+                            Anonymous? <input type="checkbox" id="anonymous_check">
+                            <button onclick="javascript:createComment()" id="comment_button">Comment</button>
+                        </div>
+                    </div>
+                    <ul id="comments" class="comments"></ul>
+                </div>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>
