@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="/static/css/team.css">
     <script src="/static/scripts/all.js"></script>
     <script src="/static/scripts/team.js"></script>
-    <title>Players</title>
+    <script type="text/javascript" src="/static/scripts/paginator.js"></script>
+    <title>Team</title>
 </head>
 
 <body onload="loadPage()">
@@ -43,8 +44,9 @@
         <div id="main">
             <div class="team_page">
                 <div class="teamContainer">
-                    <div class="teamName">
+                    <div class="teamName-container">
                         <h1 id="team_name" class="teamName">Astralis</h1>
+                        <img class="teamLogo" src="https://static.hltv.org/images/team/logo/6665" alt="Team Logo">
                         <div id="team_country" class="teamCountry">
                             <img class="flag" src="https://www.countryflags.io/PT/shiny/24.png" alt="CountryFlag">
                             Ismael Lourenço
@@ -54,18 +56,154 @@
                         <a href="#" class="fa fa-facebook"></a>
                         <a href="#" class="fa fa-twitter"></a>
                     </div>
-                    <br>
-                    <br>
-                    <h3 class="comments_heading">Comments:</h3>
-                    <div class="comments_area">
-                        <textarea placeholder="Write your comment here..." id="comment_text"></textarea>
-                        <div>
-                            Anonymous? <input type="checkbox" id="anonymous_check">
-                            <button onclick="javascript:createComment()" id="comment_button">Comment</button>
+                    <div class="teamFav">
+                        <div class="clickFav">
+                            <span class="fa star fa-star-o"></span>
+                            <p id="fav_text" class="info">&nbsp;&nbsp;Added!</p>
                         </div>
                     </div>
-                    <ul id="comments" class="comments"></ul>
+                    <div class="teamStats-container">
+                        <div class="teamStats"><b>World ranking</b><span class="right">#1</span></div>
+                        <div class="teamStats"><b>Last Matches</b><span class="right"><span
+                                    style="color: green;">W</span> <span style="color: red;">L</span> <span
+                                    style="color: grey;">?</span></span></div>
+                    </div>
                 </div>
+                <div class="teamPlayer-container">
+                    <a href="/player/4954/Xyp9x" class="teamPlayer" title="Xyp9x">
+                        <div>
+                            <img alt="Xyp9x"
+                                src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                                class="teamPlayer-image" title="Andreas 'Xyp9x' Højsleth">
+                            <div class="teamPlayer-name">
+                                <div class="playerFlagName"><img alt="Denmark"
+                                        src="https://www.countryflags.io/PT/shiny/24.png" class="flag"
+                                        title="Denmark"><span class="playerName">Device</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="/player/4954/Xyp9x" class="teamPlayer" title="Xyp9x">
+                        <div>
+                            <img alt="Xyp9x"
+                                src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                                class="teamPlayer-image" title="Andreas 'Xyp9x' Højsleth">
+                            <div class="teamPlayer-name">
+                                <div class="playerFlagName"><img alt="Denmark"
+                                        src="https://www.countryflags.io/PT/shiny/24.png" class="flag"
+                                        title="Denmark"><span class="playerName">Device</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="/player/4954/Xyp9x" class="teamPlayer" title="Xyp9x">
+                        <div>
+                            <img alt="Xyp9x"
+                                src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                                class="teamPlayer-image" title="Andreas 'Xyp9x' Højsleth">
+                            <div class="teamPlayer-name">
+                                <div class="playerFlagName"><img alt="Denmark"
+                                        src="https://www.countryflags.io/PT/shiny/24.png" class="flag"
+                                        title="Denmark"><span class="playerName">Device</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="/player/4954/Xyp9x" class="teamPlayer" title="Xyp9x">
+                        <div>
+                            <img alt="Xyp9x"
+                                src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                                class="teamPlayer-image" title="Andreas 'Xyp9x' Højsleth">
+                            <div class="teamPlayer-name">
+                                <div class="playerFlagName"><img alt="Denmark"
+                                        src="https://www.countryflags.io/PT/shiny/24.png" class="flag"
+                                        title="Denmark"><span class="playerName">Device</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="/player/4954/Xyp9x" class="teamPlayer" title="Xyp9x">
+                        <div>
+                            <img alt="Xyp9x"
+                                src="https://static.hltv.org//images/playerprofile/bodyshot/compressed/7592.png"
+                                class="teamPlayer-image" title="Andreas 'Xyp9x' Højsleth">
+                            <div class="teamPlayer-name">
+                                <div class="playerFlagName"><img alt="Denmark"
+                                        src="https://www.countryflags.io/PT/shiny/24.png" class="flag"
+                                        title="Denmark"><span class="playerName">Device</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="lastResults">
+                    <h2 class="headline">Last Results for Astralis</h2>
+                    <table id="table_to_page">
+                        <tbody>
+                            <tr>
+                                <td class="date">22/12/2019</td>
+                                <td class="result">
+                                    <div class="team1">
+                                        <img alt="Astralis" src="https://static.hltv.org/images/team/logo/6665"
+                                            class="logo" title="Astralis">
+                                        Astralis
+                                    </div>
+                                    <div class="score">2 : 0</div>
+                                    <div class="team2">
+                                        Liquid
+                                        <img alt="Liquid" src="https://static.hltv.org/images/team/logo/5973"
+                                            class="logo" title="Liquid">
+                                    </div>
+                                </td>
+                                <td class="matchButton"><a href="/matches">Match</a></td>
+                            </tr>
+                            <tr>
+                                <td class="date">22/12/2019</td>
+                                <td class="result">
+                                    <div class="team1">
+                                        <img alt="Astralis" src="https://static.hltv.org/images/team/logo/6665"
+                                            class="logo" title="Astralis">
+                                        Astralis
+                                    </div>
+                                    <div class="score">2 : 1</div>
+                                    <div class="team2">
+                                        NiP
+                                        <img alt="NiP" src="https://static.hltv.org/images/team/logo/4411" class="logo"
+                                            title="NiP">
+                                    </div>
+                                </td>
+                                <td class="matchButton"><a href="/matches">Match</a></td>
+                            </tr>
+                            <tr>
+                                <td class="date">22/12/2019</td>
+                                <td class="result">
+                                    <div class="team1">
+                                        <img alt="Astralis" src="https://static.hltv.org/images/team/logo/6665"
+                                            class="logo" title="Astralis">
+                                        Astralis
+                                    </div>
+                                    <div class="score">1 : 2</div>
+                                    <div class="team2">
+                                        FaZe
+                                        <img alt="FaZe" src="https://static.hltv.org/images/team/logo/6667" class="logo"
+                                            title="FaZe">
+                                    </div>
+                                </td>
+                                <td class="matchButton"><a href="/matches">Match</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pageNumbers" id="table_pages_numbers"></div>
+                </div>
+                <h3 class="comments_heading">Comments:</h3>
+                <div class="comments_area">
+                    <textarea placeholder="Write your comment here..." id="comment_text"></textarea>
+                    <div>
+                        Anonymous? <input type="checkbox" id="anonymous_check">
+                        <button onclick="javascript:createComment()" id="comment_button">Comment</button>
+                    </div>
+                </div>
+                <ul id="comments" class="comments"></ul>
             </div>
         </div>
 </body>

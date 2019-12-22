@@ -14,6 +14,7 @@
 
 .teamContainer {
     box-shadow: 0 1px 2px 0 rgba(50, 50, 50, .4);
+    border-bottom: 5px solid #16a085;
     background-color: #fff;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -23,8 +24,411 @@
     padding-right: 16px;
 }
 
-.teamName {
+.teamName-container {
     grid-area: a;
     display: grid;
-    
+    grid-template-columns: 1fr 150px;
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-template-areas: "a b""a c";
 }
+
+.teamName {
+    grid-area: b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 300px;
+}
+
+.teamCountry {
+    grid-area: c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.teamLogo {
+    grid-area: a;
+    height: 86px;
+    width: 76px;
+    background-color: rgb(226, 226, 226)
+}
+
+.flag {
+    height: 15px;
+    width: 15px;
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.teamSocial {
+    grid-area: b;
+    align-self: center;
+    text-align: center;
+    color: #fff !important;
+}
+
+.teamFav {
+    grid-area: c;
+    position: relative;
+    align-self: center;
+    margin-left: 70px;
+}
+
+.clickFav {
+    font-size: 33px;
+    color: rgba(0, 0, 0, .5);
+    width: 38px;
+    height: 38px;
+    margin: 0 auto;
+    cursor: pointer;
+    position: relative;
+    z-index: auto;
+}
+
+.click span {
+    z-index: 999 !important;
+    position: absolute;
+}
+
+span:hover {
+    opacity: 0.8;
+}
+
+span:active {
+    transform: scale(0.93, 0.93) translateY(2px)
+}
+
+.fa-star {
+    color: gold;
+}
+
+.info {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: grey;
+    position: relative;
+    top: -10px;
+    left: -3px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.info-tog {
+    color: #F5CC27;
+    position: relative;
+    top: 2px;
+    opacity: 1;
+}
+
+.teamStats-container {
+    grid-area: d;
+    align-self: center;
+}
+
+.teamStats {
+    border-top: 1px solid #ccc;
+    padding: 5px 15px;
+    margin-left: 6px;
+}
+
+.teamStats .right {
+    float: right;
+}
+
+.teamPlayer-container {
+    background-image: linear-gradient(136deg,#1b1f23,#3a4755);
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 5px solid #16a085;
+}
+
+.teamPlayer {
+    height: 100%;
+    position: relative;
+    flex: 0 0 18.5%;
+    padding-bottom: 0;
+    padding-left: 8px; 
+}
+
+.teamPlayer-container .teamPlayer-image{
+    z-index: 2;
+    transition: .2s ease;
+    width: 100%;
+    position: relative;
+    top: 8px;
+}
+
+.teamPlayer-container .teamPlayer-name{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.teamPlayer-name .playerFlagName {
+    text-align: center;
+    color:#fff !important;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-right: auto;
+    margin-right: 8px;
+    z-index: 3;
+    position: relative;
+    width: 90%;
+    background: linear-gradient(90deg, transparent 10%, rgba(0,0,0,.5) 20%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.5) 80%, transparent 90%);
+}
+
+.playerFlagName .playerName {
+    margin-left: 5px;
+}
+
+.lastResults {
+    padding: 6px 12px;
+    border: 2px solid rgb(180, 180, 180);
+    border-top: none;
+}
+
+.lastResults .headline{
+    opacity: 1;
+    color: rgba(53, 53, 53, .65);
+}
+
+.lastResults table{
+   width: 100%;
+}
+
+.lastResults tr {
+    height: 40px;
+}
+
+.lastResults .team1{
+   flex: 1;
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lastResults .team2{
+   flex: 1;
+    display: flex;
+    justify-content: center;
+    margin-right: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lastResults .date{
+    width: 80px;
+}
+
+.lastResults .score{
+   flex: 0 0 50px;
+display: flex;
+justify-content: center;
+margin-left: 5px;
+margin-right: 5px;
+}
+
+.lastResults .result{
+   display: flex;
+   text-align: center;
+   margin-top: 8px;
+}
+
+.lastResults .logo{
+    height: 23px;
+    width: 23px;
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+}
+
+.lastResults .matchButton{
+    width: 88px;
+    text-align: right;
+}
+
+.lastResults a{
+    background-color: #16a085;
+    color: black;
+    border: 2px solid black;
+    border-radius: 10%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    width: 25px;
+    height: 15px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    padding: 5px;
+}
+
+.lastResults a:hover {
+    background-color: #1eceaa;
+}
+
+.pageNumbers {
+    display: flex;
+    flex-direction: row;
+}
+
+.comments_heading {
+    margin-top: 30px;
+}
+
+.comments_area {
+    width: 100%;
+}
+
+.comments_area textarea {
+    width: 100%;
+    padding: 15px;
+    height: 150px;
+    resize: none;
+    overflow: auto;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px 0 rgba(50, 50, 50, .4);
+}
+
+
+.comments_area div {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.comments_area button {
+
+    float: right;
+    width: 150px;
+    height: 30px;
+    background: rgb(199, 199, 199);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 4px;
+    margin: 5px;
+}
+
+.comments_area button:hover {
+    background: rgb(134, 134, 134);
+}
+
+.comments_area input[type=checkbox] {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 4px;
+    margin: 5px;
+}
+
+.comments {
+    border-top: 1px solid rgb(153, 153, 153);
+    clear: both;
+    list-style: none;
+    margin-top: 40px;
+    padding-top: 10px;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.comments-bubble {
+    position: relative;
+    background: #c0c0c0;
+    border: 1px solid #bebebe;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 75px;
+    padding: 15px 10px 10px 15px;
+}
+
+.comments-bubble:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 39px solid transparent;
+    border-right-color: #c0c0c0;
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -19.5px;
+    margin-left: -39px;
+}
+
+.comments_odd {
+    background: #e2e6ec;
+}
+
+.comments_odd:after {
+    border-right-color: #e2e6ec;
+}
+
+.comments_bubble_text {
+    padding: 0;
+    min-height: 0;
+    width: 100%;
+}
+
+.comments_madeby {
+    font-size: 10px;
+    line-height: 18px;
+}
+
+.comments_buttons_group {
+    bottom: 5px;
+    position: absolute;
+    right: 5px;
+}
+
+.comments_buttons {
+    float: right;
+    margin-right: 10px;
+}
+
+.comments_buttons button {
+    background: transparent;
+    color: grey;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.comments_buttons button:active {
+    color: blue;
+}
+
+.editable {
+    background-color: #d1d1d1;
+    outline: 0;
+}
+
+.editableButtons {
+    font-size: 30px;
+}
+
+.editableButtons buttons {
+    font-size: 30px;
+}
+
+
