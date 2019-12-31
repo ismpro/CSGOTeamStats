@@ -39,7 +39,7 @@ function registerSubmit(e) {
             if (code === 230) {
                 changeMode()
             } else {
-                document.getElementById('mgsLogin').innerHTML = res.data
+                document.getElementById('mgsRegister').innerHTML = res.data
             }
         })
         .catch(function (err) {
