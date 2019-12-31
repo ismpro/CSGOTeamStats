@@ -10,6 +10,7 @@ const mongoose = require('mongoose')
 const chalk = require('chalk')
 const ApiControler = require('./app/config/ApiControler.js')
 const logger = require('./app/logger.js')
+const nodemailer = require('nodemailer')
 
 console.clear()
 console.log(chalk.green('\n  Starting server'));
@@ -43,6 +44,15 @@ db.once('open', function () {
     const Teams = require('./app/models/Teams')
     const Players = require('./app/models/Players')
     const Match = require('./app/models/Match')
+});
+
+//Mailer
+var transporter = nodemailer.createTransport({
+    service: process.env.SERVICE,
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.MAILPASS
+    }
 });
 
 //Disabling things for security
@@ -85,7 +95,7 @@ app.use((req, res, next) => {
 })
 
 //Adding Routes
-require('./app/routes.js')(app, api)
+require('./app/routes.js')(app, api, transporter)
 
 //Handling erros inside of server
 app.use(function (err, req, res) {

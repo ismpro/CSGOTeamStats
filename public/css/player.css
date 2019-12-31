@@ -227,7 +227,7 @@ span:active {
     opacity: 1;
     color: rgba(53, 53, 53, .65);
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .stats-window {

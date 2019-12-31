@@ -64,7 +64,7 @@
                     <div class="playerFav">
                         <div class="clickFav">
                             <span class="fa star fa-star-o"></span>
-                            <p id="fav_text" class="info">&nbsp;Added!</p>
+                            <p id="fav_text" class="info">&nbsp;&nbsp;Added!</p>
                         </div>
                     </div>
                     <div class="playerInfo">
@@ -165,7 +165,7 @@
                     <textarea placeholder="Write your comment here..." id="comment_text"></textarea>
                     <div>
                         Anonymous? <input type="checkbox" id="anonymous_check">
-                        <button id="comment_button">Comment</button>
+                        <button onclick="javascript:createComment()" id="comment_button">Comment</button>
                     </div>
                 </div>
                 <ul id="comments" class="comments"></ul>

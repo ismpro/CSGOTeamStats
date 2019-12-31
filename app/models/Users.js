@@ -37,11 +37,7 @@ var userSchema = mongoose.Schema({
     password: String,
     creationDate: Date,
     atribuitesessionid: String,
-    comments: {
-        players: [commentsPlayers],
-        teams: [commentsTeams],
-        games: [commentsGame]
-    },
+    admin: Schema.Types.Mixed,
     favorite: {
         players: [{
             type: Schema.Types.ObjectId,

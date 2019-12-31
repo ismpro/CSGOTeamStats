@@ -5,6 +5,7 @@ const Teams = require('./models/Teams')
 const Players = require('./models/Players')
 const Match = require('./models/Match')
 const User = require('./models/Users.js')
+const AdminConnection = require('./models/AdminConnection.js')
 
 //Redirect Functions - Protection layer
 const redirectHome = (req, res, next) => {
@@ -25,7 +26,7 @@ const redirectHome = (req, res, next) => {
     }
 }
 
-module.exports = function (app, api) {
+module.exports = function (app, api, transporter) {
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'index.html'))
     })
@@ -41,8 +42,58 @@ module.exports = function (app, api) {
     app.get('/match*', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'views', 'matches.html'))
     })
-    app.post('/player/:id', function (req, res) {
+    app.get('/admin', function (req, res) {
+        if (req.query.acesspin == app.get('pin')) {
+            res.status(200).sendFile(path.join(global.appRoot, 'views', 'admin.html'))
+        } else {
+            res.status(401).send('<h1>Request Unauthorized</h1>')
+        }
+    })
 
+    app.post('/admin/login', function (req, res) {
+        let ip = req.headers['x-forwarded-for'] || req.ip
+        let createdSessionId = functions.createid(64)
+        let data = req.body;
+        const isLocalhost = Boolean(
+            ip === '::1' ||
+            // 127.0.0.1/8 is considered localhost for IPv4.
+            ip.match(
+                /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+            ) ||
+            ip === '0000:0000:0000:0000:0000:0000:0000:0001'
+        );
+        User.findOne({
+            'email': data.email
+        }, function (err, user) {
+            if (!err) {
+                if (user) {
+                    if (user.validPassword(data.password) && user.admin) {
+                        req.session.userid = user._id
+                        req.session.sessionId = sessionId
+                        user.atribuitesessionid = sessionId
+                        let userSave = user.save()
+                        let sessionSave = req.session.save()
+                        Promise.all([userSave, sessionSave]).then(() => {
+                            res.status(220).json({
+                                name: user.firstName + ' ' + user.lastName,
+                                ip: 
+                            })
+                        }).catch(() => {
+                            res.status(500).send('Error on server! Try again later!')
+                        })
+                    } else {
+                        res.status(221).send('Unauthorized')
+                    }
+                } else {
+                    res.status(221).send('Unauthorized')
+                }
+            } else {
+                res.status(500).send('Error on server! Try again later!')
+            }
+        });
+    })
+
+    app.post('/player/:id', function (req, res) {
         res.status(200).send({
             id: req.params.id
         })
@@ -62,7 +113,7 @@ module.exports = function (app, api) {
                         let userSave = user.save()
                         let sessionSave = req.session.save()
                         Promise.all([userSave, sessionSave]).then(() => {
-                            res.status(220).send('Email or password invalid')
+                            res.status(220).send('Not implemented')
                         }).catch(() => {
                             res.status(500).send('Error on server! Try again later!')
                         })
@@ -91,6 +142,7 @@ module.exports = function (app, api) {
                     newUser.lastName = data.lastName
                     newUser.password = newUser.generateHash(data.password);
                     newUser.creationDate = new Date();
+                    newUser.admin = false;
                     newUser.atribuitesessionid = 'expired';
                     newUser.save(function (err, user) {
                         if (!err && user) {

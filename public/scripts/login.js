@@ -1,13 +1,17 @@
 /* eslint-disable */
 let mode = true;
 
+function pageLoad(cb) {
+    cb()
+}
+
 function loginSubmit(e) {
     e.preventDefault();
 
     api.post('/auth/login', {
-            email: document.getElementById("email_login").value,
-            password: document.getElementById("password_login").value
-        })
+        email: document.getElementById("email_login").value,
+        password: document.getElementById("password_login").value
+    })
         .then(function (res) {
             let code = res.status
             if (code === 220) {
@@ -25,17 +29,17 @@ function registerSubmit(e) {
     e.preventDefault();
 
     api.post('/auth/register', {
-            email: document.getElementById("email_register").value,
-            password: document.getElementById("password_register").value,
-            first_name: document.getElementById("first_name_register").value,
-            last_name: document.getElementById("last_name_register").value
-        })
+        email: document.getElementById("email_register").value,
+        password: document.getElementById("password_register").value,
+        first_name: document.getElementById("first_name_register").value,
+        last_name: document.getElementById("last_name_register").value
+    })
         .then(function (res) {
             let code = res.status
             if (code === 230) {
                 changeMode()
             } else {
-                document.getElementById('mgsLogin').innerHTML = res.data
+                document.getElementById('mgsRegister').innerHTML = res.data
             }
         })
         .catch(function (err) {
