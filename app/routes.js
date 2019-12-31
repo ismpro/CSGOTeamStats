@@ -5,7 +5,6 @@ const Teams = require('./models/Teams')
 const Players = require('./models/Players')
 const Match = require('./models/Match')
 const User = require('./models/Users.js')
-const AdminConnection = require('./models/AdminConnection.js')
 
 //Redirect Functions - Protection layer
 const redirectHome = (req, res, next) => {
@@ -76,7 +75,7 @@ module.exports = function (app, api, transporter) {
                         Promise.all([userSave, sessionSave]).then(() => {
                             res.status(220).json({
                                 name: user.firstName + ' ' + user.lastName,
-                                ip: 
+                                ip: '123123123'
                             })
                         }).catch(() => {
                             res.status(500).send('Error on server! Try again later!')
