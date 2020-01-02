@@ -3,50 +3,17 @@ const bcrypt = require('bcryptjs')
 
 const Schema = mongoose.Schema;
 
-let commentsGame = mongoose.Schema({
-    title: String,
-    text: String,
-    ref: {
-        type: Schema.Types.ObjectId,
-        ref: 'Game'
-    }
-});
-
-let commentsTeams = mongoose.Schema({
-    title: String,
-    text: String,
-    ref: {
-        type: Schema.Types.ObjectId,
-        ref: 'Teams'
-    }
-});
-
-let commentsPlayers = mongoose.Schema({
-    title: String,
-    text: String,
-    ref: {
-        type: Schema.Types.ObjectId,
-        ref: 'Players'
-    }
-});
-
 var userSchema = mongoose.Schema({
     email: String,
     firstName: String,
     lastName: String,
     password: String,
     creationDate: Date,
-    atribuitesessionid: String,
-    admin: Schema.Types.Mixed,
+    atribuitesessionid: Schema.Types.Mixed,
+    admin: Boolean,
     favorite: {
-        players: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Players'
-        }],
-        teams: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Teams'
-        }]
+        players: [Number],
+        teams: [Number]
     }
 }, {
     collection: 'Users'

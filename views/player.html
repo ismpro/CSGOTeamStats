@@ -51,10 +51,11 @@
                     <div class="playerName">
                         <h1 id="player_ign" class="playerNick">Ismpro</h1>
                         <div class="playerReal">
-                            <img class="flag" src="https://www.countryflags.io/PT/shiny/24.png" alt="CountryFlag">
-                            Ismael Lourenço
+                            <img id="player_country" class="flag" src="https://www.countryflags.io/PT/shiny/24.png"
+                                alt="CountryFlag">
+                            <span id="player_real">Ismael Lourenço</span>
                         </div>
-                        <div class="playerSocial">
+                        <div id="player_social" class="playerSocial">
                             <a href="#" class="fa fa-facebook"></a>
                             <a href="#" class="fa fa-twitch"></a>
                             <a href="#" class="fa fa-twitter"></a>
@@ -77,7 +78,7 @@
                             <span class="right">
                                 <img id="team_flag" src="https://static.hltv.org/images/team/logo/4608" height="16"
                                     width="16" alt="NAVI">
-                                <span id="team_name">NaVi</span>
+                                <span id="team_name"><a href="#">NaVi</a></span>
                             </span>
                         </div>
                     </div>
@@ -93,37 +94,38 @@
                     <div class="two_col_div">
                         <div class="col_div">
                             <div class="cell_div">
-                                <b>Rating 2.0</b>
-                                <span class="statsVal">1.03</span>
+                                <b>Rating</b>
+                                <span id="player_rating" class="statsVal">1.03</span>
                             </div>
                             <div class="cell_div">
                                 <b>Kills per round</b>
-                                <span class="statsVal">1.03</span>
+                                <span id="player_kills" class="statsVal">1.03</span>
                             </div>
                             <div class="cell_div">
                                 <b>Headshots</b>
-                                <span class="statsVal">1.03</span>
+                                <span id="player_hs" class="statsVal">1.03</span>
                             </div>
                         </div>
                         <div class="col_div">
                             <div class="cell_div">
                                 <b>Maps played</b>
-                                <span class="statsVal">1.03</span>
+                                <span id="player_maps" class="statsVal">1.03</span>
                             </div>
                             <div class="cell_div">
                                 <b>Deaths per round</b>
-                                <span class="statsVal">1.03</span>
+                                <span id="player_death" class="statsVal">1.03</span>
                             </div>
                             <div class="cell_div">
                                 <b>Rounds contributed</b>
-                                <span class="statsVal">1.03</span>
+                                <span id="player_rc" class="statsVal">1.03</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="achiv" class="tabcontent">
-                    <h2 class="tab-headline">Achievements for ismpro <span class="stats-window">Past 15 games</span>
+                    <h2 id="player_achivs_headline" class="tab-headline">Achievements for ismpro <span
+                            class="stats-window">Past 15 games</span>
                     </h2>
                     <table class="achivTable">
                         <thead>
@@ -132,7 +134,7 @@
                                 <th>Tournament</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="player_achiv">
                             <tr>
                                 <td>
                                     <div><i class="fa fa-trophy "></i>1st</div>

@@ -13,19 +13,29 @@
 </head>
 
 <body>
-    <di id="login">
+    <div id="login">
         <form onsubmit="login(event)">
-            <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username..." name="uname" id="uname" required>
+            <label for="uname"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email..." name="eamil" id="eamil" required>
 
             <label for="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password..." name="psw" id="psw" required>
 
             <input type="submit" value="Login">
         </form>
+        <button id="adminButton" onclick="changeMode()" class="button_a">Sing up for our admin program</button>
         <br>
         <p id="mgsLogin"></p>
-    </di>
+    </div>
+    <div id="trying" style="display: none;">
+        <form onsubmit="sendEmail(event)">
+            <label for="eamil1"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email..." name="eamil1" id="eamil1" required>
+
+            <input type="submit" value="Send">
+        </form>
+        <button onclick="changeMode()" class="button_a">Go back for login</button>
+    </div>
     <script src="/static/scripts/admin.js"></script>
 </body>
 

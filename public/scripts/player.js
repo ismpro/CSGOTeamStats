@@ -1,74 +1,141 @@
 /* eslint-disable */
-let favAnimation = false
-let comments = [{
-    id: 1234,
-    text: 'O gajo que escreveu que não deste jogador pode morrer no inferno!',
-    date: new Date(),
-    hasEdit: false,
-    user: {
-        name: 'Ismpro (for testing)',
-        id: '5dea68b738defa02b0f6ff87'
-    }
-}, {
-    id: 1232,
-    text: 'Epa não gosto deste jogador. Joga mesmo mal!.',
-    date: new Date(2019, 11, 18, 9, 20),
-    hasEdit: false,
-    user: {
-        name: 'Ismpro (for testing)',
-        id: '5dea68b738defa02b0f6ff87'
-    }
-}, {
-    id: 3421,
-    text: 'Gosto muito do layout desta pagina',
-    date: new Date(2019, 11, 17, 18, 35),
-    hasEdit: false,
-    user: {
-        name: 'anon',
-        id: '5dea68b738defa02b0f6ff87'
-    }
-}]
+let favController = false
+let comments = []
 
 function pageLoad(cb) {
     document.getElementById("defaultTab").click();
     document.getElementById('comment_button').onclick = () => createComment()
     let fav = document.getElementsByClassName('clickFav')[0]
     fav.addEventListener('click', () => {
-        let star = fav.firstElementChild
-        if (!favAnimation) {
-            favAnimation = true
-            if (star.classList.contains("fa-star")) {
-                setTimeout(() => {
-                    star.classList.remove("fa-star")
-                    star.classList.add("fa-star-o")
-                }, 15)
-                document.getElementById('fav_text').innerText = 'Removed!'
-                fav.lastElementChild.classList.add('info-tog')
-                setTimeout(() => {
-                    fav.lastElementChild.classList.remove('info-tog')
-                    favAnimation = false
-                }, 1000)
-            } else {
-                setTimeout(() => {
-                    star.classList.add('fa-star')
-                    star.classList.remove('fa-star-o')
-                }, 150)
-                document.getElementById('fav_text').innerHTML = '&nbsp;&nbsp;Added!'
-                fav.lastElementChild.classList.add('info-tog')
-                setTimeout(() => {
-                    fav.lastElementChild.classList.remove('info-tog')
-                    favAnimation = false
-                }, 1000)
-            }
+        if (!favController) {
+            favController = true
+            let path = window.location.pathname
+            let id = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf(''))
+            api.post('/fav/player', {
+                id: id
+            }).then((data) => {
+                if (data.status === 200) {
+                    data = data.data
+                    favAnimation(data === 'added', fav)
+                }
+            }).catch(err => console.log(err))
         }
     })
-    loadComments()
-    /* axios.post('123123').then(res => {
+    api.post(window.location.pathname).then(res => {
         console.log(res.data)
-        document.getElementById('player_ign').innerHTML = res.data.name
-        
-    }) */
-    cb()
+        loadData(res.data)
+        let star = document.getElementsByClassName('clickFav')[0].firstElementChild
+        if (res.data.fav) {
+            star.classList.add('fa-star')
+            star.classList.remove('fa-star-o')
+        } else {
+            star.classList.remove("fa-star")
+            star.classList.add("fa-star-o")
+        }
+        cb()
+    }).catch(err => console.log(err))
+
+}
+
+function favAnimation(type, fav) {
+    let star = fav.firstElementChild
+    if (type) {
+        setTimeout(() => {
+            star.classList.add('fa-star')
+            star.classList.remove('fa-star-o')
+        }, 150)
+        document.getElementById('fav_text').innerHTML = '&nbsp;&nbsp;Added!'
+        fav.lastElementChild.classList.add('info-tog')
+        setTimeout(() => {
+            fav.lastElementChild.classList.remove('info-tog')
+            favController = false
+        }, 1000)
+    } else {
+        setTimeout(() => {
+            star.classList.remove("fa-star")
+            star.classList.add("fa-star-o")
+        }, 15)
+        document.getElementById('fav_text').innerText = 'Removed!'
+        fav.lastElementChild.classList.add('info-tog')
+        setTimeout(() => {
+            fav.lastElementChild.classList.remove('info-tog')
+            favController = false
+        }, 1000)
+    }
+}
+
+function loadData(data) {
+    let teamData = data.team
+    data = data.player
+    let imagetag = document.getElementById('player_image')
+    imagetag.src = data.image
+    imagetag.alt = data.ign || 'Not Specified'
+    imagetag.title = data.ign || 'Not Specified'
+    document.getElementById('player_ign').innerHTML = data.ign || 'Not Specified'
+    let countrytag = document.getElementById('player_country')
+    countrytag.src = `https://www.countryflags.io/${data.country.code}/shiny/24.png`
+    countrytag.alt = data.country.name || 'World'
+    document.getElementById('player_real').innerHTML = data.name || 'Not Specified'
+    let socialDiv = document.getElementById('player_social')
+    socialDiv.innerHTML = ""
+    if (data.twitch) {
+        let tag = document.createElement("a");
+        tag.href = data.twitch
+        tag.classList.add("fa", "fa-twitch")
+        socialDiv.appendChild(tag)
+    }
+    if (data.twitter) {
+        let tag = document.createElement("a");
+        tag.href = data.twitter
+        tag.classList.add("fa", "fa-twitter")
+        socialDiv.appendChild(tag)
+    }
+    if (data.facebook) {
+        let tag = document.createElement("a");
+        tag.href = data.facebook
+        tag.classList.add("fa", "fa-facebook")
+        socialDiv.appendChild(tag)
+    }
+    document.getElementById('player_age').innerHTML = data.age || ''
+    if (data.team) {
+        let teamtag = document.getElementById('team_flag')
+        teamtag.src = teamData ? teamData.logo : window.location.origin + '/static/images/logo-team.png'
+        teamtag.alt = teamData.name || ''
+        document.getElementById('team_name').innerHTML = teamData ? `<a class="teamLink" href="${window.location.origin + '/team/' + teamData.id}">${teamData.name}</a>` : `<a class="teamLink" href="#">Error</a>`
+
+
+    }
+    document.getElementById('player_ign_stats').innerHTML = `${data.ign || ''} statistics<span class=" stats-window">(Past 3 months)</span>`
+
+    document.getElementById('player_rating').innerHTML = data.statistics.rating
+    document.getElementById('player_kills').innerHTML = data.statistics.killsPerRound
+    document.getElementById('player_hs').innerHTML = data.statistics.headshots
+    document.getElementById('player_maps').innerHTML = data.statistics.mapsPlayed
+    document.getElementById('player_death').innerHTML = data.statistics.deathsPerRound
+    document.getElementById('player_rc').innerHTML = data.statistics.roundsContributed
+
+    document.getElementById('player_achivs_headline').innerHTML = `Achievements for ${data.ign} <span class="stats-window">Past 15 games</span>`
+
+    if (data.achievements && data.achievements.length > 0) {
+        let table = document.getElementById('player_achiv')
+        let html = '';
+        data.achievements.forEach((achiv) => {
+            html += '<tr><td>'
+            if (achiv.place === '1st') {
+                html += '<div><i class="fa fa-trophy "></i>1st</div></td>'
+            } else if (achiv.place === '2nd') {
+                html += '<div><i class="fa fa-trophy "></i>2st</div></td>'
+            } else if (achiv.place === '3rd') {
+                html += '<div><i class="fa fa-trophy "></i>3st</div></td>'
+            } else {
+                html += achiv.place + '</td>'
+            }
+            html += `<td>${achiv.event.name}</td></tr>`
+        })
+        table.innerHTML = html
+    }
+    comments = data.comments || []
+    loadComments()
 }
 
 function changeTab(e, tabName) {

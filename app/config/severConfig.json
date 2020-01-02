@@ -31,6 +31,16 @@
             "color": "#cc0000"
         },
         {
+            "code": 240,
+            "message": "Request Admin Program Authorized",
+            "color": "#00ff00"
+        },
+        {
+            "code": 241,
+            "message": "Request Admin Program Denied",
+            "color": "#cc0000"
+        },
+        {
             "code": 304,
             "message": "Request Not Modified",
             "color": "#ffff00"

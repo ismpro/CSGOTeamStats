@@ -152,6 +152,22 @@ span:active {
     margin-left: 16px;
 }
 
+.teamLink {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.teamLink:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.teamLink:hover {
+    color: black;
+    text-decoration: underline;
+}
+
 .playerAge,
 .playerTeam {
     display: flex;

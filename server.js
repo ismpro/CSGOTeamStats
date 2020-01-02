@@ -5,6 +5,7 @@ const dotenv = require('dotenv')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const helmet = require('helmet')
 const mongoose = require('mongoose')
 const chalk = require('chalk')
@@ -74,10 +75,13 @@ app.use(cookieParser())
 
 //Setting Sessions
 app.use(session({
-    name: 'sid',
+    name: 'somestringstuff',
     resave: true,
     saveUninitialized: false,
     secret: process.env.SECRET || 'secretstring',
+    store: new MongoStore({
+        mongooseConnection: db
+    }),
     cookie: {
         maxAge: 3600000,
         sameSite: 'lax',
