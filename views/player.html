@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/scripts/all.js"></script>
     <script src="/static/scripts/player.js"></script>
+    <script type="text/javascript" src="/static/scripts/paginator.js"></script>
     <title>Players</title>
 </head>
 
@@ -64,7 +65,7 @@
                         </div>
 
                     </div>
-                    <div class="playerFav">
+                    <div id="playerFav" class="playerFav">
                         <div class="clickFav">
                             <span class="fa star fa-star-o"></span>
                             <p id="fav_text" class="info">&nbsp;&nbsp;Added!</p>
@@ -129,7 +130,7 @@
                     <h2 id="player_achivs_headline" class="tab-headline">Achievements for ismpro <span
                             class="stats-window">Past 15 games</span>
                     </h2>
-                    <table class="achivTable">
+                    <table id="table_to_page" class="achivTable">
                         <thead>
                             <tr>
                                 <th>Placement</th>
@@ -163,14 +164,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="pageNumbers" id="table_pages_numbers"></div>
                 </div>
                 <h3 class="comments_heading">Comments:</h3>
-                <div class="comments_area">
-                    <textarea placeholder="Write your comment here..." id="comment_text"></textarea>
-                    <div>
-                        Anonymous? <input type="checkbox" id="anonymous_check">
-                        <button onclick="javascript:createComment()" id="comment_button">Comment</button>
-                    </div>
+                <div id="comments_area" class="comments_area">
+                    <p>You need to login to write comments</p>
                 </div>
                 <ul id="comments" class="comments"></ul>
             </div>

@@ -9,6 +9,42 @@ const User = require('./models/Users.js')
 const Link = require('./models/Links.js')
 const Comments = require('./models/Comments.js')
 
+async function parseComments(comments, id) {
+    if (comments.length === 0) {
+        return []
+    }
+    let parseComments = []
+    for (const comment of comments) {
+        let hasEdit = comment.hasEdit
+        if (comment.hasEdit) {
+            let user = await User.findById(comment.hasEdit)
+            hasEdit = user.admin ? user.firstName + ' (admin)' : user.firstName
+        }
+        let name = ''
+        if (comment.isAnon) {
+            name = 'anon'
+        } else {
+            let user = await User.findById(comment.user)
+            name = user.firstName
+        }
+        parseComments.push({
+            id: comment._id,
+            text: comment.text,
+            hasEdit: hasEdit,
+            user: name,
+            date: comment.date,
+            isFromUser: comment.user.equals(id)
+        })
+    }
+    parseComments.sort(function (a, b) {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return a > b ? -1 : a < b ? 1 : 0;
+    });
+    console.log(parseComments)
+    return parseComments
+}
+
 //Redirect Functions - Protection layer
 const redirectHome = (req, res, next) => {
     if (req.session.userid) {
@@ -204,21 +240,39 @@ module.exports = function (app, api, transporter) {
                         id: player.team.id
                     }, function (err, team) {
                         if (!err) {
-                            if (req.session.userid) {
-                                User.findById(req.session.userid, function (err, user) {
-                                    res.status(200).json({
-                                        player: player,
-                                        team: team,
-                                        fav: user.favorite.players.includes(id)
-                                    })
-                                })
-                            } else {
-                                res.status(200).json({
-                                    player: player,
-                                    team: team
-                                })
-                            }
-
+                            Comments.find({
+                                type: 'player',
+                                id: id
+                            }, function (err, comments) {
+                                if (!err) {
+                                    if (req.session.userid) {
+                                        User.findById(req.session.userid, function (err, user) {
+                                            if (!err) {
+                                                parseComments(comments, user._id).then(parsedComments => {
+                                                    res.status(200).json({
+                                                        player: player,
+                                                        team: team,
+                                                        fav: user.favorite.players.includes(id),
+                                                        comments: parsedComments
+                                                    })
+                                                })
+                                            } else {
+                                                res.status(500).send('Error on server! Try again later!')
+                                            }
+                                        })
+                                    } else {
+                                        parseComments(comments).then(parsedComments => {
+                                            res.status(200).json({
+                                                player: player,
+                                                team: team,
+                                                comments: parsedComments
+                                            })
+                                        })
+                                    }
+                                } else {
+                                    res.status(500).send('Error on server! Try again later!')
+                                }
+                            })
                         } else {
                             res.status(500).send('Error on server! Try again later!')
                         }
@@ -259,6 +313,58 @@ module.exports = function (app, api, transporter) {
         })
     })
 
+    app.post('/comment/create', function (req, res) {
+        let comment = req.body
+        if (req.session.userid) {
+            let newComment = new Comments();
+            newComment.type = comment.type;
+            newComment.text = comment.text;
+            newComment.id = comment.id;
+            newComment.isAnon = comment.isAnon;
+            newComment.hasEdit = false;
+            newComment.user = req.session.userid;
+            newComment.date = new Date();
+            newComment.save((err, comment) => {
+                if (!err) {
+                    User.findById(req.session.userid, function (err, user) {
+                        if (!err) {
+                            res.status(200).json({
+                                id: comment._id,
+                                text: comment.text,
+                                hasEdit: false,
+                                user: comment.isAnon ? 'anon' : user.firstName,
+                                date: comment.date,
+                                isFromUser: true
+                            })
+                        } else {
+                            res.status(500).send(err.message)
+                        }
+                    })
+                } else {
+                    res.status(500).send(err.message)
+                }
+            })
+        } else {
+            res.status(200).send(false)
+        }
+    })
+
+    app.post('/comment/delete', function (req, res) {
+        if (req.session.userid) {
+
+        } else {
+            res.status(200).send(false)
+        }
+    })
+
+    app.post('/comment/edit', function (req, res) {
+        if (req.session.userid) {
+
+        } else {
+            res.status(200).send(false)
+        }
+    })
+
     app.post('/auth/validate', function (req, res) {
         if (req.session.userid) {
             User.findById(req.session.userid, (err, user) => {
@@ -266,7 +372,7 @@ module.exports = function (app, api, transporter) {
                     res.status(500).send(err.message)
                 } else {
                     if (user && user.atribuitesessionid === req.session.sessionId) {
-                        res.status(200).send(true)
+                        res.status(200).send(req.session.sessionId)
                     } else {
                         res.status(200).send(false)
                     }

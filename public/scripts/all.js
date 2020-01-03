@@ -4,6 +4,8 @@ const api = axios.create({
     withCredentials: true,
 });
 
+let admin = false;
+
 function loadPage() {
     pageLoad(() => {
         setTimeout(() => {
@@ -11,8 +13,10 @@ function loadPage() {
         }, 100)
     })
     api.post('/auth/validate').then((res) => {
+        console.log(res.data)
         let button = document.getElementById('loginButton')
-        if (res.data) {
+        if (typeof res.data === 'string') {
+            sessionId = res.data
             button.style.display = "inline";
             button.innerHTML = '<button class="loginButton">Log out</button>'
             button.firstElementChild.onclick = () => {
@@ -28,6 +32,11 @@ function loadPage() {
                         }
                     }
                 }).catch(err => console.log(err))
+            }
+            try {
+                onsession()
+            } catch (error) {
+                console.warn('onsession not define')
             }
         } else {
             button.style.display = "inline";
@@ -86,6 +95,8 @@ function sideNav(e) {
 }
 
 function timeSince(date) {
+
+    date = new Date(date)
 
     var seconds = Math.floor((new Date() - date) / 1000);
 

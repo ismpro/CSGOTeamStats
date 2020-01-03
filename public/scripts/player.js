@@ -1,10 +1,19 @@
 /* eslint-disable */
 let favController = false
-let comments = []
+let comments = [{
+    id: 1234,
+    text: 'O gajo que escreveu que não deste jogador pode morrer no inferno!',
+    date: new Date(),
+    hasEdit: false,
+    user: {
+        name: 'Ismpro (for testing)',
+        id: '5dea68b738defa02b0f6ff87'
+    },
+    isFromUser: true
+}]
 
 function pageLoad(cb) {
     document.getElementById("defaultTab").click();
-    document.getElementById('comment_button').onclick = () => createComment()
     let fav = document.getElementsByClassName('clickFav')[0]
     fav.addEventListener('click', () => {
         if (!favController) {
@@ -32,9 +41,23 @@ function pageLoad(cb) {
             star.classList.remove("fa-star")
             star.classList.add("fa-star-o")
         }
+        comments = res.data.comments
+        loadComments()
         cb()
     }).catch(err => console.log(err))
+}
 
+function onsession() {
+    document.getElementById('comments_area').innerHTML = '<textarea placeholder="Write your comment here..." id="comment_text"></textarea> \
+        <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
+        <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
+    document.getElementById('comment_button').onclick = () => createComment()
+    document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
+    <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
+}
+
+function onlogout() {
+    document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
 }
 
 function favAnimation(type, fav) {
@@ -134,8 +157,12 @@ function loadData(data) {
         })
         table.innerHTML = html
     }
-    comments = data.comments || []
-    loadComments()
+    paginator({
+        table: document.getElementById("table_to_page"),
+        box: document.getElementById("table_pages_numbers"),
+        box_mode: "button",
+        rows_per_page: 10
+    });
 }
 
 function changeTab(e, tabName) {
@@ -155,7 +182,7 @@ function changeTab(e, tabName) {
     e.currentTarget.className += " active";
 }
 
-function loadComments() {
+function loadComments(id) {
 
     let commentsDiv = document.getElementById('comments')
     let html = ''
@@ -174,41 +201,43 @@ function loadComments() {
         }
 
         if (comment.hasEdit) {
-            html += `<a href="#">${comment.editBy.name}</a> / Made by: `
+            html += `<a href="#">${comment.hasEdit}</a> / Made by: `
         }
-        if (comment.user.name === 'anon') {
+        if (comment.user === 'anon') {
             html += 'Anonymous'
         } else {
-            html += `<a href="#">${comment.user.name}</a>`
+            html += `<a href="#">${comment.user}</a>`
         }
-        html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
-        html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+        if (comment.isFromUser || admin) {
+            html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+            html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+        }
         html += '</div></blockquote></li>'
     })
     commentsDiv.innerHTML = html;
     comments.forEach((comment) => {
-        document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
-        document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+        if (comment.isFromUser || admin) {
+            document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
+            document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+        }
     })
 }
 
 function createComment() {
     let text = document.getElementById('comment_text').value;
     let isAnon = document.getElementById('anonymous_check').checked;
-    comments.unshift({
-        id: ((Math.random() * 1e6) | 0),
+    let path = window.location.pathname
+    api.post('/comment/create', {
+        type: 'player',
+        id: path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('')),
         text: text,
-        date: new Date(),
-        user: isAnon ? {
-            name: 'anon',
-            id: '5dea68b738defa02b0f6ff87'
-        } : {
-            name: 'Ismpro (for testing)',
-            id: '5dea68b738defa02b0f6ff87'
-        }
+        isAnon: isAnon
+    }).then((res) => {
+        let comment = res.data
+        comments.unshift(comment)
+        document.getElementById('comment_text').value = ''
+        loadComments()
     })
-    document.getElementById('comment_text').value = ''
-    loadComments()
 }
 
 function deleteComment(id) {

@@ -1,5 +1,6 @@
 /*****************************************************
  * Paginator Function                                *
+ * Change by Ismael Lourenço                         *
  *****************************************************
  * config : {
  *     get_rows : function used to select rows to do pagination on
@@ -67,13 +68,13 @@ function paginator(config) {
     if (typeof config.get_rows != "function") {
         config.get_rows = function () {
             var table = config.table
-            var tbody = table.getElementsByTagName("tbody")[0]||table;
+            var tbody = table.getElementsByTagName("tbody")[0] || table;
 
             // get all the possible rows for paging
             // exclude any rows that are just headers or empty
             children = tbody.children;
             var trs = [];
-            for (var i=0;i<children.length;i++) {
+            for (var i = 0; i < children.length; i++) {
                 if (children[i].nodeType = "tr") {
                     if (children[i].getElementsByTagName("td").length > 0) {
                         trs.push(children[i]);
@@ -105,7 +106,7 @@ function paginator(config) {
     var page = config.page;
 
     // get page count
-    var pages = (rows_per_page > 0)? Math.ceil(trs.length / rows_per_page):1;
+    var pages = (rows_per_page > 0) ? Math.ceil(trs.length / rows_per_page) : 1;
 
     // check that page and page count are sensible values
     if (pages < 1) {
@@ -118,14 +119,14 @@ function paginator(config) {
         page = 1;
     }
     config.page = page;
- 
+
     // hide rows not on current page and show the rows that are
-    for (var i=0;i<trs.length;i++) {
+    for (var i = 0; i < trs.length; i++) {
         if (typeof trs[i]["data-display"] == "undefined") {
-            trs[i]["data-display"] = trs[i].style.display||"";
+            trs[i]["data-display"] = trs[i].style.display || "";
         }
         if (rows_per_page > 0) {
-            if (i < page*rows_per_page && i >= (page-1)*rows_per_page) {
+            if (i < page * rows_per_page && i >= (page - 1) * rows_per_page) {
                 trs[i].style.display = trs[i]["data-display"];
             } else {
                 // Only hide if pagination is not disabled
@@ -141,7 +142,7 @@ function paginator(config) {
     }
 
     // page button maker functions
-    config.active_class = config.active_class||"active";
+    config.active_class = config.active_class || "active";
     if (typeof config.box_mode != "function" && config.box_mode != "list" && config.box_mode != "buttons") {
         config.box_mode = "button";
     }
@@ -152,7 +153,7 @@ function paginator(config) {
         if (config.box_mode == "list") {
             make_button = function (symbol, index, config, disabled, active) {
                 var li = document.createElement("li");
-                var a  = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = "#";
                 a.innerHTML = symbol;
                 a.addEventListener("click", function (event) {
@@ -201,20 +202,20 @@ function paginator(config) {
         }
 
         // make page button collection
-        var page_box = document.createElement(config.box_mode == "list"?"ul":"div");
+        var page_box = document.createElement(config.box_mode == "list" ? "ul" : "div");
         if (config.box_mode == "list") {
             page_box.className = "pagination";
         }
 
-        var left = make_button("&laquo;", (page>1?page-1:1), config, (page == 1), false);
+        var left = make_button("&laquo;", (page > 1 ? page - 1 : 1), config, (page == 1), false);
         page_box.appendChild(left);
 
-        for (var i=1;i<=pages;i++) {
+        for (var i = 1; i <= pages; i++) {
             var li = make_button(i, i, config, false, (page == i));
             page_box.appendChild(li);
         }
 
-        var right = make_button("&raquo;", (pages>page?page+1:page), config, (page == pages), false);
+        var right = make_button("&raquo;", (pages > page ? page + 1 : page), config, (page == pages), false);
         page_box.appendChild(right);
         if (box.childNodes.length) {
             while (box.childNodes.length > 1) {
@@ -229,48 +230,43 @@ function paginator(config) {
     // make rows per page selector
     if (!(typeof config.page_options == "boolean" && !config.page_options)) {
         if (typeof config.page_options == "undefined") {
-            config.page_options = [
-                { value: 5,  text: '5'   },
-                { value: 10, text: '10'  },
-                { value: 20, text: '20'  },
-                { value: 50, text: '50'  },
-                { value: 100,text: '100' },
-                { value: 0,  text: 'All' }
+            config.page_options = [{
+                    value: 5,
+                    text: '5'
+                },
+                {
+                    value: 10,
+                    text: '10'
+                },
+                {
+                    value: 20,
+                    text: '20'
+                },
+                {
+                    value: 50,
+                    text: '50'
+                },
+                {
+                    value: 100,
+                    text: '100'
+                },
+                {
+                    value: 0,
+                    text: 'All'
+                }
             ];
         }
-        var options = config.page_options;
-        var select = document.createElement("select");
-        for (var i=0;i<options.length;i++) {
-            var o = document.createElement("option");
-            o.value = options[i].value;
-            o.text = options[i].text;
-            select.appendChild(o);
-        }
-        select.value = rows_per_page;
-        select.addEventListener("change", function () {
-            config.rows_per_page = this.value;
-            paginator(config);
-        }, false);
-        box.appendChild(select);
     }
-
-    // status message
-    var stat = document.createElement("span");
-    stat.innerHTML = "On page " + page + " of " + pages
-        + ", showing rows " + (((page-1)*rows_per_page)+1)
-        + " to " + (trs.length<page*rows_per_page||rows_per_page==0?trs.length:page*rows_per_page)
-        + " of " + trs.length;
-    box.appendChild(stat);
 
     // hide pagination if disabled
     if (config.disable) {
         if (typeof box["data-display"] == "undefined") {
-            box["data-display"] = box.style.display||"";
+            box["data-display"] = box.style.display || "";
         }
         box.style.display = "none";
     } else {
         if (box.style.display == "none") {
-            box.style.display = box["data-display"]||"";
+            box.style.display = box["data-display"] || "";
         }
     }
 

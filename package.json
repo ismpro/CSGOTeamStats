@@ -1,6 +1,6 @@
 {
   "name": "csgoteamstats",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CSGOTeamStats is a site where you can find all of your favarite players",
   "main": "server.js",
   "scripts": {
