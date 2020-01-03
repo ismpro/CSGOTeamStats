@@ -10,7 +10,7 @@ var userSchema = mongoose.Schema({
     password: String,
     creationDate: Date,
     atribuitesessionid: Schema.Types.Mixed,
-    admin: Boolean,
+    admin: Schema.Types.Mixed,
     favorite: {
         players: [Number],
         teams: [Number]

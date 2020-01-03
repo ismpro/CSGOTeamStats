@@ -151,17 +151,15 @@ module.exports = function (app, api, transporter) {
                         let message = {
                             from: {
                                 name: 'CSGOTeamStats NoReply',
-                                address: 'foobar@example.com'
+                                address: 'noreply.csgoteamstats@gmail.com'
                             },
                             to: 'ismaelourenco@msn.com',
                             subject: "New admin request",
-                            text: "Plaintext version of the message",
-                            html: '<table><tbody><tr><td>Id:</td><td>Nome:</td><td>Emial:</td></tr> \
-                                <tr><td>' + user._id + '</td> \
-                                <td>' + user.firstName + ' ' + user.lastName + '</td> \
-                                <td>' + user.email + '</td></tr> \
+                            html: '<table><tbody><tr><td>Id:</td><td>' + user._id + '</td></tr> \
+                                <tr><td>Nome:</td><td>' + user.firstName + ' ' + user.lastName + '</td> \
+                                <td>Email:</td><td>' + user.email + '</td></tr> \
                                 </tbody></table> \
-                                <a href="/' + createLink + '?type=accept">Accept</a>  \
+                                <a href="/admin/program/' + createLink + '?type=accept">Accept</a>  \
                                 <a href= "/admin/program/' + createLink + '?type=deny">Deny</a>'
                         };
                         transporter.sendMail(message, (err) => {
@@ -171,7 +169,7 @@ module.exports = function (app, api, transporter) {
                                     if (!err) {
                                         res.status(240).send('Process begin! A email will be sent when the process is finish!')
                                     } else {
-                                        res.status(500).send('Error on server! Try again later!')
+                                        res.status(500).send(err.message)
                                     }
                                 })
                             } else {
@@ -183,14 +181,16 @@ module.exports = function (app, api, transporter) {
                     res.status(241).send('Email doenst exits')
                 }
             } else {
-                res.status(500).send('Error on server! Try again later!')
+                res.status(500).send(err.message)
             }
         });
     })
 
-    app.get('/admin/ask/:id', function (req, res) {
+    app.get('/admin/program/:id', function (req, res) {
         let id = req.params.id;
+        let type = req.query.type;
         console.log(id)
+        console.log(type)
     })
 
     app.post('/fav/:type', function (req, res) {
