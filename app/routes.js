@@ -258,6 +258,36 @@ module.exports = function (app, api, transporter) {
         })
     })
 
+    app.post('/auth/validate', function (req, res) {
+        if (req.session.userid) {
+            User.findById(req.session.userid, (err, user) => {
+                if (err) {
+                    res.status(500).send(err.message)
+                } else {
+                    if (user && user.atribuitesessionid === req.session.sessionId) {
+                        res.status(200).send(true)
+                    } else {
+                        res.status(200).send(false)
+                    }
+                }
+            })
+        } else {
+            res.status(200).send(false)
+        }
+    })
+
+    app.post('/auth/logout', function (req, res) {
+        if (req.session) {
+            req.session.destroy((err) => {
+                if (err) {
+                    res.status(500).send(err.message)
+                } else {
+                    res.status(200).send(true)
+                }
+            });
+        }
+    })
+
     app.post('/auth/login', function (req, res) {
         let data = req.body;
         User.findOne({
@@ -273,7 +303,7 @@ module.exports = function (app, api, transporter) {
                         let userSave = user.save()
                         let sessionSave = req.session.save()
                         Promise.all([userSave, sessionSave]).then(() => {
-                            res.status(220).send('Not implemented')
+                            res.status(220).send('/')
                         }).catch(() => {
                             res.status(500).send('Error on server! Try again later!')
                         })

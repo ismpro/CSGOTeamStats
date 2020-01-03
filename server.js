@@ -103,7 +103,7 @@ require('./app/routes.js')(app, api, transporter)
 
 //Handling erros inside of server
 app.use(function (err, req, res) {
-    res.status(500).send('Something broke!')
+    res.send('Something broke!')
 })
 
 //Starting to listen to requests
