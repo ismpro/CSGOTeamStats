@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const path = require('path');
 // eslint-disable-next-line no-unused-vars
 const functions = require('./functions.js')

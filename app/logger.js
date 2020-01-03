@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const functions = require('./functions')
 const iplocate = require('node-iplocate')
 const path = require('path')
