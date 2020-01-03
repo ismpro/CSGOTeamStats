@@ -7,7 +7,7 @@ const Players = require('./models/Players')
 const Match = require('./models/Match')
 const User = require('./models/Users.js')
 const Link = require('./models/Links.js')
-const Comments = require('./models/Comments.js')
+const Comment = require('./models/Comments.js')
 
 async function parseComments(comments, id) {
     if (comments.length === 0) {
@@ -159,15 +159,30 @@ module.exports = function (app, api, transporter) {
                                 <tr><td>Nome:</td><td>' + user.firstName + ' ' + user.lastName + '</td> \
                                 <td>Email:</td><td>' + user.email + '</td></tr> \
                                 </tbody></table> \
-                                <a href="/admin/program/' + createLink + '?type=accept">Accept</a>  \
-                                <a href= "/admin/program/' + createLink + '?type=deny">Deny</a>'
+                                <a href="https://csgoteamstats.herokuapp.com/admin/program/' + createLink + '?type=accept">Accept</a>  \
+                                <a href= "https://csgoteamstats.herokuapp.com/admin/program/' + createLink + '?type=deny">Deny</a>'
                         };
                         transporter.sendMail(message, (err) => {
                             if (!err) {
                                 user.admin = 'processing';
                                 user.save((err) => {
                                     if (!err) {
-                                        res.status(240).send('Process begin! A email will be sent when the process is finish!')
+                                        let d = new Date()
+                                        let expire = d.setDate(d.getDate()).getTime()
+                                        console.log(expire)
+                                        let link = new Link({
+                                            link: createLink,
+                                            type: 'adminprogram',
+                                            state: 'beginning',
+                                            expireDate: expire
+                                        })
+                                        link.save(err => {
+                                            if (!err) {
+                                                res.status(240).send('Process begin! A email will be sent when the process is finish!')
+                                            } else {
+                                                res.status(500).send(err.message)
+                                            }
+                                        })
                                     } else {
                                         res.status(500).send(err.message)
                                     }
@@ -240,7 +255,7 @@ module.exports = function (app, api, transporter) {
                         id: player.team.id
                     }, function (err, team) {
                         if (!err) {
-                            Comments.find({
+                            Comment.find({
                                 type: 'player',
                                 id: id
                             }, function (err, comments) {
@@ -316,7 +331,7 @@ module.exports = function (app, api, transporter) {
     app.post('/comment/create', function (req, res) {
         let comment = req.body
         if (req.session.userid) {
-            let newComment = new Comments();
+            let newComment = new Comment();
             newComment.type = comment.type;
             newComment.text = comment.text;
             newComment.id = comment.id;
