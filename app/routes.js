@@ -170,7 +170,8 @@ module.exports = function (app, api, transporter) {
                 if (!err) {
                     if (link) {
                         let now = new Date().getTime()
-                        if (link.state !== 'expired' && link.expire < now) {
+                        let expireNumber = new Date(link.expire).getTime()
+                        if (link.state !== 'expired' && expireNumber < now) {
                             if (type === 'accept') {
                                 link.state = 'accept';
                                 User.findById(link.user, function (err, user) {
@@ -209,12 +210,13 @@ module.exports = function (app, api, transporter) {
                                 res.status(209).send('<h1>Link Expire</h1>')
                             } else {
                                 link.state = 'expired'
-                                link.save(err => {
-                                    if (!err) {
-                                        res.status(209).send('<h1>Link Expire</h1>')
-                                    } else {
-                                        res.status(500).send(err.message)
-                                    }
+                                user.admin = false;
+                                let userSave = user.save()
+                                let sessionSave = link.save()
+                                Promise.all([userSave, sessionSave]).then(() => {
+                                    res.status(209).send('<h1>Link Expire</h1>')
+                                }).catch((err) => {
+                                    res.status(500).send(err)
                                 })
                             }
                         }
