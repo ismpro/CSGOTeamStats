@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const path = require('path');
-// eslint-disable-next-line no-unused-vars
 const functions = require('./functions.js')
 const Teams = require('./models/Teams')
 const Players = require('./models/Players')
@@ -8,42 +7,6 @@ const Match = require('./models/Match')
 const User = require('./models/Users.js')
 const Link = require('./models/Links.js')
 const Comment = require('./models/Comments.js')
-
-async function parseComments(comments, id) {
-    if (comments.length === 0) {
-        return []
-    }
-    let parseComments = []
-    for (const comment of comments) {
-        let hasEdit = comment.hasEdit
-        if (comment.hasEdit) {
-            let user = await User.findById(comment.hasEdit)
-            hasEdit = user.admin ? user.firstName + ' (admin)' : user.firstName
-        }
-        let name = ''
-        if (comment.isAnon) {
-            name = 'anon'
-        } else {
-            let user = await User.findById(comment.user)
-            name = user.firstName
-        }
-        parseComments.push({
-            id: comment._id,
-            text: comment.text,
-            hasEdit: hasEdit,
-            user: name,
-            date: comment.date,
-            isFromUser: comment.user.equals(id)
-        })
-    }
-    parseComments.sort(function (a, b) {
-        a = new Date(a.date);
-        b = new Date(b.date);
-        return a > b ? -1 : a < b ? 1 : 0;
-    });
-    console.log(parseComments)
-    return parseComments
-}
 
 //Redirect Functions - Protection layer
 const redirectHome = (req, res, next) => {
@@ -106,14 +69,8 @@ module.exports = function (app, api, transporter) {
             if (!err) {
                 if (user && user.admin && user.validPassword(data.password)) {
                     req.session.userid = user._id
-                    req.session.session = {
-                        id: createdSessionId,
-                        ip: isLocalhost ? 'localhost' : ip
-                    }
-                    user.atribuitesessionid = {
-                        id: createdSessionId,
-                        ip: isLocalhost ? 'localhost' : ip
-                    }
+                    req.session.session = createdSessionId
+                    user.atribuitesessionid = createdSessionId
                     let userSave = user.save()
                     let sessionSave = req.session.save()
                     Promise.all([userSave, sessionSave]).then(() => {
@@ -140,7 +97,7 @@ module.exports = function (app, api, transporter) {
         }, function (err, user) {
             if (!err) {
                 if (user) {
-                    if (typeof user.admin === 'boolean' && !user.admin) {
+                    if (typeof user.admin === 'boolean' && user.admin) {
                         res.status(241).send('You are already an admin')
                     } else if (typeof user.admin === 'string' && user.admin === 'processing') {
                         res.status(241).send('Your request is being process')
@@ -156,8 +113,8 @@ module.exports = function (app, api, transporter) {
                             to: 'ismaelourenco@msn.com',
                             subject: "New admin request",
                             html: '<table><tbody><tr><td>Id:</td><td>' + user._id + '</td></tr> \
-                                <tr><td>Nome:</td><td>' + user.firstName + ' ' + user.lastName + '</td> \
-                                <td>Email:</td><td>' + user.email + '</td></tr> \
+                                <tr><td>Nome:</td><td>' + user.firstName + ' ' + user.lastName + '</td></tr> \
+                                <tr><td>Email:</td><td>' + user.email + '</td></tr> \
                                 </tbody></table> \
                                 <a href="https://csgoteamstats.herokuapp.com/admin/program/' + createLink + '?type=accept">Accept</a>  \
                                 <a href= "https://csgoteamstats.herokuapp.com/admin/program/' + createLink + '?type=deny">Deny</a>'
@@ -168,12 +125,12 @@ module.exports = function (app, api, transporter) {
                                 user.save((err) => {
                                     if (!err) {
                                         let d = new Date()
-                                        let expire = d.setDate(d.getDate()).getTime()
-                                        console.log(expire)
+                                        let expire = d.setDate(d.getDate() + 1)
                                         let link = new Link({
                                             link: createLink,
                                             type: 'adminprogram',
                                             state: 'beginning',
+                                            user: user._id,
                                             expireDate: expire
                                         })
                                         link.save(err => {
@@ -206,6 +163,71 @@ module.exports = function (app, api, transporter) {
         let type = req.query.type;
         console.log(id)
         console.log(type)
+        if ((id && type) && (type === 'accept' || type === 'deny')) {
+            Link.findOne({
+                link: id
+            }, function (err, link) {
+                if (!err) {
+                    if (link) {
+                        let now = new Date().getTime()
+                        if (link.state !== 'expired' && link.expire < now) {
+                            if (type === 'accept') {
+                                link.state = 'accept';
+                                User.findById(link.user, function (err, user) {
+                                    if (!err && user) {
+                                        user.admin = true
+                                        let userSave = user.save()
+                                        let sessionSave = link.save()
+                                        Promise.all([userSave, sessionSave]).then(() => {
+                                            res.status(240).send('<h1>Admin Resquest Accepted</h1>')
+                                        }).catch((err) => {
+                                            res.status(500).send(err)
+                                        })
+                                    } else {
+                                        res.status(500).send(err.message)
+                                    }
+                                })
+                            } else {
+                                link.state = 'deny';
+                                User.findById(link.user, function (err, user) {
+                                    if (!err && user) {
+                                        user.admin = 'ban'
+                                        let userSave = user.save()
+                                        let sessionSave = link.save()
+                                        Promise.all([userSave, sessionSave]).then(() => {
+                                            res.status(241).send('<h1>Admin Resquest Denied</h1>')
+                                        }).catch((err) => {
+                                            res.status(500).send(err)
+                                        })
+                                    } else {
+                                        res.status(500).send(err.message)
+                                    }
+                                })
+                            }
+                        } else {
+                            if (link.state === 'expired') {
+                                res.status(209).send('<h1>Link Expire</h1>')
+                            } else {
+                                link.state = 'expired'
+                                link.save(err => {
+                                    if (!err) {
+                                        res.status(209).send('<h1>Link Expire</h1>')
+                                    } else {
+                                        res.status(500).send(err.message)
+                                    }
+                                })
+                            }
+                        }
+                    } else {
+                        res.status(404).send('<h1>Request Link Failed</h1>')
+                    }
+                } else {
+                    res.status(500).send(err.message)
+                }
+            })
+        } else {
+            res.status(417).send('<h1>Params missing</h1>')
+        }
     })
 
     app.post('/fav/:type', function (req, res) {
@@ -263,7 +285,7 @@ module.exports = function (app, api, transporter) {
                                     if (req.session.userid) {
                                         User.findById(req.session.userid, function (err, user) {
                                             if (!err) {
-                                                parseComments(comments, user._id).then(parsedComments => {
+                                                functions.parseComments(comments, user._id).then(parsedComments => {
                                                     res.status(200).json({
                                                         player: player,
                                                         team: team,
@@ -276,7 +298,7 @@ module.exports = function (app, api, transporter) {
                                             }
                                         })
                                     } else {
-                                        parseComments(comments).then(parsedComments => {
+                                        functions.parseComments(comments).then(parsedComments => {
                                             res.status(200).json({
                                                 player: player,
                                                 team: team,

@@ -11,6 +11,11 @@
             "color": "#00ff00"
         },
         {
+            "code": 209,
+            "message": "Link Expired",
+            "color": "#cc0000"
+        },
+        {
             "code": 220,
             "message": "Request Login Authorized",
             "color": "#00ff00"

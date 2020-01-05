@@ -6,6 +6,10 @@ let linkSchema = Schema({
     link: String,
     type: String,
     state: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users'
+    },
     expireDate: Date
 }, {
     collection: 'Links'

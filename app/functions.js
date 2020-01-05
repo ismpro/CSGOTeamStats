@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path')
+const User = require('./models/Users.js')
 
 function validateEmail(email) {
     // eslint-disable-next-line
@@ -139,4 +140,40 @@ exports.standardDeviation = function (values) {
 }
 exports.sleep = function (time) {
     return new Promise(resolve => setTimeout(resolve, time))
+}
+
+exports.parseComments = async function (comments, id) {
+    if (comments.length === 0) {
+        return []
+    }
+    let parseComments = []
+    for (const comment of comments) {
+        let hasEdit = comment.hasEdit
+        if (comment.hasEdit) {
+            let user = await User.findById(comment.hasEdit)
+            hasEdit = user.admin ? user.firstName + ' (admin)' : user.firstName
+        }
+        let name = ''
+        if (comment.isAnon) {
+            name = 'anon'
+        } else {
+            let user = await User.findById(comment.user)
+            name = user.firstName
+        }
+        parseComments.push({
+            id: comment._id,
+            text: comment.text,
+            hasEdit: hasEdit,
+            user: name,
+            date: comment.date,
+            isFromUser: comment.user.equals(id)
+        })
+    }
+    parseComments.sort(function (a, b) {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return a > b ? -1 : a < b ? 1 : 0;
+    });
+    console.log(parseComments)
+    return parseComments
 }
