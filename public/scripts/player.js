@@ -14,6 +14,32 @@ let comments = [{
 
 function pageLoad(cb) {
     document.getElementById("defaultTab").click();
+    api.post(window.location.pathname).then(res => {
+        console.log(res.data)
+        loadData(res.data)
+        if (typeof (res.data.fav) !== "undefined") {
+            let star = document.getElementsByClassName('clickFav')[0].firstElementChild
+            if (res.data.fav) {
+                star.classList.add('fa-star')
+                star.classList.remove('fa-star-o')
+            } else {
+                star.classList.remove("fa-star")
+                star.classList.add("fa-star-o")
+            }
+        }
+        comments = res.data.comments
+        loadComments()
+        cb()
+    }).catch(err => console.log(err))
+}
+
+function onsession() {
+    document.getElementById('comments_area').innerHTML = '<textarea placeholder="Write your comment here..." id="comment_text"></textarea> \
+        <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
+        <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
+    document.getElementById('comment_button').onclick = () => createComment()
+    document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
+    <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
     let fav = document.getElementsByClassName('clickFav')[0]
     fav.addEventListener('click', () => {
         if (!favController) {
@@ -30,34 +56,11 @@ function pageLoad(cb) {
             }).catch(err => console.log(err))
         }
     })
-    api.post(window.location.pathname).then(res => {
-        console.log(res.data)
-        loadData(res.data)
-        let star = document.getElementsByClassName('clickFav')[0].firstElementChild
-        if (res.data.fav) {
-            star.classList.add('fa-star')
-            star.classList.remove('fa-star-o')
-        } else {
-            star.classList.remove("fa-star")
-            star.classList.add("fa-star-o")
-        }
-        comments = res.data.comments
-        loadComments()
-        cb()
-    }).catch(err => console.log(err))
-}
-
-function onsession() {
-    document.getElementById('comments_area').innerHTML = '<textarea placeholder="Write your comment here..." id="comment_text"></textarea> \
-        <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
-        <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
-    document.getElementById('comment_button').onclick = () => createComment()
-    document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
-    <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
 }
 
 function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
+    document.getElementById("playerFav").innerHTML = ''
 }
 
 function favAnimation(type, fav) {
