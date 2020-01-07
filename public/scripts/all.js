@@ -13,7 +13,6 @@ function loadPage() {
         }, 100)
     })
     api.post('/auth/validate').then((res) => {
-        console.log(res.data)
         let button = document.getElementById('loginButton')
         if (typeof res.data === 'string') {
             sessionId = res.data
@@ -36,6 +35,7 @@ function loadPage() {
             try {
                 onsession()
             } catch (error) {
+                console.log(error)
                 console.warn('onsession not define')
             }
         } else {

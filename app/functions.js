@@ -150,8 +150,11 @@ exports.parseComments = async function (comments, id) {
     for (const comment of comments) {
         let hasEdit = comment.hasEdit
         if (comment.hasEdit) {
-            let user = await User.findById(comment.hasEdit)
-            hasEdit = user.admin ? user.firstName + ' (admin)' : user.firstName
+            let user = await User.findById(comment.hasEdit.user)
+            hasEdit = {
+                user: user.admin ? user.firstName + ' (admin)' : user.firstName,
+                date: comment.hasEdit.date
+            }
         }
         let name = ''
         if (comment.isAnon) {
@@ -174,6 +177,5 @@ exports.parseComments = async function (comments, id) {
         b = new Date(b.date);
         return a > b ? -1 : a < b ? 1 : 0;
     });
-    console.log(parseComments)
     return parseComments
 }

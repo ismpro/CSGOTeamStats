@@ -1,54 +1,255 @@
 /* eslint-disable */
-
-let comments = [{
-    id: 1234,
-    text: 'Cool Team',
-    date: new Date(),
-    hasEdit: false,
-    user: {
-        name: 'Ismpro (for testing)',
-        id: '5dea68b738defa02b0f6ff87'
-    }
-}]
-let favAnimation = false
+let favController = false
+let comments = []
 
 function pageLoad(cb) {
-    let fav = document.getElementsByClassName('clickFav')[0]
-    fav.addEventListener('click', () => {
-        let star = fav.firstElementChild
-        if (!favAnimation) {
-            favAnimation = true
-            if (star.classList.contains("fa-star")) {
-                setTimeout(() => {
-                    star.classList.remove("fa-star")
-                    star.classList.add("fa-star-o")
-                }, 15)
-                document.getElementById('fav_text').innerText = 'Removed!'
-                fav.lastElementChild.classList.add('info-tog')
-                setTimeout(() => {
-                    fav.lastElementChild.classList.remove('info-tog')
-                    favAnimation = false
-                }, 1000)
-            } else {
-                setTimeout(() => {
-                    star.classList.add('fa-star')
-                    star.classList.remove('fa-star-o')
-                }, 150)
-                document.getElementById('fav_text').innerHTML = '&nbsp;&nbsp;Added!'
-                fav.lastElementChild.classList.add('info-tog')
-                setTimeout(() => {
-                    fav.lastElementChild.classList.remove('info-tog')
-                    favAnimation = false
-                }, 1000)
+    api.post(window.location.pathname).then(res => {
+        loadData(res.data)
+        comments = res.data.comments
+        loadComments()
+        cb()
+    }).catch(err => console.log(err))
+}
+
+function onsession() {
+    let path = window.location.pathname
+    let id = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf(''))
+    document.getElementById('comments_area').innerHTML = '<textarea placeholder="Write your comment here..." id="comment_text"></textarea> \
+        <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
+        <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
+    document.getElementById('comment_button').onclick = () => createComment()
+    api.post('/fav', {
+        type: 'team',
+        id: id
+    }).then((res) => {
+        document.getElementById("teamFav").innerHTML = '<div class="clickFav"> \
+    <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
+        let fav = document.getElementsByClassName('clickFav')[0]
+        fav.addEventListener('click', () => {
+            if (!favController) {
+                favController = true
+                api.post('/fav/team', {
+                    id: id
+                }).then((data) => {
+                    if (data.status === 200) {
+                        data = data.data
+                        favAnimation(data === 'added', fav)
+                    }
+                }).catch(err => console.log(err))
             }
+        })
+        if (typeof (res.data) !== "string") {
+            let star = document.getElementsByClassName('clickFav')[0].firstElementChild
+            if (res.data) {
+                star.classList.add('fa-star')
+                star.classList.remove('fa-star-o')
+            } else {
+                star.classList.remove("fa-star")
+                star.classList.add("fa-star-o")
+            }
+        } else {
+            location.replace()
         }
     })
-    loadComments()
-    /* paginator({
-        table: document.getElementById("table_to_page"),
-        box: document.getElementById("table_pages_numbers"),
-    }); */
-    cb()
+}
+
+function onlogout() {
+    document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
+    document.getElementById("teamFav").innerHTML = ''
+}
+
+function favAnimation(type, fav) {
+    let star = fav.firstElementChild
+    if (type) {
+        setTimeout(() => {
+            star.classList.add('fa-star')
+            star.classList.remove('fa-star-o')
+        }, 150)
+        document.getElementById('fav_text').innerHTML = '&nbsp;&nbsp;Added!'
+        fav.lastElementChild.classList.add('info-tog')
+        setTimeout(() => {
+            fav.lastElementChild.classList.remove('info-tog')
+            favController = false
+        }, 1000)
+    } else {
+        setTimeout(() => {
+            star.classList.remove("fa-star")
+            star.classList.add("fa-star-o")
+        }, 15)
+        document.getElementById('fav_text').innerText = 'Removed!'
+        fav.lastElementChild.classList.add('info-tog')
+        setTimeout(() => {
+            fav.lastElementChild.classList.remove('info-tog')
+            favController = false
+        }, 1000)
+    }
+}
+
+function loadData(data) {
+    let playersData = data.players
+    let recentData = data.recentResults
+    data = data.team
+    let imagetag = document.getElementById('team_logo')
+    imagetag.src = data.logo
+    imagetag.alt = data.name || 'Not Specified'
+    imagetag.title = data.name || 'Not Specified'
+    document.getElementById('team_name').innerHTML = data.name || 'Not Specified'
+    let countrytag = document.getElementById('team_country')
+    countrytag.src = `https://www.countryflags.io/${data.location.code}/shiny/24.png`
+    countrytag.alt = data.location.name || 'World'
+    document.getElementById('team_country_name').innerHTML = data.location.name || 'Not Specified'
+    let socialDiv = document.getElementById('teamSocial')
+    socialDiv.innerHTML = ""
+    if (data.twitch) {
+        let tag = document.createElement("a");
+        tag.href = data.twitch
+        tag.classList.add("fa", "fa-twitch")
+        socialDiv.appendChild(tag)
+    }
+    if (data.twitter) {
+        let tag = document.createElement("a");
+        tag.href = data.twitter
+        tag.classList.add("fa", "fa-twitter")
+        socialDiv.appendChild(tag)
+    }
+    if (data.facebook) {
+        let tag = document.createElement("a");
+        tag.href = data.facebook
+        tag.classList.add("fa", "fa-facebook")
+        socialDiv.appendChild(tag)
+    }
+    document.getElementById('ranking').innerHTML = '#' + data.rank || 'Not Specified'
+    let playersContainer = document.getElementById('players_container')
+    playersContainer.innerHTML = ""
+    for (const player of playersData) {
+        let playerATag = document.createElement('a')
+        let playerFirstDivTag = document.createElement('div')
+        let playerFirstImgTag = document.createElement('img')
+        let playerSecondDivTag = document.createElement('div')
+        let playerThirdDivTag = document.createElement('div')
+        let playerSecondImgTag = document.createElement('img')
+        let playerSpanTag = document.createElement('span')
+
+        playerATag.href = "/player/" + player.id
+        playerATag.classList.add('teamPlayer')
+        playerATag.title = player.name
+
+        playerFirstImgTag.src = player.image
+        playerFirstImgTag.alt = player.name
+        playerFirstImgTag.title = player.name
+        playerFirstImgTag.classList.add('teamPlayer-image')
+
+        playerSecondDivTag.classList.add('teamPlayer-name')
+
+        playerThirdDivTag.classList.add('playerFlagName')
+
+        playerSecondImgTag.src = `https://www.countryflags.io/${player.country.code}/shiny/24.png`
+        playerSecondImgTag.alt = player.country.name
+        playerSecondImgTag.title = player.country.name
+        playerSecondImgTag.classList.add('flag')
+
+        playerSpanTag.innerHTML = player.name
+        playerSpanTag.classList.add('playerName')
+
+        playerThirdDivTag.appendChild(playerSecondImgTag)
+        playerThirdDivTag.appendChild(playerSpanTag)
+
+        playerSecondDivTag.appendChild(playerThirdDivTag)
+
+        playerFirstDivTag.appendChild(playerFirstImgTag)
+        playerFirstDivTag.appendChild(playerSecondDivTag)
+
+        playerATag.appendChild(playerFirstDivTag)
+
+        playersContainer.appendChild(playerATag)
+    }
+
+    document.getElementById('results_headline').innerHTML = "Last Results for " + data.name
+
+    let lastResultsCounter = 0
+    let lastResultsTag = document.getElementById('results_body')
+    let lastTag = document.getElementById('last_matches_r')
+    lastResultsTag.innerHTML = ""
+    lastTag.innerHTML = ""
+    for (const result of recentData) {
+        let resultTr = document.createElement('tr')
+        let result1Td = document.createElement('td')
+        let result2Td = document.createElement('td')
+        let result1Div = document.createElement('div')
+        let result1Img = document.createElement('img')
+        let result1Span = document.createElement('span')
+        let result2Div = document.createElement('div')
+        let result3Div = document.createElement('div')
+        let result2Img = document.createElement('img')
+        let result2Span = document.createElement('span')
+        let result1A = document.createElement('a')
+        let result3Td = document.createElement('td')
+        let result2A = document.createElement('a')
+
+        result1Td.innerHTML = result.date || '00/00/0000'
+        result1Td.classList.add('date')
+
+        result2Td.classList.add('result')
+
+        result1Div.classList.add('team1')
+        result1Img.classList.add('logo')
+        result1Img.src = data.logo
+        result1Img.alt = data.name || 'Not Specified'
+        result1Img.title = data.name || 'Not Specified'
+        result1Span.innerHTML = data.name || 'Not Specified'
+
+        let score = result.score.split(':')
+        result2Div.classList.add('score')
+        result2Div.innerHTML = score.join(' : ')
+
+        result3Div.classList.add('team2')
+        result2Img.classList.add('logo')
+        result2Img.src = result.enemyTeam.logo
+        result2Img.alt = result.enemyTeam.name || 'Not Specified'
+        result2Img.title = result.enemyTeam.name || 'Not Specified'
+        result1A.classList.add('teamLink')
+        result1A.href = '/team/' + result.enemyTeam.id
+        result1A.innerHTML = result.enemyTeam.name || 'Not Specified'
+
+        result3Td.classList.add('matchButton')
+        result2A.href = '/match/' + result.id
+        result2A.innerHTML = 'Match'
+
+        result1Div.appendChild(result1Img)
+        result1Div.appendChild(result1Span)
+
+        result2Span.appendChild(result1A)
+        result3Div.appendChild(result2Span)
+        result3Div.appendChild(result2Img)
+
+        result2Td.appendChild(result1Div)
+        result2Td.appendChild(result2Div)
+        result2Td.appendChild(result3Div)
+
+        result3Td.appendChild(result2A)
+
+        resultTr.appendChild(result1Td)
+        resultTr.appendChild(result2Td)
+        resultTr.appendChild(result3Td)
+
+        lastResultsTag.appendChild(resultTr)
+
+        if (lastResultsCounter < 5) {
+            let spanTag = document.createElement('span')
+            if (score[0] < score[1]) {
+                spanTag.style.color = "red"
+                spanTag.innerHTML = "L&nbsp;"
+            } else if (score[0] > score[1]) {
+                spanTag.style.color = "green"
+                spanTag.innerHTML = "W&nbsp;"
+            } else {
+                spanTag.style.color = "grey"
+                spanTag.innerHTML = "?&nbsp;"
+            }
+            lastTag.appendChild(spanTag)
+            lastResultsCounter++
+        }
+    }
 }
 
 function loadComments() {
@@ -62,7 +263,7 @@ function loadComments() {
         if (comment.hasEdit) {
             html += 'Edit '
         }
-        let timeString = timeSince(comment.date)
+        let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
         if (timeString === 'just now') {
             html += 'Just now by '
         } else {
@@ -70,72 +271,90 @@ function loadComments() {
         }
 
         if (comment.hasEdit) {
-            html += `<a href="#">${comment.editBy.name}</a> / Made by: `
+            html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
         }
-        if (comment.user.name === 'anon') {
+        if (comment.user === 'anon') {
             html += 'Anonymous'
         } else {
-            html += `<a href="#">${comment.user.name}</a>`
+            html += `<a href="#">${comment.user}</a>`
         }
-        html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
-        html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+        if (comment.isFromUser || admin) {
+            html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+            html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+        }
         html += '</div></blockquote></li>'
     })
     commentsDiv.innerHTML = html;
     comments.forEach((comment) => {
-        document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
-        document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+        if (comment.isFromUser || admin) {
+            document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
+            document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+        }
     })
 }
 
 function createComment() {
     let text = document.getElementById('comment_text').value;
     let isAnon = document.getElementById('anonymous_check').checked;
-    comments.unshift({
-        id: ((Math.random() * 1e6) | 0),
+    let path = window.location.pathname
+    api.post('/comment/create', {
+        type: 'team',
         text: text,
-        date: new Date(),
-        user: isAnon ? {
-            name: 'anon',
-            id: '5dea68b738defa02b0f6ff87'
-        } : {
-                name: 'Ismpro (for testing)',
-                id: '5dea68b738defa02b0f6ff87'
-            }
+        id: path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('')),
+        isAnon: isAnon
+    }).then((res) => {
+        if (res.data) {
+            let comment = res.data
+            comments.unshift(comment)
+            document.getElementById('comment_text').value = ''
+            loadComments()
+        } else {
+            location.reload();
+        }
     })
-    document.getElementById('comment_text').value = ''
-    loadComments()
 }
 
 function deleteComment(id) {
     return function () {
-        var index = comments.findIndex((comment) => comment.id === id);
-        if (index !== -1) {
-            comments.splice(index, 1);
-            loadComments()
-        }
+        api.post('/comment/delete', {
+            id: id
+        }).then((res) => {
+            if (res.data) {
+                var index = comments.findIndex((comment) => comment.id === id);
+                if (index !== -1) {
+                    comments.splice(index, 1);
+                    loadComments()
+                }
+            } else {
+                location.reload();
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
 }
 
 function editComment(id) {
     const saveComment = () => () => {
-        let textTag = document.getElementById(`comment_text_${id}`);
-
-        var index = comments.findIndex((comment) => comment.id === id);
-        if (index !== -1) {
-            comments[index] = {
-                id: id,
-                text: textTag.innerHTML,
-                date: new Date(),
-                hasEdit: true,
-                editBy: {
-                    name: 'Ismpro (for testing)',
-                    id: '5dea68b738defa02b0f6ff87'
-                },
-                user: comments[index].user
+        let text = document.getElementById(`comment_text_${id}`).innerHTML;
+        if (text.includes('<br>')) text = text.replace('<br>', '') //Firefox adds <br> in input text
+        api.post('/comment/edit', {
+            id: id,
+            text: text
+        }).then((res) => {
+            if (res.data) {
+                var index = comments.findIndex((comment) => comment.id === id);
+                if (index !== -1) {
+                    comments[index] = res.data
+                    loadComments()
+                }
+            } else {
+                location.reload();
             }
-            loadComments()
-        }
+        }).catch(err => {
+            console.log(err)
+        })
+
     }
     const cancelComment = (beforeText) => () => {
         let textTag = document.getElementById(`comment_text_${id}`);

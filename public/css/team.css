@@ -141,7 +141,7 @@ span:active {
 }
 
 .teamPlayer-container {
-    background-image: linear-gradient(136deg,#1b1f23,#3a4755);
+    background-image: linear-gradient(136deg, #1b1f23, #3a4755);
     overflow: hidden;
     position: relative;
     padding: 0;
@@ -155,10 +155,10 @@ span:active {
     position: relative;
     flex: 0 0 18.5%;
     padding-bottom: 0;
-    padding-left: 8px; 
+    padding-left: 8px;
 }
 
-.teamPlayer-container .teamPlayer-image{
+.teamPlayer-container .teamPlayer-image {
     z-index: 2;
     transition: .2s ease;
     width: 100%;
@@ -166,7 +166,7 @@ span:active {
     top: 8px;
 }
 
-.teamPlayer-container .teamPlayer-name{
+.teamPlayer-container .teamPlayer-name {
     position: absolute;
     width: 100%;
     bottom: 0;
@@ -177,7 +177,7 @@ span:active {
 
 .teamPlayer-name .playerFlagName {
     text-align: center;
-    color:#fff !important;
+    color: #fff !important;
     display: flex;
     justify-content: center;
     margin: 0 auto;
@@ -186,7 +186,7 @@ span:active {
     z-index: 3;
     position: relative;
     width: 90%;
-    background: linear-gradient(90deg, transparent 10%, rgba(0,0,0,.5) 20%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.5) 80%, transparent 90%);
+    background: linear-gradient(90deg, transparent 10%, rgba(0, 0, 0, .5) 20%, rgba(0, 0, 0, .5) 50%, rgba(0, 0, 0, .5) 80%, transparent 90%);
 }
 
 .playerFlagName .playerName {
@@ -199,21 +199,21 @@ span:active {
     border-top: none;
 }
 
-.lastResults .headline{
+.lastResults .headline {
     opacity: 1;
     color: rgba(53, 53, 53, .65);
 }
 
-.lastResults table{
-   width: 100%;
+.lastResults table {
+    width: 100%;
 }
 
 .lastResults tr {
     height: 40px;
 }
 
-.lastResults .team1{
-   flex: 1;
+.lastResults .team1 {
+    flex: 1;
     display: flex;
     justify-content: center;
     margin-left: auto;
@@ -222,8 +222,8 @@ span:active {
     text-overflow: ellipsis;
 }
 
-.lastResults .team2{
-   flex: 1;
+.lastResults .team2 {
+    flex: 1;
     display: flex;
     justify-content: center;
     margin-right: auto;
@@ -232,25 +232,41 @@ span:active {
     text-overflow: ellipsis;
 }
 
-.lastResults .date{
+.teamLink {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.teamLink:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.teamLink:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.lastResults .date {
     width: 80px;
 }
 
-.lastResults .score{
-   flex: 0 0 50px;
-display: flex;
-justify-content: center;
-margin-left: 5px;
-margin-right: 5px;
+.lastResults .score {
+    flex: 0 0 50px;
+    display: flex;
+    justify-content: center;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
-.lastResults .result{
-   display: flex;
-   text-align: center;
-   margin-top: 8px;
+.lastResults .result {
+    display: flex;
+    text-align: center;
+    margin-top: 8px;
 }
 
-.lastResults .logo{
+.lastResults .logo {
     height: 23px;
     width: 23px;
     display: inline-block;
@@ -264,7 +280,7 @@ margin-right: 5px;
     text-align: right;
 }
 
-.matchButton a{
+.matchButton a {
     background-color: #16a085;
     color: black;
     border: 2px solid black;
@@ -430,5 +446,3 @@ margin-right: 5px;
 .editableButtons buttons {
     font-size: 30px;
 }
-
-

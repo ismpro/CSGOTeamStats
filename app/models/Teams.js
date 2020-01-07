@@ -6,7 +6,7 @@ let teamsSchema = Schema({
     id: Number,
     name: String,
     logo: String,
-    location: String,
+    location: Schema.Types.Mixed,
     facebook: String,
     twitter: String,
     rank: Number,

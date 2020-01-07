@@ -236,7 +236,6 @@ module.exports = function (app, api, transporter) {
         let id = req.body.id
         let userId = req.session.userid
         let type = req.params.type
-        console.log(userId)
         User.findById(userId, function (err, user) {
             if (!err) {
                 if (type === 'player') {
@@ -268,6 +267,30 @@ module.exports = function (app, api, transporter) {
         })
     })
 
+    app.post('/fav', function (req, res) {
+        if (req.session.userid) {
+            User.findById(req.session.userid, function (err, user) {
+                if (!err) {
+                    switch (req.body.type) {
+                        case "player":
+                            res.status(200).send(user.favorite.players.includes(req.body.id))
+                            break;
+                        case "team":
+                            res.status(200).send(user.favorite.teams.includes(req.body.id))
+                            break;
+                        default:
+                            res.status(200).send('logout')
+                            break;
+                    }
+                } else {
+                    res.status(500).send('Error on server! Try again later!')
+                }
+            })
+        } else {
+            res.status(200).send('logout')
+        }
+    })
+
     app.post('/player/:id', function (req, res) {
         let id = req.params.id;
         Players.findOne({
@@ -284,30 +307,13 @@ module.exports = function (app, api, transporter) {
                                 id: id
                             }, function (err, comments) {
                                 if (!err) {
-                                    if (req.session.userid) {
-                                        User.findById(req.session.userid, function (err, user) {
-                                            if (!err) {
-                                                functions.parseComments(comments, user._id).then(parsedComments => {
-                                                    res.status(200).json({
-                                                        player: player,
-                                                        team: team,
-                                                        fav: user.favorite.players.includes(id),
-                                                        comments: parsedComments
-                                                    })
-                                                })
-                                            } else {
-                                                res.status(500).send('Error on server! Try again later!')
-                                            }
+                                    functions.parseComments(comments).then(parsedComments => {
+                                        res.status(200).json({
+                                            player: player,
+                                            team: team,
+                                            comments: parsedComments
                                         })
-                                    } else {
-                                        functions.parseComments(comments).then(parsedComments => {
-                                            res.status(200).json({
-                                                player: player,
-                                                team: team,
-                                                comments: parsedComments
-                                            })
-                                        })
-                                    }
+                                    })
                                 } else {
                                     res.status(500).send('Error on server! Try again later!')
                                 }
@@ -325,19 +331,8 @@ module.exports = function (app, api, transporter) {
             }
         })
     })
-    app.post('/team/:id', function (req, res) {
-        let id = req.params.id;
-        Teams.findOne({
-            id: id
-        }, function (err, team) {
-            console.log(team)
-            if (!err) {
-                res.status(200).json(team)
-            } else {
-                res.status(500).send('Error on server! Try again later!')
-            }
-        })
-    })
+
+    app.post('/team/:id', require('./routes/team-post')())
 
     app.post('/matches/:id', function (req, res) {
         let id = req.params.id;
@@ -354,6 +349,7 @@ module.exports = function (app, api, transporter) {
 
     app.post('/comment/create', function (req, res) {
         let comment = req.body
+        console.log(comment)
         if (req.session.userid) {
             let newComment = new Comment();
             newComment.type = comment.type;
@@ -365,19 +361,11 @@ module.exports = function (app, api, transporter) {
             newComment.date = new Date();
             newComment.save((err, comment) => {
                 if (!err) {
-                    User.findById(req.session.userid, function (err, user) {
-                        if (!err) {
-                            res.status(200).json({
-                                id: comment._id,
-                                text: comment.text,
-                                hasEdit: false,
-                                user: comment.isAnon ? 'anon' : user.firstName,
-                                date: comment.date,
-                                isFromUser: true
-                            })
-                        } else {
-                            res.status(500).send(err.message)
-                        }
+                    functions.parseComments([comment], req.session.userid).then(data => {
+                        res.status(200).json(data[0])
+                    }).catch(err => {
+                        console.log(err)
+                        res.status(500).send('Error on Server!')
                     })
                 } else {
                     res.status(500).send(err.message)
@@ -390,7 +378,13 @@ module.exports = function (app, api, transporter) {
 
     app.post('/comment/delete', function (req, res) {
         if (req.session.userid) {
-
+            Comment.findByIdAndDelete(req.body.id, function (err) {
+                if (!err) {
+                    res.status(200).send(true)
+                } else {
+                    res.status(500).send('Error on Server!')
+                }
+            })
         } else {
             res.status(200).send(false)
         }
@@ -398,7 +392,31 @@ module.exports = function (app, api, transporter) {
 
     app.post('/comment/edit', function (req, res) {
         if (req.session.userid) {
-
+            Comment.findById(req.body.id, function (err, comment) {
+                if (!err) {
+                    comment.text = req.body.text;
+                    comment.hasEdit = {
+                        user: req.session.userid,
+                        date: new Date()
+                    };
+                    comment.save((err, comment) => {
+                        if (!err) {
+                            functions.parseComments([comment], req.session.userid).then(data => {
+                                res.status(200).json(data[0])
+                            }).catch(err => {
+                                console.log(err)
+                                res.status(500).send('Error on Server!')
+                            })
+                        } else {
+                            console.log(err)
+                            res.status(500).send('Error on Server!')
+                        }
+                    })
+                } else {
+                    console.log(err)
+                    res.status(500).send('Error on Server!')
+                }
+            })
         } else {
             res.status(200).send(false)
         }

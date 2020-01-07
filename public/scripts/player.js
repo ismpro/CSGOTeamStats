@@ -1,32 +1,11 @@
 /* eslint-disable */
 let favController = false
-let comments = [{
-    id: 1234,
-    text: 'O gajo que escreveu que não deste jogador pode morrer no inferno!',
-    date: new Date(),
-    hasEdit: false,
-    user: {
-        name: 'Ismpro (for testing)',
-        id: '5dea68b738defa02b0f6ff87'
-    },
-    isFromUser: true
-}]
+let comments = []
 
 function pageLoad(cb) {
     document.getElementById("defaultTab").click();
     api.post(window.location.pathname).then(res => {
-        console.log(res.data)
         loadData(res.data)
-        if (typeof (res.data.fav) !== "undefined") {
-            let star = document.getElementsByClassName('clickFav')[0].firstElementChild
-            if (res.data.fav) {
-                star.classList.add('fa-star')
-                star.classList.remove('fa-star-o')
-            } else {
-                star.classList.remove("fa-star")
-                star.classList.add("fa-star-o")
-            }
-        }
         comments = res.data.comments
         loadComments()
         cb()
@@ -34,26 +13,43 @@ function pageLoad(cb) {
 }
 
 function onsession() {
+    let path = window.location.pathname
+    let id = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf(''))
     document.getElementById('comments_area').innerHTML = '<textarea placeholder="Write your comment here..." id="comment_text"></textarea> \
         <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
         <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
     document.getElementById('comment_button').onclick = () => createComment()
-    document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
+    api.post('/fav', {
+        type: 'player',
+        id: id
+    }).then((res) => {
+        if (typeof (res.data) !== "string") {
+            document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
     <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
-    let fav = document.getElementsByClassName('clickFav')[0]
-    fav.addEventListener('click', () => {
-        if (!favController) {
-            favController = true
-            let path = window.location.pathname
-            let id = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf(''))
-            api.post('/fav/player', {
-                id: id
-            }).then((data) => {
-                if (data.status === 200) {
-                    data = data.data
-                    favAnimation(data === 'added', fav)
+            let fav = document.getElementsByClassName('clickFav')[0]
+            fav.addEventListener('click', () => {
+                if (!favController) {
+                    favController = true
+                    api.post('/fav/player', {
+                        id: id
+                    }).then((data) => {
+                        if (data.status === 200) {
+                            data = data.data
+                            favAnimation(data === 'added', fav)
+                        }
+                    }).catch(err => console.log(err))
                 }
-            }).catch(err => console.log(err))
+            })
+            let star = document.getElementsByClassName('clickFav')[0].firstElementChild
+            if (res.data) {
+                star.classList.add('fa-star')
+                star.classList.remove('fa-star-o')
+            } else {
+                star.classList.remove("fa-star")
+                star.classList.add("fa-star-o")
+            }
+        } else {
+            location.replace()
         }
     })
 }
@@ -185,7 +181,7 @@ function changeTab(e, tabName) {
     e.currentTarget.className += " active";
 }
 
-function loadComments(id) {
+function loadComments() {
 
     let commentsDiv = document.getElementById('comments')
     let html = ''
@@ -196,7 +192,7 @@ function loadComments(id) {
         if (comment.hasEdit) {
             html += 'Edit '
         }
-        let timeString = timeSince(comment.date)
+        let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
         if (timeString === 'just now') {
             html += 'Just now by '
         } else {
@@ -204,7 +200,7 @@ function loadComments(id) {
         }
 
         if (comment.hasEdit) {
-            html += `<a href="#">${comment.hasEdit}</a> / Made by: `
+            html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
         }
         if (comment.user === 'anon') {
             html += 'Anonymous'
@@ -236,42 +232,58 @@ function createComment() {
         text: text,
         isAnon: isAnon
     }).then((res) => {
-        let comment = res.data
-        comments.unshift(comment)
-        document.getElementById('comment_text').value = ''
-        loadComments()
+        if (res.data) {
+            let comment = res.data
+            comments.unshift(comment)
+            document.getElementById('comment_text').value = ''
+            loadComments()
+        } else {
+            location.reload();
+        }
     })
 }
 
 function deleteComment(id) {
     return function () {
-        var index = comments.findIndex((comment) => comment.id === id);
-        if (index !== -1) {
-            comments.splice(index, 1);
-            loadComments()
-        }
+        api.post('/comment/delete', {
+            id: id
+        }).then((res) => {
+            if (res.data) {
+                var index = comments.findIndex((comment) => comment.id === id);
+                if (index !== -1) {
+                    comments.splice(index, 1);
+                    loadComments()
+                }
+            } else {
+                location.reload();
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
 }
 
 function editComment(id) {
     const saveComment = () => () => {
-        let textTag = document.getElementById(`comment_text_${id}`);
-
-        var index = comments.findIndex((comment) => comment.id === id);
-        if (index !== -1) {
-            comments[index] = {
-                id: id,
-                text: textTag.innerHTML,
-                date: new Date(),
-                hasEdit: true,
-                editBy: {
-                    name: 'Ismpro (for testing)',
-                    id: '5dea68b738defa02b0f6ff87'
-                },
-                user: comments[index].user
+        let text = document.getElementById(`comment_text_${id}`).innerHTML;
+        if (text.includes('<br>')) text = text.replace('<br>', '') //Firefox adds <br> in input text
+        api.post('/comment/edit', {
+            id: id,
+            text: text
+        }).then((res) => {
+            if (res.data) {
+                var index = comments.findIndex((comment) => comment.id === id);
+                if (index !== -1) {
+                    comments[index] = res.data
+                    loadComments()
+                }
+            } else {
+                location.reload();
             }
-            loadComments()
-        }
+        }).catch(err => {
+            console.log(err)
+        })
+
     }
     const cancelComment = (beforeText) => () => {
         let textTag = document.getElementById(`comment_text_${id}`);
