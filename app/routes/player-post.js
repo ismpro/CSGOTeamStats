@@ -3,6 +3,7 @@ const {
 } = require('../functions.js');
 const Teams = require('../models/Teams.js');
 const Players = require('../models/Players.js');
+const Comment = require('../models/Comments.js');
 
 module.exports = function () {
     return function (req, res) {
