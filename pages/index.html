@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/scripts/all.js"></script>
-    <script src="/static/scripts/index.js"></script>
     <title>CSGOTeamStats</title>
 </head>
 
@@ -46,53 +45,13 @@
         <div id="main">
             <div style="text-align: center; width: 100%; display: flex; padding: 5px">
                 <div style="text-align: center; width: 100%; display: flex; padding: 5px">
-                    <!-- ESTATÍSTICAS -->
+
                     <div class="statistics">
-
-                        <div style="margin-bottom: 30px;">
-                            <h1 style="color: black">Statistics</h1>
-
-                            <input type="text" name="player" placeholder="Player">
-
-                            <select>
-                                <option value="KDR">KDR</option>
-                                <option value="Headshot">Headshot %</option>
-                                <option value="ADR">ADR</option>
-                                <option value="KPR">KPR</option>
-                            </select>
-
-                            <select>
-                                <option value="Last game">Last game</option>
-                                <option value="Last 3 games">Last 3 games</option>
-                                <option value="Last 5 games">Last 5 games</option>
-                                <option value="Last 10 games">Last 10 games</option>
-                            </select>
-
-                            <button type="button">Generate</button>
-                        </div>
-
-                        <h2>karrigan ADR Last 3 games: <u>67.6</u></h2>
-
-                        <table style="width: 100%; margin-bottom: 30px">
-                            <tr style="font-size: 20px;">
-                                <td>3 games ago:</td>
-                                <td>2 games ago:</td>
-                                <td>Last game:</td>
-                            </tr>
-                            <tr>
-                                <td><b>75.3</b></td>
-                                <td><b>59.0</b></td>
-                                <td><b>68.3</b></td>
-                            </tr>
-                            <tr>
-                                <td>(mousesports VS Astralis)</td>
-                                <td>(mousesports VS Giants)</td>
-                                <td>(mousesports VS FaZe Clan)</td>
-                            </tr>
-                        </table>
-
-                        <img src="/static/images/statistics-graph.png" style="width: 500px; height: 300px;">
-
+                        <form onsubmit="javascript:search(event)">
+                            <input type="text" onkeyup="javascript:search(event)" id="search_string">
+                        </form>
+                        <ul id="search_list">
+                        </ul>
                     </div>
 
                     <!-- JOGOS -->
@@ -407,27 +366,7 @@
 
                     </div>
                 </div>
-
-
-
-
-                <script>
-                    var matchesDetails = document.getElementsByClassName("match");
-                    var i;
-
-                    for (i = 0; i < matchesDetails.length; i++) {
-                        matchesDetails[i].addEventListener("click", function () {
-                            if (!isOpen) {
-                                var details = this.nextElementSibling;
-                                if (details.style.maxHeight) {
-                                    details.style.maxHeight = null;
-                                } else {
-                                    details.style.maxHeight = details.scrollHeight + "px";
-                                }
-                            }
-                        });
-                    }
-                </script>
+                <script src="/static/scripts/index.js"></script>
 </body>
 
 </html>
