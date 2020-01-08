@@ -15,7 +15,7 @@ function loginSubmit(e) {
         .then(function (res) {
             let code = res.status
             if (code === 220) {
-                window.location.replace(res.data)
+                window.location = document.referrer;
             } else {
                 document.getElementById('mgsLogin').innerHTML = res.data
             }

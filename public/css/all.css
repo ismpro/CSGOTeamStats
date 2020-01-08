@@ -151,6 +151,7 @@ body {
     text-align: center;
     text-decoration: none;
     border-radius: 30%;
+    margin-left: 10px;
 }
 
 .fa:hover {
