@@ -76,7 +76,6 @@ module.exports = function () {
                     code: 'World',
                     name: 'World'
                 }
-                getPlayer(team.players)
                 Promise.all([getPlayer(team.players), getLastResults(team.recentResults)]).then(data => {
                     Comment.find({
                         type: 'team',

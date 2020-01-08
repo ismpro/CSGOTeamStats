@@ -35,7 +35,7 @@ module.exports = function (app, api, transporter) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'team.html'))
     })
     app.get('/match/:id', function (req, res) {
-        res.status(200).sendFile(path.join(global.appRoot, 'pages', 'matches.html'))
+        res.status(200).sendFile(path.join(global.appRoot, 'pages', 'match.html'))
     })
     app.get('/admin', function (req, res) {
         if (req.query.acesspin == app.get('pin')) {
