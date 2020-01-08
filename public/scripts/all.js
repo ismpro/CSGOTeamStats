@@ -12,37 +12,39 @@ function loadPage() {
             fade(true, 'loader', 'page')
         }, 100)
     })
-    api.post('/auth/validate').then((res) => {
-        let button = document.getElementById('loginButton')
-        if (typeof res.data === 'string') {
-            sessionId = res.data
-            button.style.display = "inline";
-            button.innerHTML = '<button class="loginButton">Log out</button>'
-            button.firstElementChild.onclick = () => {
-                api.post('/auth/logout').then((res) => {
-                    if (res.data) {
-                        try {
-                            onlogout()
-                        } catch (error) {
-                            console.warn('onlogout not define')
-                        } finally {
-                            button.style.display = "inline";
-                            button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
+    if (location.pathname !== '/login' && location.pathname !== '/contact') {
+        api.post('/auth/validate').then((res) => {
+            let button = document.getElementById('loginButton')
+            if (typeof res.data === 'string') {
+                sessionId = res.data
+                button.style.display = "inline";
+                button.innerHTML = '<button class="loginButton">Log out</button>'
+                button.firstElementChild.onclick = () => {
+                    api.post('/auth/logout').then((res) => {
+                        if (res.data) {
+                            try {
+                                onlogout()
+                            } catch (error) {
+                                console.warn('onlogout not define')
+                            } finally {
+                                button.style.display = "inline";
+                                button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
+                            }
                         }
-                    }
-                }).catch(err => console.log(err))
+                    }).catch(err => console.log(err))
+                }
+                try {
+                    onsession()
+                } catch (error) {
+                    console.log(error)
+                    console.warn('onsession not define')
+                }
+            } else {
+                button.style.display = "inline";
+                button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
             }
-            try {
-                onsession()
-            } catch (error) {
-                console.log(error)
-                console.warn('onsession not define')
-            }
-        } else {
-            button.style.display = "inline";
-            button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
-        }
-    }).catch(err => console.log(err))
+        }).catch(err => console.log(err))
+    }
 }
 
 function fade(isOut, element1, element2) {

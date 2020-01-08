@@ -22,46 +22,50 @@
     </div>
     <div id="page" style="display: none;">
         <header class="header">
-            <div style="width: 100%; margin: auto; text-align: center;">
-                <!-- hambúrger -->
-                <!-- hambúrger -->
-                <div class="bar">
-                    <div class="bar1"></div>
-                    <div class="bar2"></div>
-                    <div class="bar3"></div>
-                </div>
-                <!-- logo -->
-                <img src="/static/images/logo-title.png" class="logo_title">
-                <img src="/static/images/logo-image.png" class="logo_image">
+            <div id="mySidenav" class="sidenav">
+                <a href="/">Home</a>
+                <a href="/results">Results</a>
+                <a href="/contact">Contact</a>
             </div>
+            <!-- hambúrger -->
+            <div class="bar" onclick="sideNav(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <!-- logo -->
+            <img src="/static/images/logo-title.png" class="logo_title">
+            <img src="/static/images/logo-image.png" class="logo_image">
         </header>
-        <div class="title">
-            <div>CSGOTeam<span>Stats</span><img src="/static/images/logo-image.png" width="38" height="58"
-                    alt="BonecoCsgo"></div>
-        </div>
-        <br>
-        <div class="login" id="login">
-            <div id="login_form" style="display: block;">
-                <form onsubmit="loginSubmit(event)">
-                    <input type="email" placeholder="Email..." id="email_login"><br>
-                    <input type="password" placeholder="Password..." id="password_login"><br>
-                    <input type="submit" value="Login"><br />
-                </form>
-                <br>
-                <p id="mgsLogin"></p>
-                <button onclick="changeMode()" class="button_a">Don't have an account? Sign Up</button>
+        <div id="main">
+            <div class="title">
+                <div>CSGOTeam<span>Stats</span><img src="/static/images/logo-image.png" width="38" height="58"
+                        alt="BonecoCsgo"></div>
             </div>
-            <div id="register_form" style="display: none;">
-                <form onsubmit="registerSubmit(event)">
-                    <input type="email" placeholder="Email..." id="email_register"><br>
-                    <input type="password" placeholder="Password..." id="password_register"><br>
-                    <input type="text" placeholder="First Name..." id="first_name_register"><br>
-                    <input type="text" placeholder="Last Name..." id="last_name_register"><br>
-                    <input type="submit" value="Register"><br />
-                </form>
-                <br>
-                <p id="mgsRegister"></p>
-                <button onclick="changeMode()" class="button_a">Have an account? Sign In</button>
+            <br>
+            <div class="login" id="login">
+                <div id="login_form" style="display: block;">
+                    <form onsubmit="loginSubmit(event)">
+                        <input type="email" placeholder="Email..." id="email_login"><br>
+                        <input type="password" placeholder="Password..." id="password_login"><br>
+                        <input type="submit" value="Login"><br />
+                    </form>
+                    <br>
+                    <p id="mgsLogin"></p>
+                    <button onclick="changeMode()" class="button_a">Don't have an account? Sign Up</button>
+                </div>
+                <div id="register_form" style="display: none;">
+                    <form onsubmit="registerSubmit(event)">
+                        <input type="email" placeholder="Email..." id="email_register"><br>
+                        <input type="password" placeholder="Password..." id="password_register"><br>
+                        <input type="text" placeholder="First Name..." id="first_name_register"><br>
+                        <input type="text" placeholder="Last Name..." id="last_name_register"><br>
+                        <input type="submit" value="Register"><br />
+                    </form>
+                    <br>
+                    <p id="mgsRegister"></p>
+                    <button onclick="changeMode()" class="button_a">Have an account? Sign In</button>
+                </div>
             </div>
         </div>
     </div>

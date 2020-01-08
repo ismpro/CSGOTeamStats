@@ -1,10 +1,15 @@
-const Teams = require('../models/Teams')
-const Players = require('../models/Players')
-const Comment = require('../models/Comments.js')
-const User = require('../models/Users.js')
-const Match = require('../models/Match')
-const functions = require('../functions.js')
-const countryCode = require('country-code-lookup')
+const Teams = require('../models/Teams');
+const Players = require('../models/Players');
+const Comment = require('../models/Comments.js');
+const User = require('../models/Users.js');
+const Match = require('../models/Match');
+const {
+    formatDate,
+    parseComments
+} = require('../functions.js')
+const {
+    byCountry
+} = require('country-code-lookup')
 
 const getPlayer = async function (players) {
     let parsedPlayer = [];
@@ -48,7 +53,7 @@ const getLastResults = async function (recent) {
             })
             parsedLastResults.push({
                 id: resultInfo.id,
-                date: functions.formatDate(resultInfo.date),
+                date: formatDate(resultInfo.date),
                 score: results.result,
                 enemyTeam: {
                     id: teamInfo.id,
@@ -68,7 +73,7 @@ module.exports = function () {
             id: id
         }, function (err, team) {
             if (!err) {
-                let code = countryCode.byCountry(team.location)
+                let code = byCountry(team.location)
                 team.location = code ? {
                     code: code.iso2,
                     name: code.country
@@ -85,7 +90,7 @@ module.exports = function () {
                             if (req.session.userid) {
                                 User.findById(req.session.userid, function (err, user) {
                                     if (!err) {
-                                        functions.parseComments(comments, user._id).then(parsedComments => {
+                                        parseComments(comments, user._id).then(parsedComments => {
                                             res.status(200).json({
                                                 players: data[0],
                                                 recentResults: data[1],
@@ -99,7 +104,7 @@ module.exports = function () {
                                     }
                                 })
                             } else {
-                                functions.parseComments(comments).then(parsedComments => {
+                                parseComments(comments).then(parsedComments => {
                                     res.status(200).json({
                                         players: data[0],
                                         recentResults: data[1],

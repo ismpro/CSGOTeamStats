@@ -28,6 +28,12 @@ module.exports = function (app, api, transporter) {
     app.get('/login', redirectHome, function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'login.html'))
     })
+    app.get('/results', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'pages', 'results.html'))
+    })
+    app.get('/contact', function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'pages', 'contact.html'))
+    })
     app.get('/player/:id', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'player.html'))
     })
@@ -74,6 +80,8 @@ module.exports = function (app, api, transporter) {
     app.post('/auth/login', require('./routes/auth/login')())
 
     app.post('/auth/register', require('./routes/auth/register')())
+
+    app.post('/search', require('./routes/search')())
 
     app.get('/fetchAllInfo', require('./routes/fetchAllInfo')(app, api))
 

@@ -9,7 +9,9 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "db/*"
+      "db/*",
+      "pages/*",
+      "public/*"
     ]
   },
   "author": "Ismael Lourenço",
