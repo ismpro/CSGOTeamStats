@@ -1,8 +1,8 @@
-const Teams = require('../models/Teams')
-const Players = require('../models/Players')
-const Comment = require('../models/Comments.js')
-const User = require('../models/Users.js')
-const Match = require('../models/Match')
+const Teams = require('../models/Teams');
+const Players = require('../models/Players');
+const Comment = require('../models/Comments.js');
+const User = require('../models/Users.js');
+const Match = require('../models/Match');
 const {
     formatDate,
     parseComments
