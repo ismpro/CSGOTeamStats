@@ -59,7 +59,7 @@ module.exports = function (app, api, transporter) {
 
     app.post('/team/:id', require('./routes/team-post')())
 
-    app.post('/matches/:id', require('./routes/match-post')())
+    app.post('/match/:id', require('./routes/match-post')())
 
     app.post('/comment/create', require('./routes/comment/create')())
 
