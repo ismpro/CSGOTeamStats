@@ -38,14 +38,43 @@
             <img src="/static/images/logo-image.png" class="logo_image">
         </header>
         <div id="main">
-            
+            <div class="container-contact100">
+                <div class="wrap-contact100">
+                    <form onsubmit="sendEmail(event)" class="contact100-form">
+                        <span class="contact100-form-title">
+                            Contact Us
+                        </span>
+                        <div class="wrap-input100">
+                            <input class="input100" type="text" id="name" placeholder="Full Name">
+                            <span class="focus-input100-1"></span>
+                            <span class="focus-input100-2"></span>
+                        </div>
+                        <div class="wrap-input100">
+                            <input class="input100" type="email" id="email" placeholder="Email">
+                            <span class="focus-input100-1"></span>
+                            <span class="focus-input100-2"></span>
+                        </div>
+                        <div class="wrap-input100">
+                            <textarea class="input100" id="message" placeholder="Your Message"></textarea>
+                            <span class="focus-input100-1"></span>
+                            <span class="focus-input100-2"></span>
+                        </div>
+                        <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="copy-mail">
+                            <label class="label-checkbox100" for="ckb1">
+                                Send copy to my-email
+                            </label>
+                        </div>
+                        <div class="container-contact100-form-btn">
+                            <button onclick="sendEmail(event)" class="contact100-form-btn">
+                                Send Email
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    <script>
-        function pageLoad(cb) {
-            return cb()
-        }
-    </script>
+        <script src="/static/scripts/contact.js"></script>
 </body>
 
 </html>

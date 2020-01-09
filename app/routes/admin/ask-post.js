@@ -22,7 +22,7 @@ module.exports = function (transporter) {
                         let createLink = createid(124)
                         let message = {
                             from: {
-                                name: 'CSGOTeamStats NoReply',
+                                name: 'CSGOTeamStats Noreply',
                                 address: 'noreply.csgoteamstats@gmail.com'
                             },
                             to: 'ismaelourenco@msn.com',

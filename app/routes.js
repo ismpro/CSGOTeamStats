@@ -44,12 +44,14 @@ module.exports = function (app, api, transporter) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'match.html'))
     })
     app.get('/admin', function (req, res) {
-        if (req.query.acesspin == app.get('pin')) {
+        if (req.query.accesspin == app.get('pin')) {
             res.status(200).sendFile(path.join(global.appRoot, 'pages', 'admin.html'))
         } else {
             res.status(401).send('<h1>Request Unauthorized</h1>')
         }
     })
+
+    app.post('/email', require('./routes/email')(transporter));
 
     app.post('/admin/login', require('./routes/admin/login-post')());
 
