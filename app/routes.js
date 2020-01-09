@@ -21,6 +21,25 @@ const redirectHome = (req, res, next) => {
     }
 }
 
+const checkAdminSession = (req, res, next) => {
+    next()
+    /* if (req.session.userid) {
+        User.findById(req.session.userid, (err, user) => {
+            if (err) {
+                res.status(500).send(err.message)
+            } else {
+                if (user && user.atribuitesessionid === req.session.sessionId && typeof user.admin !== 'string' && user.admin) {
+                    next()
+                } else {
+                    res.status(401).send('Unauthorized')
+                }
+            }
+        })
+    } else {
+        res.status(401).redirect('Unauthorized')
+    } */
+}
+
 module.exports = function (app, api, transporter) {
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'index.html'))
@@ -58,6 +77,38 @@ module.exports = function (app, api, transporter) {
     app.post('/admin/ask', require('./routes/admin/ask-post')(transporter));
 
     app.get('/admin/program/:id', require('./routes/admin/program-id-post')());
+
+    app.post('/admin/info/user/get', checkAdminSession, require('./routes/admin/info/user/get')());
+
+    app.post('/admin/info/user/create', checkAdminSession, require('./routes/admin/info/user/create')());
+
+    app.post('/admin/info/user/delete', checkAdminSession, require('./routes/admin/info/user/delete')());
+
+    app.post('/admin/info/user/edit', checkAdminSession, require('./routes/admin/info/user/edit')());
+
+    app.post('/admin/info/team/get', checkAdminSession, require('./routes/admin/info/team/get')());
+
+    app.post('/admin/info/team/create', checkAdminSession, require('./routes/admin/info/team/create')());
+
+    app.post('/admin/info/team/delete', checkAdminSession, require('./routes/admin/info/team/delete')());
+
+    app.post('/admin/info/team/edit', checkAdminSession, require('./routes/admin/info/team/edit')());
+
+    app.post('/admin/info/player/get', checkAdminSession, require('./routes/admin/info/player/get')());
+
+    app.post('/admin/info/player/create', checkAdminSession, require('./routes/admin/info/player/create')());
+
+    app.post('/admin/info/player/delete', checkAdminSession, require('./routes/admin/info/player/delete')());
+
+    app.post('/admin/info/player/edit', checkAdminSession, require('./routes/admin/info/player/edit')());
+
+    app.post('/admin/info/match/get', checkAdminSession, require('./routes/admin/info/match/get')());
+
+    app.post('/admin/info/match/create', checkAdminSession, require('./routes/admin/info/match/create')());
+
+    app.post('/admin/info/match/delete', checkAdminSession, require('./routes/admin/info/match/delete')());
+
+    app.post('/admin/info/match/edit', checkAdminSession, require('./routes/admin/info/match/edit')());
 
     app.post('/fav/:type', require('./routes/fav/type-post')());
 

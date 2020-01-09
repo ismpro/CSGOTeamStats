@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="robots" content="noindex" />
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/scripts/all.js"></script>
     <title>CSGOTeamStats</title>
 </head>
 
 <body>
-    <div id="login">
+    <div style="display: none;" id="login">
         <form onsubmit="login(event)">
             <label for="uname"><b>Email</b></label>
             <input type="text" placeholder="Enter Email..." name="eamil" id="eamil" required>
@@ -35,6 +35,31 @@
             <input type="submit" value="Send">
         </form>
         <button onclick="changeMode()" class="button_a">Go back for login</button>
+        <p id="mgsAsk"></p>
+    </div>
+    <div id="tables" style="display: block;">
+        <div id="checkboxs">
+            Users <input type="checkbox" onchange="onChangeChk(this, 'user')" id="user_chk" checked>
+            | Teams <input type="checkbox" onchange="onChangeChk(this, 'team')" id="team_chk">
+            | Players <input type="checkbox" onchange="onChangeChk(this, 'player')" id="player_chk">
+            | Matches <input type="checkbox" onchange="onChangeChk(this, 'match')" id="match_chk">
+        </div>
+        <div class="table-wrapper">
+            <div class="table-scroll">
+                <table id="table"></table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal content -->
+    <div id="modal" class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2 id="head_modal"></h2>
+        </div>
+        <div id="modal_body" class="modal-body">
+            <p>Some text in the Modal Body</p>
+            <p>Some other text...</p>
+        </divid="modal">
     </div>
     <script src="/static/scripts/admin.js"></script>
 </body>
