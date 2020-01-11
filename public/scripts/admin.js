@@ -5,9 +5,9 @@ let mode = true;
 function login(e) {
     e.preventDefault()
     api.post('/admin/login', {
-            email: document.getElementById("eamil").value,
-            password: document.getElementById("psw").value
-        })
+        email: document.getElementById("eamil").value,
+        password: document.getElementById("psw").value
+    })
         .then(function (res) {
             let code = res.status
             if (code === 220) {
@@ -26,8 +26,8 @@ function login(e) {
 function sendEmail(e) {
     e.preventDefault()
     api.post('/admin/ask', {
-            email: document.getElementById("eamil1").value
-        })
+        email: document.getElementById("eamil1").value
+    })
         .then(function (res) {
             let code = res.status
             if (code === 220) {
@@ -65,7 +65,7 @@ function onChangeChk(element, type) {
         case 'user':
             api.post('/admin/info/user/get').then(res => {
                 if (typeof res.data === 'object' && res.status === 200) {
-                    createTable(type, res.data, table, ['favorite', 'password'])
+                    createTable('user', res.data, table, ['favorite', 'password', '__v', 'creationDate', 'atribuitesessionid'])
                 } else {
                     //console.log(err)
                 }
@@ -74,7 +74,7 @@ function onChangeChk(element, type) {
         case 'team':
             api.post('/admin/info/team/get').then(res => {
                 if (typeof res.data === 'object' && res.status === 200) {
-                    createTable(type, res.data, table, ['recentResults'])
+                    createTable(type, res.data, table, ['recentResults', '__v'])
                 } else {
                     //console.log(err)
                 }
@@ -83,7 +83,7 @@ function onChangeChk(element, type) {
         case 'player':
             api.post('/admin/info/player/get').then(res => {
                 if (typeof res.data === 'object' && res.status === 200) {
-                    createTable(type, res.data, table)
+                    createTable(type, res.data, table, ['achievements', '__v'])
                 } else {
                     //console.log(err)
                 }
@@ -111,19 +111,11 @@ inputs.forEach(input => {
 document.getElementById('user_chk').checked = true
 api.post('/admin/info/user/get').then(res => {
     if (typeof res.data === 'object' && res.status === 200) {
-        createTable('player', res.data, table, ['favorite', 'password'])
+        createTable('user', res.data, table, ['favorite', 'password', '__v', 'creationDate', 'atribuitesessionid'])
     } else {
         //console.log(err)
     }
 }).catch(err => console.log(err))
-
-// When the user clicks anywhere outside of the modal, close it
-let modal = document.getElementById("modal");
-window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
 
 function createTable(type, tableData, table, rejectKeys = []) {
     let tableBody = document.createElement('tbody');
@@ -193,16 +185,46 @@ function createTable(type, tableData, table, rejectKeys = []) {
 }
 
 function editCell(type, id, keys, current) {
+
+    const saveEdit = () => () => {
+        let object = {
+            _id: id,
+        }
+        keys.forEach(key => { 
+            let value = document.getElementById(key).value
+            object[key] = value
+        })
+        api.post(`/admin/info/${type}/edit`, object).then(res => {
+            console.log(res.data)
+            if (res.status === 200) {
+                closeModal()
+                onChangeChk(document.getElementById('user_chk'), 'user')
+            }
+        })
+    }
+
     return function () {
         let modal_head = document.getElementById("head_modal");
         modal_head.innerHTML = type
         let modal_body = document.getElementById("modal_body");
-        let html = '<p>'
-        current.forEach(e => {
-            html += e + ' |'
+        let html = '<div>'
+        keys.forEach((key, index) => {
+            html += `${key} <br>`
+            html += `<input id="${key}" type="text" value="${current[index]}" > <br>`
         })
-        html += '</p>'
+        html += '</div>'
+        html += '<div>'
+        html += `<button id="save_button" >Save</button> <button onclick="closeModal()" >Close</button>`
+        html += '</div>'
         modal_body.innerHTML = html
+        document.getElementById("save_button").onclick = saveEdit()
         modal.style.display = 'block'
     }
+}
+
+function closeModal() {
+    let modal = document.getElementById("modal");
+    modal.style.display = "none";
+    let modal_body = document.getElementById("modal_body");
+    modal_body.innerHTML = ""
 }
