@@ -42,13 +42,6 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
-    /* const User = require('./app/models/Users.js')
-    User.findOne({
-        email: 'ismaelourenco@msn.com'
-    }, function (err, user) {
-        user.admin = false
-        user.save()
-    }) */
 });
 
 //Mailer

@@ -114,11 +114,11 @@ module.exports = function (app, api, transporter) {
 
     app.post('/fav', require('./routes/fav/post')());
 
-    app.post('/player/:id', require('./routes/player-post')())
+    app.post('/player/:id', require('./routes/player-post')(api))
 
-    app.post('/team/:id', require('./routes/team-post')())
+    app.post('/team/:id', require('./routes/team-post')(api))
 
-    app.post('/match/:id', require('./routes/match-post')())
+    app.post('/match/:id', require('./routes/match-post')(api))
 
     app.post('/comment/create', require('./routes/comment/create')())
 

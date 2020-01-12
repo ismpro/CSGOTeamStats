@@ -121,9 +121,9 @@ function loadData(data) {
     document.getElementById('player_age').innerHTML = data.age || ''
     if (data.team) {
         let teamtag = document.getElementById('team_flag')
-        teamtag.src = teamData ? teamData.logo : window.location.origin + '/static/images/logo-team.png'
-        teamtag.alt = teamData.name || ''
-        document.getElementById('team_name').innerHTML = teamData ? `<a class="teamLink" href="${window.location.origin + '/team/' + teamData.id}">${teamData.name}</a>` : `<a class="teamLink" href="#">Error</a>`
+        teamtag.src = teamData ? teamData.logo : '/static/images/logo-team.png'
+        teamtag.alt = teamData ? teamData.name : ''
+        document.getElementById('team_name').innerHTML = teamData ? `<a class="teamLink" href="/team/${teamData.id}">${teamData.name}</a>` : `<a class="teamLink" href="#">Error</a>`
 
 
     }

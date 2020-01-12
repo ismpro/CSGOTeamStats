@@ -1,5 +1,4 @@
 const schedule = require('node-schedule')
-// eslint-disable-next-line no-unused-vars
 const functions = require('../functions.js')
 const chalk = require('chalk')
 const {
@@ -11,18 +10,103 @@ const Match = require('../models/Match')
 
 class ApiControler {
     constructor() {
-        this.maxRequest = 100
-        this.currentHeaders = {
-            currentRequestCount: 0,
-            remainingRequest: this.maxRequest
-        }
-        this.secheduleJob = schedule.scheduleJob('00 * * * *', () => {
-            this.currentHeaders = {
-                currentRequestCount: 0,
-                remainingRequest: this.maxRequest
-            }
-            console.log(chalk.red('Headers Reseted'))
+        this.secheduleUpdatedJob = schedule.scheduleJob({
+            hour: 21,
+            minute: 13
+        }, () => {
+            this.updateAll()
         });
+        this.secheduleFetchLastInfoJob = schedule.scheduleJob('01 * * * *', () => {
+            this.fetchAllInfo(1)
+        });
+    }
+
+    updateAll() {
+        return new Promise(resolve => {
+            let playersCursor = Players.find({}).cursor();
+            let teamsCursor = Teams.find({}).cursor();
+            let matchCursor = Match.find({}).cursor();
+            let playerSaved = 0
+            let teamSaved = 0
+            let matchSaved = 0
+            let playerUpdater = playersCursor
+                .eachAsync(player => {
+                    return new Promise(resolve => {
+                        this.fetchPlayerById(player.id).then(newplayer => {
+                            player.set(newplayer)
+                            player.save(() => {
+                                playerSaved++
+                                console.log('\nPlayers Saved: ' + playerSaved)
+                                resolve()
+                            })
+                        })
+                    })
+                })
+                .then(() => console.log('Players all updated'));
+            let teamUpdater = teamsCursor
+                .eachAsync(team => {
+                    return new Promise(resolve => {
+                        this.fetchTeamById(team.id).then(newTeam => {
+                            team.set(newTeam)
+                            team.save(() => {
+                                teamSaved++
+                                console.log('\nTeams Saved: ' + teamSaved)
+                                resolve()
+                            })
+                        })
+                    })
+                })
+            let matchUpdater = matchCursor
+                .eachAsync(match => {
+                    return new Promise(resolve => {
+                        Promise.all([this.fetchMatchById(match.id), this.fetchMatchesStatsById(match.statsId)]).then(data => {
+                            let match = data[0]
+                            let matchStats = data[1]
+                            let parsedMatch = {
+                                id: match.id,
+                                statsId: match.statsId,
+                                team1: match.team1,
+                                team2: match.team2,
+                                winnerTeam: match.winnerTeam,
+                                date: new Date(match.date),
+                                format: match.format,
+                                additionalInfo: match.additionalInfo,
+                                event: match.event.name,
+                                maps: match.maps,
+                                players: match.players,
+                                streams: match.streams,
+                                live: match.live,
+                                status: match.status,
+                                title: match.title,
+                                hasScorebot: match.hasScorebot,
+                                highlightedPlayer: match.highlightedPlayer,
+                                vetoes: match.vetoes,
+                                highlights: match.highlights,
+                                demos: match.demos,
+                                overview: {
+                                    mostKills: matchStats.overview.mostKills,
+                                    mostDamage: matchStats.overview.mostDamage,
+                                    mostAssists: matchStats.overview.mostAssists,
+                                    mostAWPKills: matchStats.overview.mostAWPKills,
+                                    mostFirstKills: matchStats.overview.mostFirstKills,
+                                    bestRating: matchStats.overview.bestRating
+                                },
+                                playerStats: matchStats.playerStats
+                            }
+                            match.set(parsedMatch)
+                            match.save(() => {
+                                matchSaved++
+                                console.log('\nMatches Saved: ' + matchSaved)
+                                resolve()
+                            })
+                        })
+                    })
+                })
+            Promise.all([playerUpdater, teamUpdater, matchUpdater]).then(() => {
+                console.log('Update Complete')
+                resolve()
+            })
+        })
     }
 
     async fetchAllInfoFromMatch(id) {
@@ -119,20 +203,23 @@ class ApiControler {
         let playersIt = 0
         let playersCount = 0
         for (const id of playersids) {
-            try {
-                playersIt++
-                playersCount++
-                if (playersCount === 3) {
-                    await functions.sleep(3000)
-                    playersCount = 0
+            let findedPlayer = await Players.findOne({ id: id })
+            if (!findedPlayer) {
+                try {
+                    playersIt++
+                    playersCount++
+                    if (playersCount === 3) {
+                        await functions.sleep(3000)
+                        playersCount = 0
+                    }
+                    console.log('Player: ' + playersIt)
+                    let player = await this.fetchPlayerById(id)
+                    let newPlayer = new Players(player)
+                    await newPlayer.save()
+                    players.push(player)
+                } catch (error) {
+                    console.log(error.message)
                 }
-                console.log('Player: ' + playersIt)
-                let player = await this.fetchPlayerById(id)
-                let newPlayer = new Players(player)
-                await newPlayer.save()
-                players.push(player)
-            } catch (error) {
-                console.log(error.message)
             }
         }
         return {
@@ -150,18 +237,21 @@ class ApiControler {
         let matchIt = 0
         let matchCount = 0
         for (const id of results) {
-            try {
-                matchIt++
-                matchCount++
-                if (matchCount === 3) {
-                    await functions.sleep(3000)
-                    matchCount = 0
+            let foundedMatch = Match.findOne({ id: id })
+            if (!foundedMatch) {
+                try {
+                    matchIt++
+                    matchCount++
+                    if (matchCount === 3) {
+                        await functions.sleep(3000)
+                        matchCount = 0
+                    }
+                    console.log('Match: ' + matchIt)
+                    let infoAll = await this.fetchAllInfoFromMatch(id)
+                    info.push(infoAll)
+                } catch (error) {
+                    console.log(error.message)
                 }
-                console.log('Match: ' + matchIt)
-                let infoAll = await this.fetchAllInfoFromMatch(id)
-                info.push(infoAll)
-            } catch (error) {
-                console.log(error.message)
             }
         }
         return info
@@ -170,8 +260,8 @@ class ApiControler {
     fetchPlayerById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayer({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -180,8 +270,8 @@ class ApiControler {
     fetchTeamById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeam({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -190,8 +280,8 @@ class ApiControler {
     fetchTeamStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeamStats({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -200,8 +290,8 @@ class ApiControler {
     fetchResultsByPages(pages) {
         return new Promise((resolve, reject) => {
             HLTV.getResults({
-                    pages: pages
-                })
+                pages: pages
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -210,8 +300,8 @@ class ApiControler {
     fetchMatchById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatch({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -220,8 +310,8 @@ class ApiControler {
     fetchMatchesStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchStats({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -230,9 +320,9 @@ class ApiControler {
     fetchMatchesStatsByDates(startDate, endDate) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchesStats({
-                    startDate: functions.formatDate(startDate),
-                    endDate: functions.formatDate(endDate)
-                })
+                startDate: functions.formatDate(startDate),
+                endDate: functions.formatDate(endDate)
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -241,8 +331,8 @@ class ApiControler {
     fetchMatchMapStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchMapStats({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -259,8 +349,8 @@ class ApiControler {
     fetchRankingByCountry(country) {
         return new Promise((resolve, reject) => {
             HLTV.getTeamRanking({
-                    country: country
-                })
+                country: country
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })

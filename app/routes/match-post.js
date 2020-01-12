@@ -1,6 +1,6 @@
 const Match = require('../models/Match');
 
-module.exports = function () {
+module.exports = function (api) {
     return function (req, res) {
         let id = req.params.id;
         Match.findOne({
