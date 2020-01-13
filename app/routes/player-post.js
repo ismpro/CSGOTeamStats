@@ -17,7 +17,7 @@ const getTeam = async (id) => {
                     logo: team.logo,
                 })
             } else {
-                res.status(500).send('Error on server! Try again later!')
+                reject(err.message)
             }
         })
     })
@@ -53,8 +53,8 @@ module.exports = function (api) {
                             .then(data => {
                                 res.status(200).json({
                                     player: player,
-                                    team: team,
-                                    comments: parsedComments
+                                    team: data[0],
+                                    comments: data[1]
                                 })
                             })
                             .catch(err => {
@@ -71,23 +71,22 @@ module.exports = function (api) {
                         })
                     }
                 } else {
-                    console.log('No player')
                     api.fetchPlayerById(id)
                         .then(player => {
-                            Promise.all([getTeam(player.team.id), getComments(player.id)])
+                            let newPlayer = new Players(player)
+                            Promise.all([newPlayer.save(), player.team ? getTeam(player.team.id) : null, getComments(player.id)])
                                 .then(data => {
+                                    console.log(data)
                                     res.status(200).json({
                                         player: player,
-                                        team: team,
-                                        comments: parsedComments
+                                        team: data[0],
+                                        comments: data[1]
                                     })
                                 })
                                 .catch(err => {
                                     res.status(500).send(err)
                                 })
-                            res.status(200).json(parsedTeam)
-                        }).catch(err => {
-                            console.log(err)
+                        }).catch(() => {
                             res.status(200).send(false)
                         })
                 }

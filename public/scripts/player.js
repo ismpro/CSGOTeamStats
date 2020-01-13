@@ -5,9 +5,17 @@ let comments = []
 function pageLoad(cb) {
     document.getElementById("defaultTab").click();
     api.post(window.location.pathname).then(res => {
-        loadData(res.data)
-        comments = res.data.comments
-        loadComments()
+        if (res.data) {
+            loadData(res.data)
+            comments = res.data.comments
+            loadComments()
+        } else {
+            let main = document.getElementById('main')
+            main.innerHTML = `<h2 class="player_not_found">Player Not found</h2>`
+            window.onclick = () => {
+                window.location.replace('/')
+            }
+        }
         cb()
     }).catch(err => console.log(err))
 }
@@ -88,9 +96,10 @@ function favAnimation(type, fav) {
 
 function loadData(data) {
     let teamData = data.team
+    console.log(teamData)
     data = data.player
     let imagetag = document.getElementById('player_image')
-    imagetag.src = data.image
+    imagetag.src = data.image || '/static/images/logo-jogador.png'
     imagetag.alt = data.ign || 'Not Specified'
     imagetag.title = data.ign || 'Not Specified'
     document.getElementById('player_ign').innerHTML = data.ign || 'Not Specified'
@@ -118,25 +127,22 @@ function loadData(data) {
         tag.classList.add("fa", "fa-facebook")
         socialDiv.appendChild(tag)
     }
-    document.getElementById('player_age').innerHTML = data.age || ''
-    if (data.team) {
-        let teamtag = document.getElementById('team_flag')
-        teamtag.src = teamData ? teamData.logo : '/static/images/logo-team.png'
-        teamtag.alt = teamData ? teamData.name : ''
-        document.getElementById('team_name').innerHTML = teamData ? `<a class="teamLink" href="/team/${teamData.id}">${teamData.name}</a>` : `<a class="teamLink" href="#">Error</a>`
+    document.getElementById('player_age').innerHTML = data.age || '00'
+    let teamtag = document.getElementById('team_flag')
+    teamtag.src = teamData ? teamData.logo : '/static/images/logo-team.png'
+    teamtag.alt = teamData ? teamData.name : 'Not Specified'
+    document.getElementById('team_name').innerHTML = teamData ? `<a class="teamLink" href="/team/${teamData.id}">${teamData.name}</a>` : `<a class="teamLink" href="#">Not Specified</a>`
 
-
-    }
     document.getElementById('player_ign_stats').innerHTML = `${data.ign || ''} statistics<span class=" stats-window">(Past 3 months)</span>`
 
-    document.getElementById('player_rating').innerHTML = data.statistics.rating
-    document.getElementById('player_kills').innerHTML = data.statistics.killsPerRound
-    document.getElementById('player_hs').innerHTML = data.statistics.headshots
-    document.getElementById('player_maps').innerHTML = data.statistics.mapsPlayed
-    document.getElementById('player_death').innerHTML = data.statistics.deathsPerRound
-    document.getElementById('player_rc').innerHTML = data.statistics.roundsContributed
+    document.getElementById('player_rating').innerHTML = data.statistics.rating || 00
+    document.getElementById('player_kills').innerHTML = data.statistics.killsPerRound || 00
+    document.getElementById('player_hs').innerHTML = data.statistics.headshots || 00
+    document.getElementById('player_maps').innerHTML = data.statistics.mapsPlayed || 00
+    document.getElementById('player_death').innerHTML = data.statistics.deathsPerRound || 00
+    document.getElementById('player_rc').innerHTML = data.statistics.roundsContributed || 00
 
-    document.getElementById('player_achivs_headline').innerHTML = `Achievements for ${data.ign} <span class="stats-window">Past 15 games</span>`
+    document.getElementById('player_achivs_headline').innerHTML = `Achievements for ${data.ign || 'Not Specified'} <span class="stats-window">Past 15 games</span>`
 
     if (data.achievements && data.achievements.length > 0) {
         let table = document.getElementById('player_achiv')

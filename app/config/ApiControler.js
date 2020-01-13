@@ -1,6 +1,5 @@
 const schedule = require('node-schedule')
 const functions = require('../functions.js')
-const chalk = require('chalk')
 const {
     HLTV
 } = require('hltv')
@@ -11,8 +10,8 @@ const Match = require('../models/Match')
 class ApiControler {
     constructor() {
         this.secheduleUpdatedJob = schedule.scheduleJob({
-            hour: 21,
-            minute: 13
+            hour: 0,
+            minute: 1
         }, () => {
             this.updateAll()
         });
