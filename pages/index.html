@@ -45,12 +45,13 @@
             <div style="text-align: center; width: 100%; display: flex; padding: 5px">
                 <div style="text-align: center; width: 100%; display: flex; padding: 5px">
 
-                    <div class="statistics">
+                    <div class="searchDiv">
                         <form onsubmit="javascript:search(event)">
-                            <input type="text" onkeyup="javascript:search(event)" id="search_string">
+                            <input type="text" class="searchBar" onkeyup="javascript:search(event)" id="search_string">
                         </form>
-                        <ul id="search_list">
-                        </ul>
+                        <div id="search_list">
+                            <p>Type to search</p>
+                        </div>
                     </div>
 
                     <!-- JOGOS -->
