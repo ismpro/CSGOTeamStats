@@ -202,7 +202,9 @@ class ApiControler {
         let playersIt = 0
         let playersCount = 0
         for (const id of playersids) {
-            let findedPlayer = await Players.findOne({ id: id })
+            let findedPlayer = await Players.findOne({
+                id: id
+            })
             if (!findedPlayer) {
                 try {
                     playersIt++
@@ -236,7 +238,9 @@ class ApiControler {
         let matchIt = 0
         let matchCount = 0
         for (const id of results) {
-            let foundedMatch = Match.findOne({ id: id })
+            let foundedMatch = Match.findOne({
+                id: id
+            })
             if (!foundedMatch) {
                 try {
                     matchIt++
@@ -259,8 +263,8 @@ class ApiControler {
     fetchPlayerById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayer({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -269,8 +273,8 @@ class ApiControler {
     fetchTeamById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeam({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -279,8 +283,8 @@ class ApiControler {
     fetchTeamStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeamStats({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -289,8 +293,8 @@ class ApiControler {
     fetchResultsByPages(pages) {
         return new Promise((resolve, reject) => {
             HLTV.getResults({
-                pages: pages
-            })
+                    pages: pages
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -299,8 +303,8 @@ class ApiControler {
     fetchMatchById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatch({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -309,8 +313,8 @@ class ApiControler {
     fetchMatchesStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchStats({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -319,9 +323,9 @@ class ApiControler {
     fetchMatchesStatsByDates(startDate, endDate) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchesStats({
-                startDate: functions.formatDate(startDate),
-                endDate: functions.formatDate(endDate)
-            })
+                    startDate: functions.formatDate(startDate),
+                    endDate: functions.formatDate(endDate)
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -330,14 +334,14 @@ class ApiControler {
     fetchMatchMapStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchMapStats({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
     }
 
-    fetchRanking() {
+    fetchTeamRanking() {
         return new Promise((resolve, reject) => {
             HLTV.getTeamRanking()
                 .then(res => resolve(res))
@@ -348,8 +352,21 @@ class ApiControler {
     fetchRankingByCountry(country) {
         return new Promise((resolve, reject) => {
             HLTV.getTeamRanking({
-                country: country
-            })
+                    country: country
+                })
+                .then(res => resolve(res))
+                .catch(err => reject(err))
+        })
+    }
+
+    fetchPlayerRanking(startDate, endDate, rankingFilter, matchType) {
+        return new Promise((resolve, reject) => {
+            HLTV.getPlayerRanking({
+                    startDate: startDate,
+                    endDate: endDate,
+                    matchType: matchType,
+                    rankingFilter: rankingFilter
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })

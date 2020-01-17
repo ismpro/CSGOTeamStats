@@ -2,7 +2,43 @@
 let searching = false;
 
 function pageLoad(cb) {
-    return cb()
+    api.get('/ranking/players').then(res => {
+        if (res.status === 200) {
+            let ranking = res.data;
+            let mainDiv = document.getElementById('top_players')
+            mainDiv.innerHTML = ""
+            let count = 1
+            for (const rank of ranking) {
+                let div = document.createElement('div')
+                div.classList.add('player')
+                let span1 = document.createElement('span')
+                let playerA = document.createElement('a')
+                let teamA = document.createElement('a')
+                let img1 = document.createElement('img')
+                let img2 = document.createElement('img')
+                span1.classList.add('rank')
+                playerA.classList.add('text')
+                img1.classList.add('left-img')
+                img2.classList.add('right-img')
+                span1.innerHTML = '#' + count
+                playerA.innerHTML = rank.ign
+                img1.src = rank.image ? rank.image : "/static/images/logo-jogador.png";
+                img2.src = rank.team ? rank.team.logo : "/static/images/logo-team.png";
+                img1.title = rank.ign
+                img2.title = rank.team ? rank.team.name : 'Not Specified'
+                teamA.href = rank.team ? `/team/${rank.team.id}` : '#'
+                playerA.href = `/team/${rank.id}`
+                teamA.appendChild(img2)
+                div.appendChild(span1)
+                div.appendChild(img1)
+                div.appendChild(playerA)
+                div.appendChild(teamA)
+                mainDiv.appendChild(div)
+                count++
+            }
+            cb()
+        }
+    })
 }
 
 function search(e) {
@@ -34,7 +70,7 @@ function search(e) {
                             let a = document.createElement('a');
                             a.href = `/player/${player.id}`
                             let img = document.createElement('img')
-                            img.src = player.image
+                            img.src = player.image || '/static/images/logo-jogador.png'
                             img.classList.add('search-img')
                             a.appendChild(img)
                             divPlayer.appendChild(a)
@@ -65,7 +101,7 @@ function search(e) {
                             let a = document.createElement('a');
                             a.href = `/team/${team.id}`
                             let img = document.createElement('img')
-                            img.src = team.logo
+                            img.src = team.logo || '/static/images/logo-team.png'
                             img.classList.add('search-img')
                             a.appendChild(img)
                             divPlayer.appendChild(a)
