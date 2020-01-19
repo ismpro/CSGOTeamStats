@@ -77,15 +77,22 @@ function search(e) {
                             let divInfo = document.createElement('div')
                             divInfo.classList.add('search-info')
                             let aName = document.createElement('a')
-                            aName.classList.add('search-text')
-                            let aTeam = document.createElement('a')
-                            aTeam.classList.add('search-text')
+                            aName.classList.add('search-text-link')
                             aName.innerHTML = `${player.name || ''} "${player.ign || ''}"`
-                            aTeam.innerHTML = player.team ? `Playing for ${player.team.name || ''}` : 'No team'
                             aName.href = `/player/${player.id}`
-                            aTeam.href = player.team ? `/team/${player.team.id}` : '#'
                             divInfo.appendChild(aName)
-                            divInfo.appendChild(aTeam)
+                            //When theres is no team the server sends a empty objects for some reason
+                            if (Object.entries(player.team).length !== 0) {
+                                let aTeam = document.createElement('span')
+                                aTeam.classList.add('search-text')
+                                aTeam.innerHTML = `Playing for <a class="search-text-link" href="/team/${player.team.id}"> ${player.team.name || ''}</a>`
+                                divInfo.appendChild(aTeam)
+                            } else {
+                                let pTeam = document.createElement('span')
+                                pTeam.classList.add('search-text')
+                                pTeam.textContent = `No team`
+                                divInfo.appendChild(pTeam)
+                            }
                             divPlayer.appendChild(divInfo)
                             searchDiv.appendChild(divPlayer)
                         }
@@ -108,7 +115,7 @@ function search(e) {
                             let divInfo = document.createElement('div')
                             divInfo.classList.add('search-info')
                             let aName = document.createElement('a')
-                            aName.classList.add('search-text')
+                            aName.classList.add('search-text-link')
                             aName.innerHTML = team.name
                             aName.href = `/team/${team.id}`
                             divInfo.appendChild(aName)
@@ -119,6 +126,7 @@ function search(e) {
                 }
             }
         }).catch(err => {
+            console.log(err)
             let searchDiv = document.getElementById('search_list');
             searchDiv.innerHTML = "<p>Server Error</p>"
         })

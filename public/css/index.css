@@ -203,11 +203,21 @@
     align-items: center;
     text-decoration: none;
     padding: 5px;
+}
+
+.search-text-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 5px;
     color: #2d6da3;
 }
 
-.search-text:visited,
-.search-text:hover,
-.search-text:active {
+.search-text-link:hover {
+    text-decoration: underline;
+}
+
+.search-text-link:visited,
+.search-text-link:active {
     color: #2d6da3;
 }

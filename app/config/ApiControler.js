@@ -173,6 +173,14 @@ class ApiControler {
                 }
                 console.log('Team: ' + teamsIt)
                 let team1 = await this.fetchTeamById(id)
+                if (team1.players && Array.isArray(team1.players) && team1.players.length < 5) {
+                    for (let index = team1.players.length + 1; index >= 5; index++) {
+                        team1.players.length[index] = {
+                            id: 0,
+                            name: ''
+                        }
+                    }
+                }
                 let parsedTeam = {
                     id: team1.id,
                     name: team1.name,
@@ -181,8 +189,11 @@ class ApiControler {
                     facebook: team1.facebook,
                     twitter: team1.twitter,
                     rank: team1.rank,
-                    players: team1.players,
-                    recentResults: team1.recentResults
+                    players: team1.players.map(player => ({
+                        id: Number.isNaN(player.id) ? 0 : player.id,
+                        name: player.name || ''
+                    })),
+                    recentResults: team.recentResults
                 }
                 let newTeam = new Teams(parsedTeam)
                 await newTeam.save()
@@ -194,7 +205,8 @@ class ApiControler {
         let playersids = []
         for (const team of teams) {
             team.players.forEach(player => {
-                playersids.push(player.id)
+                if (player.id !== 0)
+                    playersids.push(player.id)
             });
         }
         playersids = playersids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
@@ -263,8 +275,8 @@ class ApiControler {
     fetchPlayerById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayer({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -273,8 +285,8 @@ class ApiControler {
     fetchTeamById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeam({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -283,8 +295,8 @@ class ApiControler {
     fetchTeamStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeamStats({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -293,8 +305,8 @@ class ApiControler {
     fetchResultsByPages(pages) {
         return new Promise((resolve, reject) => {
             HLTV.getResults({
-                    pages: pages
-                })
+                pages: pages
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -303,8 +315,8 @@ class ApiControler {
     fetchMatchById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatch({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -313,8 +325,8 @@ class ApiControler {
     fetchMatchesStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchStats({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -323,9 +335,9 @@ class ApiControler {
     fetchMatchesStatsByDates(startDate, endDate) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchesStats({
-                    startDate: functions.formatDate(startDate),
-                    endDate: functions.formatDate(endDate)
-                })
+                startDate: functions.formatDate(startDate),
+                endDate: functions.formatDate(endDate)
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -334,8 +346,8 @@ class ApiControler {
     fetchMatchMapStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchMapStats({
-                    id: id
-                })
+                id: id
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -352,21 +364,21 @@ class ApiControler {
     fetchRankingByCountry(country) {
         return new Promise((resolve, reject) => {
             HLTV.getTeamRanking({
-                    country: country
-                })
+                country: country
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
     }
 
-    fetchPlayerRanking(startDate, endDate, rankingFilter, matchType) {
+    fetchPlayerRanking(startDate, endDate, matchType, rankingFilter) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayerRanking({
-                    startDate: startDate,
-                    endDate: endDate,
-                    matchType: matchType,
-                    rankingFilter: rankingFilter
-                })
+                startDate: startDate,
+                endDate: endDate,
+                matchType: matchType,
+                rankingFilter: rankingFilter
+            })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })

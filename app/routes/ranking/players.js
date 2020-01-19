@@ -4,8 +4,6 @@ const {
 const Players = require('../../models/Players')
 const Teams = require('../../models/Teams')
 
-
-
 module.exports = function (api) {
 
     const getTeam = async (id) => {
@@ -22,6 +20,14 @@ module.exports = function (api) {
                         })
                     } else {
                         api.fetchTeamById(id).then(team => {
+                            if (team.players && Array.isArray(team.players) && team.players.length < 5) {
+                                for (let index = team.players.length + 1; index >= 5; index++) {
+                                    team.players.length[index] = {
+                                        id: 0,
+                                        name: ''
+                                    }
+                                }
+                            }
                             let parsedTeam = {
                                 id: team.id,
                                 name: team.name,
@@ -30,7 +36,10 @@ module.exports = function (api) {
                                 facebook: team.facebook,
                                 twitter: team.twitter,
                                 rank: team.rank,
-                                players: team.players,
+                                players: team.players.map(player => ({
+                                    id: Number.isNaN(player.id) ? 0 : player.id,
+                                    name: player.name || ''
+                                })),
                                 recentResults: team.recentResults
                             }
                             let newTeam = new Teams(parsedTeam)
@@ -52,57 +61,61 @@ module.exports = function (api) {
 
     return async function (req, res) {
         let today = new Date()
-        let days1month = today.setMonth(today.getMonth() - 1)
+        let before = new Date()
+        before.setMonth(before.getMonth() - 6)
         try {
             let parsedRanking = []
-            let ranking = await api.fetchPlayerRanking(formatDate(today), formatDate(days1month), 'Top10', 'BigEvents')
-
+            let ranking = await api.fetchPlayerRanking(formatDate(before), formatDate(today), 'Majors', 'Top10')
+            let index = 0; //Sometimes hltv returns more than 10 players 
             for (const rankPlayer of ranking) {
-                let player = await Players.findOne({
-                    id: rankPlayer.id
-                })
-                if (player) {
-                    if (player.team) {
-                        let team = await getTeam(player.team.id)
-                        parsedRanking.push({
-                            id: player.id,
-                            ign: player.ign,
-                            image: player.image,
-                            team: team,
-                        })
-                    } else {
-                        parsedRanking.push({
-                            id: player.id,
-                            ign: player.ign,
-                            image: player.image,
-                            team: null,
-                        })
-                    }
-                } else {
-                    let newP = await api.fetchPlayerById(rankPlayer.id)
-                    if (newP) {
-                        let newPlayer = new Players(newP)
-                        await newPlayer.save()
-                        if (newP.team) {
-                            let team = await getTeam(newP.team.id)
+                if (index < 10) {
+                    let player = await Players.findOne({
+                        id: rankPlayer.id
+                    })
+                    if (player) {
+                        if (player.team) {
+                            let team = await getTeam(player.team.id)
                             parsedRanking.push({
-                                id: newP.id,
-                                ign: newP.ign,
-                                image: newP.image,
+                                id: player.id,
+                                ign: player.ign,
+                                image: player.image,
                                 team: team,
                             })
                         } else {
                             parsedRanking.push({
-                                id: newP.id,
-                                ign: newP.ign,
-                                image: newP.image,
+                                id: player.id,
+                                ign: player.ign,
+                                image: player.image,
                                 team: null,
                             })
                         }
                     } else {
-                        parsedRanking.push(null)
+                        let newP = await api.fetchPlayerById(rankPlayer.id)
+                        if (newP) {
+                            let newPlayer = new Players(newP)
+                            await newPlayer.save()
+                            if (newP.team) {
+                                let team = await getTeam(newP.team.id)
+                                parsedRanking.push({
+                                    id: newP.id,
+                                    ign: newP.ign,
+                                    image: newP.image,
+                                    team: team,
+                                })
+                            } else {
+                                parsedRanking.push({
+                                    id: newP.id,
+                                    ign: newP.ign,
+                                    image: newP.image,
+                                    team: null,
+                                })
+                            }
+                        } else {
+                            parsedRanking.push(null)
+                        }
                     }
                 }
+                index++
             }
             res.status(200).json(parsedRanking)
         } catch (error) {
