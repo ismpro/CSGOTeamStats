@@ -188,3 +188,33 @@ body {
         display: none;
     }
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid rgb(128, 120, 120);
+  background-color: rgb(175, 175, 175);
+  padding: 10px;
+  z-index: 9999;
+}
+
+.footer p {
+    font-size: 12px;
+}
+
+.footer-container {
+  position: relative;
+}
+
+.footer-container .left {
+    margin-left: 10%;
+  float: left;
+}
+
+.footer-container .right {
+    margin-right: 10%;
+  float: right;
+}

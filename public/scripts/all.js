@@ -14,36 +14,53 @@ function loadPage() {
     })
     if (location.pathname !== '/login' && location.pathname !== '/contact') {
         api.post('/auth/validate').then((res) => {
-            let button = document.getElementById('loginButton')
             if (typeof res.data === 'string') {
-                sessionId = res.data
-                button.style.display = "inline";
-                button.innerHTML = '<button class="loginButton">Log out</button>'
-                button.firstElementChild.onclick = () => {
-                    api.post('/auth/logout').then((res) => {
-                        if (res.data) {
-                            try {
-                                onlogout()
-                            } catch (error) {
-                                console.warn('onlogout not define')
-                            } finally {
-                                button.style.display = "inline";
-                                button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
-                            }
-                        }
-                    }).catch(err => console.log(err))
-                }
-                try {
-                    onsession()
-                } catch (error) {
-                    console.log(error)
-                    console.warn('onsession not define')
-                }
+                authLogin()
             } else {
-                button.style.display = "inline";
-                button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
+                authLogout()
             }
         }).catch(err => console.log(err))
+    }
+}
+
+function authLogin() {
+    //sessionId = res.data  <- WTF is this ?????? TODO
+    let button = document.getElementById('loginButton')
+    button.style.display = "inline";
+    button.innerHTML = '<button class="loginButton">Log out</button>'
+    button.firstElementChild.onclick = () => {
+        api.post('/auth/logout').then((res) => {
+            if (res.data) {
+                authLogout()
+            }
+        }).catch(err => console.log(err))
+    }
+    let nav = document.getElementById('mySidenav')
+    //<a href="/profile/-">Profile</a>
+    let a = document.createElement('a')
+    a.href = '/profile/-';
+    a.textContent = 'My Profile';
+    a.id = "profilelink";
+    nav.insertBefore(a, nav.children[1]);
+    try {
+        onsession()
+    } catch (error) {
+        console.log(error) //DELETE
+        console.warn('onsession not define')
+    }
+}
+
+function authLogout() {
+    try {
+        onlogout()
+    } catch (error) {
+        console.log(error) //DELETE
+        console.warn('onlogout not define')
+    } finally {
+        let button = document.getElementById('loginButton')
+        button.style.display = "inline";
+        button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
+        document.getElementById('profilelink').remove();
     }
 }
 
