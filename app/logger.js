@@ -17,7 +17,8 @@ module.exports = function (options) {
                 functions.logger(res.statusCode).then(resolve).catch(reject)
             });
             var promise2 = new Promise((resolve, reject) => {
-                iplocate(ip).then(resolve).catch(reject)
+                //iplocate(ip).then(resolve).catch(reject)
+                resolve({ ip: '[::1]' })
             });
             Promise.all([promise1, promise2]).then((values) => {
                 let results = values[1]

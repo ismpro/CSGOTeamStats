@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/scripts/all.js"></script>
     <script src="/static/scripts/profile.js"></script>
+    <script type="text/javascript" src="/static/scripts/paginator.js"></script>
     <title>CSGOTeamStats</title>
 </head>
 
@@ -37,6 +38,10 @@
             <!-- logo -->
             <img src="/static/images/logo-title.png" class="logo_title">
             <img src="/static/images/logo-image.png" class="logo_image">
+            <!-- botão de login -->
+            <span id="loginButton">
+                <a href="/login" class="loginButton">Log in</a>
+            </span>
         </header>
         <div class="footer">
             <div class="footer-container">
@@ -50,7 +55,76 @@
             </div>
         </div>
         <div id="main">
-            <div></div>
+            <div class="user_info_container">
+                <div class="user_info">
+                    <div id="user_img" class="user_img">
+                        <img src="/static/images/kek.png" alt="kek">
+                    </div>
+                    <div class="user_creation">
+                        <p>Account created: </p>
+                        <p id="user_creation">20/01/2020</p>
+                    </div>
+                    <div class="user_email">
+                        <p>Email: <span id="user_email"></span></p>
+                    </div>
+                    <div class="user_name">
+                        <p>Name: <span id="user_name"></span></p>
+                    </div>
+                    <div class="user_pass"></div>
+                </div>
+                <div class="favorites">
+                    <h1>Favorites</h1>
+                    <div class="tab">
+                        <button class="tablinks" id="defaultTab" onclick="changeTab(event, 'player')">Players</button>
+                        <button class="tablinks" onclick="changeTab(event, 'team')">Teams</button>
+                        <button class="tablinks" onclick="changeTab(event, 'match')">Matches</button>
+                    </div>
+                    <div id="player" class="tabcontent">
+                        <h2 id="tab_headline" class="tab_headline">Your favorites players</h2>
+                        <table id="table_player_to_page" class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="player_fav">
+                            </tbody>
+                        </table>
+                        <div class="pageNumbers" id="table_player_pages_numbers"></div>
+                    </div>
+                    <div id="team" class="tabcontent">
+                        <h2 id="tab_headline" class="tab_headline">Your favorites teams</h2>
+                        <table id="table_team_to_page" class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="team_fav">
+                            </tbody>
+                        </table>
+                        <div class="pageNumbers" id="table_team_pages_numbers"></div>
+                    </div>
+                    <div id="match" class="tabcontent">
+                        <h2 id="tab_headline" class="tab_headline">Your favorites Matches</h2>
+                        <table id="table_match_to_page" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="match_fav">
+                            </tbody>
+                        </table>
+                        <div class="pageNumbers" id="table_match_pages_numbers"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 </body>
 

@@ -27,7 +27,7 @@ function pageLoad(cb) {
                 img1.title = rank.ign
                 img2.title = rank.team ? rank.team.name : 'Not Specified'
                 teamA.href = rank.team ? `/team/${rank.team.id}` : '#'
-                playerA.href = `/team/${rank.id}`
+                playerA.href = `/player/${rank.id}`
                 teamA.appendChild(img2)
                 div.appendChild(span1)
                 div.appendChild(img1)

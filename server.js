@@ -64,9 +64,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
-//Serving statics files
-app.use('/static', express.static('public'))
-
 //Setting up cookies parser
 app.use(cookieParser())
 
@@ -88,6 +85,9 @@ app.use(session({
 
 //Logger
 app.use(logger())
+
+//Serving statics files
+app.use('/static', express.static('public'))
 
 //Shameless Plug
 app.use((req, res, next) => {
