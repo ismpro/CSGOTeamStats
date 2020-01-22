@@ -9,7 +9,7 @@ module.exports = function () {
     const parseFav = async (favorite) => {
         if (favorite) {
             let parsedplayers = []
-            if (favorite.players && Array.isArray(favorite.players) && favorite.players.lenght > 0) {
+            if (favorite.players && Array.isArray(favorite.players) && favorite.players.length > 0) {
                 for (const id of favorite.players) {
                     let player = await Players.findOne({ id: id })
                     parsedplayers.push({
@@ -21,7 +21,7 @@ module.exports = function () {
                 }
             }
             let parsedteams = []
-            if (favorite.teams && Array.isArray(favorite.teams) && favorite.teams.lenght > 0) {
+            if (favorite.teams && Array.isArray(favorite.teams) && favorite.teams.length > 0) {
                 for (const id of favorite.teams) {
                     let team = await Teams.findOne({ id: id })
                     parsedteams.push({
@@ -32,7 +32,7 @@ module.exports = function () {
                 }
             }
             let parsedmatches = []
-            if (favorite.matches && Array.isArray(favorite.matches) && favorite.matches.lenght > 0) {
+            if (favorite.matches && Array.isArray(favorite.matches) && favorite.matches.length > 0) {
                 for (const id of favorite.matches) {
                     let match = await Match.findOne({ id: id })
                     parsedmatches.push({

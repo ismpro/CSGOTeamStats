@@ -105,7 +105,7 @@ module.exports = function (app, api, transporter) {
 
     app.post('/profile/:id/get', require('./routes/profile/get')())
 
-    app.post('/profile/:id/edit', require('./routes/profile/edit')())
+    app.post('/profile/:id/set', require('./routes/profile/set')())
 
     app.get('/ranking/players', require('./routes/ranking/players')(api))
 

@@ -55,7 +55,7 @@
             </div>
         </div>
         <div id="main">
-            <div class="user_info_container">
+            <div id="user_info_container" class="user_info_container">
                 <div class="user_info">
                     <div id="user_img" class="user_img">
                         <img src="/static/images/kek.png" alt="kek">
@@ -70,9 +70,10 @@
                     <div class="user_name">
                         <p>Name: <span id="user_name"></span></p>
                     </div>
-                    <div class="user_pass"></div>
+                    <div id="user_pass" class="user_pass">
+                    </div>
                 </div>
-                <div class="favorites">
+                <div id="favorites" style="display: none;" class="favorites">
                     <h1>Favorites</h1>
                     <div class="tab">
                         <button class="tablinks" id="defaultTab" onclick="changeTab(event, 'player')">Players</button>

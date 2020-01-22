@@ -1,8 +1,8 @@
 let favs = false
+let editMode = false
 function pageLoad(cb) {
     document.getElementById("defaultTab").click();
     api.post(window.location.pathname + '/get').then(res => {
-        console.log(res.data)
         if (res.data) {
             loadData(res.data)
         } else {
@@ -20,24 +20,92 @@ function pageLoad(cb) {
     }).catch(err => console.log(err))
 }
 
+function buttonEdit() {
+    let button = document.createElement('button')
+    button.id = 'editbutton'
+    button.onclick = () => {
+        let pass_div = document.getElementById('user_pass')
+        let name_div = document.getElementById('user_name')
+        let email_div = document.getElementById('user_email')
+
+        let email = email_div.innerHTML
+        let name = name_div.innerHTML
+        email_div.innerHTML = `<input id="email_form" type="text" placeholder="Email..." value="${email}" >`
+        name_div.innerHTML = `<input id="name_form" type="text" placeholder="Name..." value="${name}" >`
+        pass_div.innerHTML = `<input id="old_pass_form" type="password" placeholder="Old Password..."> <input id="new_pass_form" type="password" placeholder="New Password...">`
+        document.getElementById('editbutton').remove()
+        let span = document.createElement('span')
+        let buttonSave = document.createElement('button')
+        buttonSave.textContent = 'Save'
+        buttonSave.onclick = () => {
+            let emailV = document.getElementById('email_form').value
+            let nameV = document.getElementById('name_form').value
+            let oldV = document.getElementById('old_pass_form').value
+            let newV = document.getElementById('new_pass_form').value
+            if (emailV.length > 0 && nameV.length > 0) {
+                span.remove()
+                buttonEdit()
+                let nameSpLit = nameV.split(" ")
+                api.post(window.location.pathname + '/set', {
+                    email: emailV,
+                    name: [nameSpLit[0], nameSpLit[1]],
+                    password: [oldV, newV]
+                }).then((res) => {
+                    if (typeof res.data === 'object') {
+                        document.getElementById('user_name').textContent = res.data.name
+                        document.getElementById('user_email').textContent = res.data.email
+                        document.getElementById('user_pass').textContent = res.data.pass
+                    }
+                })
+            }
+        }
+        let buttonCancel = document.createElement('button')
+        buttonCancel.textContent = 'Cancel'
+        buttonCancel.onclick = () => {
+            span.remove()
+            buttonEdit()
+            document.getElementById('user_pass').innerHTML = ''
+            document.getElementById('user_name').textContent = name
+            document.getElementById('user_email').textContent = email
+        }
+        span.appendChild(buttonSave)
+        span.appendChild(buttonCancel)
+        document.getElementById('user_img').appendChild(span)
+
+    }
+    button.textContent = 'Edit Profile'
+    document.getElementById('user_img').appendChild(button)
+}
+
 function onsession() {
+    buttonEdit()
     if (favs) {
         loadFavs(favs)
         favs = {}
+        document.getElementById('user_info_container').style.marginTop = "25px";
+        document.getElementById('favorites').style.display = "block"
     } else {
         //Muito mau RIP
         let ti = setInterval(() => {
             if (favs) {
                 clearInterval(ti)
                 loadFavs(favs)
+                document.getElementById('user_info_container').style.marginTop = "25px";
+                document.getElementById('favorites').style.display = "block"
                 favs = {}
             }
         }, 10);
     }
 }
 
-function onlogout() {
 
+function onlogout() {
+    document.getElementById('user_info_container').style.marginTop = "250px";
+    document.getElementById('user_img').lastElementChild.remove()
+    document.getElementById('favorites').style.display = 'none'
+    document.getElementById('player_fav').innerHTML = ''
+    document.getElementById('team_fav').innerHTML = ''
+    document.getElementById('match_fav').innerHTML = ''
 }
 
 function loadData(data) {
@@ -50,7 +118,7 @@ function loadData(data) {
 
 function loadFavs(favs) {
     if (favs.players.length === 0) {
-        document.getElementById('table_player_to_page').innerHTML = 'No Favourites on this category!'
+        document.getElementById('player_fav').innerHTML = 'No Favourites on this category!'
     } else {
         let player_tbody = document.getElementById('player_fav')
         favs.players.forEach(player => {
@@ -79,7 +147,7 @@ function loadFavs(favs) {
     }
 
     if (favs.teams.length === 0) {
-        document.getElementById('table_team_to_page').innerHTML = 'No Favourites on this category!'
+        document.getElementById('team_fav').innerHTML = 'No Favourites on this category!'
     } else {
         let team_tbody = document.getElementById('team_fav')
         favs.teams.forEach(team => {
@@ -108,7 +176,7 @@ function loadFavs(favs) {
     }
 
     if (favs.matches.length === 0) {
-        document.getElementById('table_match_to_page').innerHTML = 'No Favourites on this category!'
+        document.getElementById('match_fav').innerHTML = 'No Favourites on this category!'
     } else {
         let match_tbody = document.getElementById('match_fav')
         favs.matches.forEach(match => {
