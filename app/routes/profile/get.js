@@ -6,6 +6,55 @@ const { formatDate } = require('../../functions')
 
 module.exports = function () {
 
+    const parseFav = async (favorite) => {
+        if (favorite) {
+            let parsedplayers = []
+            if (favorite.players && Array.isArray(favorite.players) && favorite.players.lenght > 0) {
+                for (const id of favorite.players) {
+                    let player = await Players.findOne({ id: id })
+                    parsedplayers.push({
+                        id: player.id,
+                        name: player.name,
+                        ign: player.ign,
+                        image: player.image
+                    })
+                }
+            }
+            let parsedteams = []
+            if (favorite.teams && Array.isArray(favorite.teams) && favorite.teams.lenght > 0) {
+                for (const id of favorite.teams) {
+                    let team = await Teams.findOne({ id: id })
+                    parsedteams.push({
+                        id: team.id,
+                        name: team.name,
+                        logo: team.logo
+                    })
+                }
+            }
+            let parsedmatches = []
+            if (favorite.matches && Array.isArray(favorite.matches) && favorite.matches.lenght > 0) {
+                for (const id of favorite.matches) {
+                    let match = await Match.findOne({ id: id })
+                    parsedmatches.push({
+                        id: match.id,
+                        name: match.event,
+                    })
+                }
+            }
+            return {
+                players: parsedplayers,
+                teams: parsedteams,
+                matches: parsedmatches
+            }
+        } else {
+            return {
+                players: [],
+                teams: [],
+                matches: []
+            }
+        }
+    }
+
     return async function (req, res) {
         let id = req.params.id;
         if (id === '-') {
