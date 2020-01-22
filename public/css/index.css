@@ -2,7 +2,7 @@
     background-color: lightgray;
     color: #16a085;
     /*border: 2px solid black;*/
-    display:inline-block;
+    display: inline-block;
     width: 350px;
     height: 700px;
     margin: 5px;
@@ -11,6 +11,10 @@
 }
 
 .players .player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 250px;
     background-color: gray;
     color: black;
     font-size: 15px;
@@ -22,6 +26,33 @@
     transition: 0.3s;
 }
 
+.player .left-img {
+    width: 30px;
+    height: 40px;
+}
+
+.player .text {
+    margin: 0px 28px;
+    color: black;
+    text-decoration: none;
+}
+
+.player .text:visited,
+.player .text:hover,
+.player .text:active {
+    color: black;
+}
+
+.player .right-img {
+    float: right;
+    width: 40px;
+    height: 40px;
+}
+
+.rank {
+    margin: 15px;
+}
+
 .players .player:hover {
     background-color: rgb(190, 190, 190);
 }
@@ -30,7 +61,7 @@
     background-color: lightgray;
     border-left: 2px solid black;
     border-right: 2px solid black;
-    display:inline-block;
+    display: inline-block;
     color: #16a085;
     padding-left: 10px;
     padding-right: 10px;
@@ -71,10 +102,10 @@
 }
 
 .details .team1 .team1_players {
-   float: left;
-   text-align: left;
-   padding-left: 50px;
-   min-width: 150px;
+    float: left;
+    text-align: left;
+    padding-left: 50px;
+    min-width: 150px;
 }
 
 .details .team1 .logo {
@@ -87,9 +118,9 @@
 }
 
 .details .team2 .team2_players {
-   float: right;
-   text-align: right;
-   padding-right: 50px;
+    float: right;
+    text-align: right;
+    padding-right: 50px;
 }
 
 .details .team2 .logo {
@@ -108,11 +139,11 @@
     border-collapse: collapse;
     border: 1px solid white;
     */
-    table-layout: fixed;    
+    table-layout: fixed;
 }
 
 
-.statistics {
+.searchDiv {
     background-color: white;
     color: black;
     /*border: 2px solid black;*/
@@ -120,4 +151,73 @@
     width: 740px;
     height: 700px;
     margin: 5px;
+}
+
+.searchBar {
+    margin-top: 5px;
+    height: 20px;
+    background-color: white;
+    background-image: url('/static/images/search.png');
+    background-position: 3px 3px;
+    background-repeat: no-repeat;
+    padding-left: 25px;
+}
+
+#search_list p {
+    text-align: center;
+}
+
+.searchBox {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+}
+
+.search-img {
+    width: 60px;
+    height: 60px;
+    vertical-align: middle;
+    border-style: none;
+    background-color: rgb(199, 199, 199);
+}
+
+.search-header {
+    background-color: #f6f6f9;
+    color: rgba(53, 53, 53, .5);
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+.search-info {
+    margin-left: 10px;
+}
+
+.search-text {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.search-text-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 5px;
+    color: #2d6da3;
+}
+
+.search-text-link:hover {
+    text-decoration: underline;
+}
+
+.search-text-link:visited,
+.search-text-link:active {
+    color: #2d6da3;
 }

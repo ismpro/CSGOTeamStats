@@ -66,7 +66,7 @@ const getLastResults = async function (recent) {
     return parsedLastResults
 }
 
-module.exports = function () {
+module.exports = function (api) {
     return function (req, res) {
         let id = req.params.id;
         Teams.findOne({
@@ -78,9 +78,9 @@ module.exports = function () {
                     code: code.iso2,
                     name: code.country
                 } : {
-                    code: 'World',
-                    name: 'World'
-                }
+                        code: 'World',
+                        name: 'World'
+                    }
                 Promise.all([getPlayer(team.players), getLastResults(team.recentResults)]).then(data => {
                     Comment.find({
                         type: 'team',

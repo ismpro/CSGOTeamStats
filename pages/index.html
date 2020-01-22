@@ -41,16 +41,29 @@
                 <a href="/login" class="loginButton">Log in</a>
             </span>
         </header>
+        <div class="footer">
+            <div class="footer-container">
+                <div class="left">
+                    <p>Authors: Ismael Lourenço e Alexendre Oliveira</p>
+                </div>
+                <div class="right">
+                    <p>Disclaimer: All information is from <a href="https://www.hltv.org/">www.hltv.org</a> and
+                        extracted using <a href="https://www.npmjs.com/package/hltv">HLTV Node.js API</a></p>
+                </div>
+            </div>
+        </div>
+
         <div id="main">
             <div style="text-align: center; width: 100%; display: flex; padding: 5px">
                 <div style="text-align: center; width: 100%; display: flex; padding: 5px">
 
-                    <div class="statistics">
+                    <div class="searchDiv">
                         <form onsubmit="javascript:search(event)">
-                            <input type="text" onkeyup="javascript:search(event)" id="search_string">
+                            <input type="text" class="searchBar" onkeyup="javascript:search(event)" id="search_string">
                         </form>
-                        <ul id="search_list">
-                        </ul>
+                        <div id="search_list">
+                            <p>Type to search</p>
+                        </div>
                     </div>
 
                     <!-- JOGOS -->
@@ -341,31 +354,12 @@
                     <!-- JOGADORES EM DESTAQUE -->
                     <div class="players">
                         <h1 style="color: black">Featured Players</h1>
-                        <div class="player">
-                            <table>
-                                <td><img src="/static/images/logo-jogador.png" style="width: 30px; height: 40px;"></td>
-                                <td style="min-width: 250px; text-align: left;">dupreeh</td>
-                                <td><img src="/static/images/logo-team.png" style="width: 40px; height: 40px;"></td>
-                            </table>
+                        <div id="top_players">
+                            <span>Server Error</span>
                         </div>
-                        <div class="player">
-                            <table>
-                                <td><img src="/static/images/logo-jogador.png" style="width: 30px; height: 40px;"></td>
-                                <td style="min-width: 250px; text-align: left;">karrigan</td>
-                                <td><img src="/static/images/logo-team.png" style="width: 40px; height: 40px;"></td>
-                            </table>
-                        </div>
-                        <div class="player">
-                            <table>
-                                <td><img src="/static/images/logo-jogador.png" style="width: 30px; height: 40px;"></td>
-                                <td style="min-width: 250px; text-align: left;">fox</td>
-                                <td><img src="/static/images/logo-team.png" style="width: 40px; height: 40px;"></td>
-                            </table>
-                        </div>
-
                     </div>
                 </div>
-                <script src="/static/scripts/index.js"></script>
+                <script src="/static/scripts/index.js"> </script>
 </body>
 
 </html>

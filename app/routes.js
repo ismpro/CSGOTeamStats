@@ -36,7 +36,7 @@ const checkAdminSession = (req, res, next) => {
             }
         })
     } else {
-        res.status(401).redirect('Unauthorized')
+        res.status(401).send('Unauthorized')
     } */
 }
 
@@ -62,6 +62,7 @@ module.exports = function (app, api, transporter) {
     app.get('/match/:id', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'match.html'))
     })
+
     app.get('/admin', function (req, res) {
         if (req.query.accesspin == app.get('pin')) {
             res.status(200).sendFile(path.join(global.appRoot, 'pages', 'admin.html'))
@@ -69,6 +70,8 @@ module.exports = function (app, api, transporter) {
             res.status(401).send('<h1>Request Unauthorized</h1>')
         }
     })
+
+    app.get('/ranking/players', require('./routes/ranking/players')(api))
 
     app.post('/email', require('./routes/email')(transporter));
 
@@ -114,11 +117,11 @@ module.exports = function (app, api, transporter) {
 
     app.post('/fav', require('./routes/fav/post')());
 
-    app.post('/player/:id', require('./routes/player-post')())
+    app.post('/player/:id', require('./routes/player-post')(api))
 
-    app.post('/team/:id', require('./routes/team-post')())
+    app.post('/team/:id', require('./routes/team-post')(api))
 
-    app.post('/match/:id', require('./routes/match-post')())
+    app.post('/match/:id', require('./routes/match-post')(api))
 
     app.post('/comment/create', require('./routes/comment/create')())
 
