@@ -179,6 +179,8 @@ module.exports = function (app, api, transporter) {
 
     app.get('/addMatch', require('./routes/addMatch')(app, api))
 
+    app.post('/results', require('./routes/results')())
+
     app.get('/getresquestlogs', function (req, res) {
         let pin = req.query.pin;
         if (app.get('pin') === pin) {
