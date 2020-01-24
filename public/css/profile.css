@@ -1,0 +1,161 @@
+.user_not_found {
+    position: absolute;
+    margin-top: 30px;
+    left: calc(50% - 150px);
+    padding: 10px;
+    z-index: 2;
+}
+
+.user_info_container {
+    position: absolute;
+    margin-top: 250px;
+    left: calc(50% - 400px);
+    height: 350px;
+    width: 700px;
+    padding: 10px;
+    z-index: 1;
+}
+
+.user_info {
+    box-shadow: 0 1px 2px 0 rgba(50, 50, 50, .4);
+    background-color: #fff;
+    transition: .2s ease;
+    margin-bottom: 10px;
+    padding-right: 16px;
+    height: inherit;
+    width: inherit;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.user_img {
+   width: 100%;
+    height: 100%;
+    max-width: 192px;
+    margin: 0 auto;
+    z-index: 4;
+    position: relative;
+    overflow: hidden;
+    grid-area: 1 / 1 / 3 / 2;
+    text-align: center;
+}
+
+ .user_img img {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    align-self: flex-center;
+    max-width: 192px;
+    margin: 15px auto;
+    z-index: 4;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px 0 rgba(50, 50, 50, .4);
+}
+
+.user_creation {
+    grid-area: 3 / 1 / 4 / 2;
+    text-align: center;
+}
+
+.user_email {
+    grid-area:  1 / 2 / 2 / 3; 
+    text-align: left;
+    margin-top: 30px;
+}
+
+.user_name {
+    grid-area:  2 / 2 / 3 / 3;
+    text-align: left;
+    margin-top: 30px;
+}
+
+.user_pass {
+    grid-area: 3 / 2 / 4 / 3;
+    text-align: left;
+    margin-top: 30px;
+}
+
+.favorites{
+    margin-bottom: 100px;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    width: inherit;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 2px solid rgb(180, 180, 180);
+    border-top: none;
+}
+
+.tab_headline {
+    color: rgba(53, 53, 53, .65);
+}
+
+.table {
+    margin-top: 20px;
+    width: 100%;
+    empty-cells: show;
+}
+
+.table thead {
+    text-align: left;
+}
+
+.table tbody tr td {
+    min-width: 150px;
+    height: 35px;
+}
+
+.fav-img {
+    width: 60px;
+    height: 60px;
+    vertical-align: middle;
+    border-style: none;
+    background-color: rgb(199, 199, 199);
+}
+
+.search-text-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 5px;
+    color: #2d6da3;
+}
+
+.search-text-link:hover {
+    text-decoration: underline;
+}
+
+.search-text-link:visited,
+.search-text-link:active {
+    color: #2d6da3;
+}

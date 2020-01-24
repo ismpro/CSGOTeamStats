@@ -2,43 +2,90 @@
 let searching = false;
 
 function pageLoad(cb) {
-    api.get('/ranking/players').then(res => {
-        if (res.status === 200) {
-            let ranking = res.data;
-            let mainDiv = document.getElementById('top_players')
-            mainDiv.innerHTML = ""
-            let count = 1
-            for (const rank of ranking) {
-                let div = document.createElement('div')
-                div.classList.add('player')
-                let span1 = document.createElement('span')
-                let playerA = document.createElement('a')
-                let teamA = document.createElement('a')
-                let img1 = document.createElement('img')
-                let img2 = document.createElement('img')
-                span1.classList.add('rank')
-                playerA.classList.add('text')
-                img1.classList.add('left-img')
-                img2.classList.add('right-img')
-                span1.innerHTML = '#' + count
-                playerA.innerHTML = rank.ign
-                img1.src = rank.image ? rank.image : "/static/images/logo-jogador.png";
-                img2.src = rank.team ? rank.team.logo : "/static/images/logo-team.png";
-                img1.title = rank.ign
-                img2.title = rank.team ? rank.team.name : 'Not Specified'
-                teamA.href = rank.team ? `/team/${rank.team.id}` : '#'
-                playerA.href = `/team/${rank.id}`
-                teamA.appendChild(img2)
-                div.appendChild(span1)
-                div.appendChild(img1)
-                div.appendChild(playerA)
-                div.appendChild(teamA)
-                mainDiv.appendChild(div)
-                count++
+
+    Promise.all([api.get('/ranking/players'), api.post('/results', { limit: 5 })])
+        .then(res => {
+            let rankRes = res[0]
+            let lastRes = res[1]
+            if (rankRes.status === 200) {
+                let ranking = rankRes.data;
+                let mainDiv = document.getElementById('top_players')
+                mainDiv.innerHTML = ""
+                let count = 1
+                for (const rank of ranking) {
+                    let div = document.createElement('div')
+                    div.classList.add('player')
+                    let span1 = document.createElement('span')
+                    let playerA = document.createElement('a')
+                    let teamA = document.createElement('a')
+                    let img1 = document.createElement('img')
+                    let img2 = document.createElement('img')
+                    span1.classList.add('rank')
+                    playerA.classList.add('text')
+                    img1.classList.add('left-img')
+                    img2.classList.add('right-img')
+                    span1.innerHTML = '#' + count
+                    playerA.innerHTML = rank.ign
+                    img1.src = rank.image ? rank.image : "/static/images/logo-jogador.png";
+                    img2.src = rank.team ? rank.team.logo : "/static/images/logo-team.png";
+                    img1.title = rank.ign
+                    img2.title = rank.team ? rank.team.name : 'Not Specified'
+                    teamA.href = rank.team ? `/team/${rank.team.id}` : '#'
+                    playerA.href = `/player/${rank.id}`
+                    teamA.appendChild(img2)
+                    div.appendChild(span1)
+                    div.appendChild(img1)
+                    div.appendChild(playerA)
+                    div.appendChild(teamA)
+                    mainDiv.appendChild(div)
+                    count++
+                }
+
             }
-            cb()
-        }
-    })
+            if (lastRes.status === 200) {
+                let results = lastRes.data;
+                console.log(results)
+                let main_div = document.getElementById('results')
+                for (const result of results) {
+                    let matchDiv = document.createElement('div')
+                    matchDiv.classList.add('match')
+                    let table = document.createElement('table')
+                    let td1 = document.createElement('td')
+                    td1.textContent = formatDate(result.date)
+                    let td2 = document.createElement('td')
+                    td2.textContent = result.team1.name
+                    td2.setAttribute("style", "min-width: 250px; text-align: right;");
+                    let td3 = document.createElement('td')
+                    td3.innerHTML = `<img alt="${result.team1.name}" src="https://static.hltv.org/images/team/logo/${result.team1.id}"
+                                            style="width: 20px; height: 20px" title="${result.team1.name}">`
+                    let td4 = document.createElement('td')
+                    td4.classList.add('result')
+                    td4.innerHTML = `<span>0</span> VS <span>2</span>`
+                    let td5 = document.createElement('td')
+                    td5.innerHTML = `<img alt="${result.team2.name}" src="https://static.hltv.org/images/team/logo/${result.team2.id}"
+                                            style="width: 20px; height: 20px" title="${result.team2.name}">`
+                    let td6 = document.createElement('td')
+                    td6.textContent = result.team2.name
+                    td6.setAttribute("style", "min-width: 300px; text-align: left;");
+                    let td7 = document.createElement('td')
+                    td7.innerHTML = `<a href="/match/${result.id}"><img src="/static/images/game-details.png"
+                                                style="width: 15px; height: 15px; float: right"></a>`
+                    table.appendChild(td1)
+                    table.appendChild(td2)
+                    table.appendChild(td3)
+                    table.appendChild(td4)
+                    table.appendChild(td5)
+                    table.appendChild(td6)
+                    table.appendChild(td7)
+                    main_div.appendChild(table)
+                }
+            }
+
+            if (lastRes.status === 200
+                && rankRes.status === 200) {
+                cb()
+            }
+        })
 }
 
 function search(e) {

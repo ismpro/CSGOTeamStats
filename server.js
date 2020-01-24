@@ -42,6 +42,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
+    //api.fetchMatchMapStatsById(96202).then(res => console.log(res.playerStats))
 });
 
 //Mailer
@@ -64,9 +65,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
-//Serving statics files
-app.use('/static', express.static('public'))
-
 //Setting up cookies parser
 app.use(cookieParser())
 
@@ -88,6 +86,9 @@ app.use(session({
 
 //Logger
 app.use(logger())
+
+//Serving statics files
+app.use('/static', express.static('public'))
 
 //Shameless Plug
 app.use((req, res, next) => {

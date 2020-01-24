@@ -96,7 +96,6 @@ function favAnimation(type, fav) {
 
 function loadData(data) {
     let teamData = data.team
-    console.log(teamData)
     data = data.player
     let imagetag = document.getElementById('player_image')
     imagetag.src = data.image || '/static/images/logo-jogador.png'

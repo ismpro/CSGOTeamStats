@@ -2,7 +2,7 @@
 const path = require('path');
 const User = require('./models/Users.js')
 
-//Redirect Functions - Protection layer
+//Redirect Function for when you are log in
 const redirectHome = (req, res, next) => {
     if (req.session.userid) {
         User.findById(req.session.userid, (err, user) => {
@@ -10,12 +10,34 @@ const redirectHome = (req, res, next) => {
                 res.status(500).send(err.message)
             } else {
                 if (user && user.atribuitesessionid === req.session.sessionId) {
-                    res.status(200).redirect('/')
+                    res.redirect('/')
                 } else {
                     next()
                 }
             }
         })
+    } else {
+        next()
+    }
+}
+
+const redirectProfile = (req, res, next) => {
+    if (req.params.id === '-') {
+        if (req.session.userid) {
+            User.findById(req.session.userid, (err, user) => {
+                if (err) {
+                    res.status(500).send(err.message)
+                } else {
+                    if (user && user.atribuitesessionid === req.session.sessionId) {
+                        next()
+                    } else {
+                        res.redirect('/')
+                    }
+                }
+            })
+        } else {
+            res.redirect('/')
+        }
     } else {
         next()
     }
@@ -44,21 +66,31 @@ module.exports = function (app, api, transporter) {
     app.get('/', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'index.html'))
     })
+
     app.get('/login', redirectHome, function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'login.html'))
     })
+
     app.get('/results', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'results.html'))
     })
+
     app.get('/contact', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'contact.html'))
     })
+
+    app.get('/profile/:id', redirectProfile, function (req, res) {
+        res.status(200).sendFile(path.join(global.appRoot, 'pages', 'profile.html'))
+    })
+
     app.get('/player/:id', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'player.html'))
     })
+
     app.get('/team/:id', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'team.html'))
     })
+
     app.get('/match/:id', function (req, res) {
         res.status(200).sendFile(path.join(global.appRoot, 'pages', 'match.html'))
     })
@@ -70,6 +102,10 @@ module.exports = function (app, api, transporter) {
             res.status(401).send('<h1>Request Unauthorized</h1>')
         }
     })
+
+    app.post('/profile/:id/get', require('./routes/profile/get')())
+
+    app.post('/profile/:id/set', require('./routes/profile/set')())
 
     app.get('/ranking/players', require('./routes/ranking/players')(api))
 
@@ -142,6 +178,8 @@ module.exports = function (app, api, transporter) {
     app.get('/fetchAllInfo', require('./routes/fetchAllInfo')(app, api))
 
     app.get('/addMatch', require('./routes/addMatch')(app, api))
+
+    app.post('/results', require('./routes/results')())
 
     app.get('/getresquestlogs', function (req, res) {
         let pin = req.query.pin;
