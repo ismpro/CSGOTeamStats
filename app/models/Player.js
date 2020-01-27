@@ -35,11 +35,11 @@ let playersSchema = Schema({
         }
     }, ],
 }, {
-    collection: 'Players'
+    collection: 'Player'
 });
 
 playersSchema.virtual('fullName').get(function () {
     return this.first_name + ' ' + this.last_name;
 });
 
-module.exports = mongoose.model('Players', playersSchema);
+module.exports = mongoose.model('Player', playersSchema);

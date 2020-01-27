@@ -12,7 +12,7 @@ let linkSchema = Schema({
     },
     expireDate: Date
 }, {
-    collection: 'Links'
+    collection: 'Link'
 });
 
 module.exports = mongoose.model('Link', linkSchema);

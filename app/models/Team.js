@@ -23,7 +23,7 @@ let teamsSchema = Schema({
         result: String
     }]
 }, {
-    collection: 'Teams'
+    collection: 'Team'
 });
 
-module.exports = mongoose.model('Teams', teamsSchema);
+module.exports = mongoose.model('Team', teamsSchema);

@@ -1,8 +1,8 @@
 const {
     formatDate
 } = require('../../functions.js')
-const Players = require('../../models/Players')
-const Teams = require('../../models/Teams')
+const Players = require('../../models/Player')
+const Teams = require('../../models/Team')
 
 module.exports = function (api) {
 

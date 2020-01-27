@@ -1,23 +1,59 @@
 const {
     parseComments
 } = require('../functions.js');
-const Teams = require('../models/Teams.js');
-const Players = require('../models/Players.js');
-const Comment = require('../models/Comments.js');
+const Teams = require('../models/Team.js/index.js');
+const Players = require('../models/Player.js/index.js');
+const Comment = require('../models/Comment.js/index.js');
 
-const getTeam = async (id) => {
+const getTeam = (id) => {
     return new Promise((resolve, reject) => {
         Teams.findOne({
             id: id
         }, function (err, team) {
-            if (!err && team) {
-                resolve({
-                    id: team.id,
-                    name: team.name,
-                    logo: team.logo,
-                })
+            if (!err) {
+                if (team) {
+                    resolve({
+                        id: team.id,
+                        name: team.name,
+                        logo: team.logo
+                    })
+                } else {
+                    this.fetchTeamById(id).then(unparsedTeam => {
+                        if (unparsedTeam.players && Array.isArray(unparsedTeam.players) && unparsedTeam.players.length < 5) {
+                            for (let index = unparsedTeam.players.length + 1; index >= 5; index++) {
+                                unparsedTeam.players.length[index] = {
+                                    id: 0,
+                                    name: ''
+                                }
+                            }
+                        }
+                        let parsedTeam = {
+                            id: unparsedTeam.id,
+                            name: unparsedTeam.name,
+                            logo: unparsedTeam.logo,
+                            location: unparsedTeam.location,
+                            facebook: unparsedTeam.facebook,
+                            twitter: newunparsedTeamTeam.twitter,
+                            rank: unparsedTeam.rank,
+                            players: unparsedTeam.players.map(player => ({
+                                id: Number.isNaN(player.id) ? 0 : player.id,
+                                name: player.name || ''
+                            })),
+                            recentResults: team.recentResults
+                        }
+                        let newTeam = new Teams(parsedTeam)
+                        newTeam.save()
+                        resolve({
+                            id: parsedTeam.id,
+                            name: parsedTeam.name,
+                            logo: parsedTeam.logo
+                        })
+                    }).catch(() => {
+                        resolve(null)
+                    })
+                }
             } else {
-                reject(err.message)
+                reject(null)
             }
         })
     })

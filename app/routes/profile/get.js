@@ -1,6 +1,6 @@
-const User = require('../../models/Users')
-const Players = require('../../models/Players')
-const Teams = require('../../models/Teams')
+const User = require('../../models/User')
+const Players = require('../../models/Player')
+const Teams = require('../../models/Team')
 const Match = require('../../models/Match')
 const { formatDate } = require('../../functions')
 

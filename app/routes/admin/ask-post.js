@@ -1,8 +1,8 @@
 const {
     createid
 } = require('../../functions.js');
-const User = require('../../models/Users.js');
-const Link = require('../../models/Links.js');
+const User = require('../../models/User.js/index.js');
+const Link = require('../../models/Link.js/index.js');
 
 module.exports = function (transporter) {
     return function (req, res) {

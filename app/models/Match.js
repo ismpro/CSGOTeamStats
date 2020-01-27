@@ -112,7 +112,7 @@ let matchSchema = Schema({
         team2: [playerStats]
     }
 }, {
-    collection: 'Matches'
+    collection: 'Match'
 });
 
 module.exports = mongoose.model('Match', matchSchema);
