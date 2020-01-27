@@ -34,7 +34,6 @@ let matchSchema = Schema({
     },
     date: Date,
     format: String,
-    additionalInfo: String,
     event: String,
     maps: [{
         map: String,
@@ -53,15 +52,8 @@ let matchSchema = Schema({
             id: Number
         }]
     },
-    streams: [{
-        name: String,
-        link: String,
-        viewers: Number
-    }],
-    live: Boolean,
     status: String,
     title: String,
-    hasScorebot: Boolean,
     highlightedPlayer: {
         name: String,
         id: Number

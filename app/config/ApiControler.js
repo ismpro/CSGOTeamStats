@@ -9,7 +9,7 @@ const Match = require('../models/Match')
 
 class ApiControler {
     constructor() {
-        this.secheduleUpdatedJob = schedule.scheduleJob({
+        /* this.secheduleUpdatedJob = schedule.scheduleJob({
             hour: 0,
             minute: 1
         }, () => {
@@ -17,7 +17,7 @@ class ApiControler {
         });
         this.secheduleFetchLastInfoJob = schedule.scheduleJob('01 * * * *', () => {
             this.fetchAllInfo(1)
-        });
+        }); */
     }
 
     updateAll() {
