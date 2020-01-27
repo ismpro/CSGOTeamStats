@@ -225,7 +225,7 @@ class ApiControler {
                         matchCount = 0
                     }
                     console.log('Match: ' + matchIt)
-                    //let infoAll = await this.fetchAllInfoFromMatch(id)
+                    let infoAll = await this.fetchAllInfoFromMatch(id)
                     info.push(infoAll)
                 } catch (error) {
                     console.log(error.message)
