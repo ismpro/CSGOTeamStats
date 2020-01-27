@@ -1,7 +1,7 @@
 const Teams = require('../models/Team');
 const Players = require('../models/Player');
-const Comment = require('../models/Comment.js/index.js');
-const User = require('../models/User.js/index.js');
+const Comment = require('../models/Comment');
+const User = require('../models/User');
 const Match = require('../models/Match');
 const {
     formatDate,

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const path = require('path');
-const User = require('./models/User.js/index.js')
+const User = require('./models/User')
 
 //Redirect Function for when you are log in
 const redirectHome = (req, res, next) => {

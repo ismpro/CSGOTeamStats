@@ -1,9 +1,9 @@
 const {
     parseComments
 } = require('../functions.js');
-const Teams = require('../models/Team.js/index.js');
-const Players = require('../models/Player.js/index.js');
-const Comment = require('../models/Comment.js/index.js');
+const Teams = require('../models/Team');
+const Players = require('../models/Player');
+const Comment = require('../models/Comment');
 
 const getTeam = (id) => {
     return new Promise((resolve, reject) => {

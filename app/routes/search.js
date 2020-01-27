@@ -1,5 +1,5 @@
-const Teams = require('../models/Team.js/index.js');
-const Players = require('../models/Player.js/index.js');
+const Teams = require('../models/Team');
+const Players = require('../models/Player');
 
 module.exports = function () {
     return function (req, res) {

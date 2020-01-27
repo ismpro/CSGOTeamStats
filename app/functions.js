@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path')
-const User = require('./models/User.js/index.js')
+const User = require('./models/User')
 
 function validateEmail(email) {
     // eslint-disable-next-line

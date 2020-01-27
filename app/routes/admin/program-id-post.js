@@ -1,5 +1,5 @@
-const User = require('../../models/User.js/index.js');
-const Link = require('../../models/Link.js/index.js');
+const User = require('../../models/User');
+const Link = require('../../models/Link');
 
 module.exports = function () {
     return function (req, res) {
