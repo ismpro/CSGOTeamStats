@@ -32,7 +32,7 @@ console.log(chalk.green(`  Node Mode: ${(global.NODE_MODE ? 'DEV' : 'PRD')}`));
 //Hltv API
 let api = new ApiControler();
 //api.fetchAllInfoFromMatch(2339061).then(res => console.log(res))
-api.updateAll()
+//api.updateAll()
 
 //MongoDB
 mongoose.set('useFindAndModify', false);
