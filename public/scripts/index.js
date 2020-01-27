@@ -78,6 +78,18 @@ function pageLoad(cb) {
                     table.appendChild(td6)
                     table.appendChild(td7)
                     main_div.appendChild(table)
+
+                    //--------------------------------------------------------------------------------------//
+
+                    let detailsDiv = document.createElement('div')
+                    detailsDiv.classList.add('details')
+
+                    
+
+
+
+
+
                 }
             }
 
