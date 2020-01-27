@@ -4,20 +4,23 @@ module.exports = function (app, api) {
     return async function (req, res) {
         let pin = req.query.pin;
         let id = req.query.id;
-        if (app.get('pin') === pin) {
+        if (true) {
             let match = await Match.findOne({
                 id: id
             })
-            if (match) {
+            if (!match) {
                 res.status(200).send('Starting to add match')
                 try {
                     await api.fetchAllInfoFromMatch(id)
                     console.log('done')
                 } catch (error) {
-                    console.log(error.message)
+                    console.log(error)
                 }
             } else {
-                res.status(200).send('Match already in db')
+                let matchDeleted = await Match.deleteOne({
+                    id: id
+                })
+                res.status(200).send(matchDeleted)
             }
         } else {
             res.status(403).send('Unauthorized')

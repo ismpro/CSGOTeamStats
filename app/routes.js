@@ -177,7 +177,7 @@ module.exports = function (app, api, transporter) {
 
     app.get('/fetchAllInfo', require('./routes/fetchAllInfo')(app, api))
 
-    app.get('/addMatch', require('./routes/addMatch')(app, api))
+    app.get('/addmatch', require('./routes/addMatch')(app, api))
 
     app.post('/results', require('./routes/results')())
 
