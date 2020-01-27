@@ -31,6 +31,8 @@ console.log(chalk.green(`  Node Mode: ${(global.NODE_MODE ? 'DEV' : 'PRD')}`));
 
 //Hltv API
 let api = new ApiControler();
+//api.fetchAllInfoFromMatch(2339061).then(res => console.log(res))
+api.updateAll()
 
 //MongoDB
 mongoose.set('useFindAndModify', false);
@@ -42,7 +44,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
-    //api.fetchMatchMapStatsById(96202).then(res => console.log(res.playerStats))
+
 });
 
 //Mailer

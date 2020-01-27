@@ -24,10 +24,8 @@ class ApiControler {
         return new Promise(resolve => {
             let playersCursor = Players.find({}).cursor();
             let teamsCursor = Teams.find({}).cursor();
-            let matchCursor = Match.find({}).cursor();
             let playerSaved = 0
             let teamSaved = 0
-            let matchSaved = 0
             let playerUpdater = playersCursor
                 .eachAsync(player => {
                     return new Promise(resolve => {
@@ -37,7 +35,7 @@ class ApiControler {
                                 playerSaved++
                                 console.log('\nPlayers Saved: ' + playerSaved)
                                 resolve()
-                            })
+                            }).catch(err => resolve())
                         })
                     })
                 })
@@ -52,56 +50,10 @@ class ApiControler {
                                 console.log('\nTeams Saved: ' + teamSaved)
                                 resolve()
                             })
-                        })
+                        }).catch(err => resolve())
                     })
                 })
-            let matchUpdater = matchCursor
-                .eachAsync(match => {
-                    return new Promise(resolve => {
-                        Promise.all([this.fetchMatchById(match.id), this.fetchMatchesStatsById(match.statsId)]).then(data => {
-                            let match = data[0]
-                            let matchStats = data[1]
-                            let parsedMatch = {
-                                id: match.id,
-                                statsId: match.statsId,
-                                team1: match.team1,
-                                team2: match.team2,
-                                winnerTeam: match.winnerTeam,
-                                date: new Date(match.date),
-                                format: match.format,
-                                additionalInfo: match.additionalInfo,
-                                event: match.event.name,
-                                maps: match.maps,
-                                players: match.players,
-                                streams: match.streams,
-                                live: match.live,
-                                status: match.status,
-                                title: match.title,
-                                hasScorebot: match.hasScorebot,
-                                highlightedPlayer: match.highlightedPlayer,
-                                vetoes: match.vetoes,
-                                highlights: match.highlights,
-                                demos: match.demos,
-                                overview: {
-                                    mostKills: matchStats.overview.mostKills,
-                                    mostDamage: matchStats.overview.mostDamage,
-                                    mostAssists: matchStats.overview.mostAssists,
-                                    mostAWPKills: matchStats.overview.mostAWPKills,
-                                    mostFirstKills: matchStats.overview.mostFirstKills,
-                                    bestRating: matchStats.overview.bestRating
-                                },
-                                playerStats: matchStats.playerStats
-                            }
-                            match.set(parsedMatch)
-                            match.save(() => {
-                                matchSaved++
-                                console.log('\nMatches Saved: ' + matchSaved)
-                                resolve()
-                            })
-                        })
-                    })
-                })
-            Promise.all([playerUpdater, teamUpdater, matchUpdater]).then(() => {
+            Promise.all([playerUpdater, teamUpdater]).then(() => {
                 console.log('Update Complete')
                 resolve()
             })
@@ -111,6 +63,17 @@ class ApiControler {
     async fetchAllInfoFromMatch(id) {
         let match = await this.fetchMatchById(id)
         let matchStats = await this.fetchMatchesStatsById(match.statsId)
+        let mapsInfo = []
+        for (const map of match.maps) {
+            let mapInfo = await this.fetchMatchMapStatsById(map.statsId)
+            mapsInfo.push({
+                map: mapInfo.map,
+                team1: mapInfo.team1,
+                team2: mapInfo.team2,
+                playerStats: mapInfo.playerStats,
+                performanceOverview: mapInfo.performanceOverview
+            })
+        }
         let parsedMatch = {
             id: match.id,
             statsId: match.statsId,
@@ -121,7 +84,7 @@ class ApiControler {
             format: match.format,
             additionalInfo: match.additionalInfo,
             event: match.event.name,
-            maps: match.maps,
+            maps: mapsInfo,
             players: match.players,
             streams: match.streams,
             live: match.live,
@@ -240,7 +203,6 @@ class ApiControler {
             teams: teams,
             players: players
         }
-
     }
 
     async fetchAllInfo(pages) {
