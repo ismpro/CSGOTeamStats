@@ -212,9 +212,10 @@ class ApiControler {
         let matchIt = 0
         let matchCount = 0
         for (const id of results) {
-            let foundedMatch = Match.findOne({
+            let foundedMatch = await Match.findOne({
                 id: id
             })
+            console.log(foundedMatch)
             if (!foundedMatch) {
                 try {
                     matchIt++
@@ -224,7 +225,7 @@ class ApiControler {
                         matchCount = 0
                     }
                     console.log('Match: ' + matchIt)
-                    let infoAll = await this.fetchAllInfoFromMatch(id)
+                    //let infoAll = await this.fetchAllInfoFromMatch(id)
                     info.push(infoAll)
                 } catch (error) {
                     console.log(error.message)
