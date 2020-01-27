@@ -1,4 +1,4 @@
-const User = require('../models/Users')
+const User = require('../models/User')
 
 module.exports = function (transporter) {
     return function (req, res) {

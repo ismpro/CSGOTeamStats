@@ -1,7 +1,7 @@
 const {
     parseComments
 } = require('../../functions.js');
-const Comment = require('../../models/Comments.js');
+const Comment = require('../../models/Comment.js/index.js');
 
 module.exports = function () {
     return function (req, res) {

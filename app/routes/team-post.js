@@ -1,7 +1,7 @@
-const Teams = require('../models/Teams');
-const Players = require('../models/Players');
-const Comment = require('../models/Comments.js');
-const User = require('../models/Users.js');
+const Teams = require('../models/Team');
+const Players = require('../models/Player');
+const Comment = require('../models/Comment.js/index.js');
+const User = require('../models/User.js/index.js');
 const Match = require('../models/Match');
 const {
     formatDate,
@@ -26,16 +26,20 @@ const getPlayer = async function (players) {
                 country: playerInfo.country
             })
         } else {
-            parsedPlayer.push({
-                id: player.id,
-                name: 'Not Specify',
-                fullName: 'Not Specify',
-                image: 'https://csgoteamstats.herokuapp.com/static/images/unimage-player.svg',
-                country: {
-                    code: 'world',
-                    name: 'world',
-                }
-            })
+            api.fetchPlayerById(player.id)
+                .then(player => {
+                    let newPlayer = new Players(player)
+                    newPlayer.save()
+                    parsedPlayer.push({
+                        id: newPlayer.id,
+                        name: newPlayer.ign,
+                        fullName: newPlayer.name,
+                        image: newPlayer.image,
+                        country: newPlayer.country
+                    })
+                }).catch(() => {
+                    res.status(200).send(false)
+                })
         }
     }
     return parsedPlayer

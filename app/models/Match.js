@@ -37,9 +37,11 @@ let matchSchema = Schema({
     additionalInfo: String,
     event: String,
     maps: [{
-        name: String,
-        result: String,
-        statsId: Number
+        map: String,
+        team1: Schema.Types.Mixed,
+        team2: Schema.Types.Mixed,
+        playerStats: Schema.Types.Mixed,
+        performanceOverview: Schema.Types.Mixed
     }],
     players: {
         team1: [{
@@ -110,7 +112,7 @@ let matchSchema = Schema({
         team2: [playerStats]
     }
 }, {
-    collection: 'Matches'
+    collection: 'Match'
 });
 
 module.exports = mongoose.model('Match', matchSchema);

@@ -1,5 +1,5 @@
 const Match = require('../models/Match');
-const Players = require('../models/Players');
+const Players = require('../models/Player');
 const {
     byCountry
 } = require('country-code-lookup')
