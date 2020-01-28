@@ -66,7 +66,7 @@ function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
     document.getElementById("playerFav").innerHTML = ''
     let group_buttons = document.getElementsByName('buttons_comments')
-    if (group_buttons.length > 1) {
+    if (group_buttons.length > 0) {
         for (const group_button of group_buttons) {
             group_button.remove()
         }
@@ -213,10 +213,10 @@ function loadComments() {
         if (comment.hasEdit) {
             html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
         }
-        if (comment.user === 'anon') {
-            html += 'Anonymous'
+        if (typeof comment.user === 'anon') {
+            html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
         } else {
-            html += `<a href="#">${comment.user}</a>`
+            html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
         }
         if (comment.isFromUser || admin) {
             html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`

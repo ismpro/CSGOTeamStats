@@ -161,7 +161,15 @@ exports.parseComments = async function (comments, id) {
             name = 'anon'
         } else {
             let user = await User.findById(comment.user)
-            name = user.firstName
+            if (user) {
+                name = {
+                    name: user.firstName,
+                    id: user._id
+                }
+            } else {
+                name = "del"
+            }
+
         }
         parseComments.push({
             id: comment._id,
