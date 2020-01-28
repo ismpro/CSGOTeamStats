@@ -18,7 +18,7 @@ let playerStats = Schema({
 })
 
 let matchSchema = Schema({
-    id: Number,
+    id: { type: Number, index: true, unique: true, required: true },
     statsId: Number,
     team1: {
         name: String,

@@ -74,7 +74,7 @@ function onChangeChk(element, type) {
         case 'team':
             api.post('/admin/info/team/get').then(res => {
                 if (typeof res.data === 'object' && res.status === 200) {
-                    createTable(type, res.data, table, ['recentResults', '__v'])
+                    createTable('team', res.data, table, ['recentResults', '__v'])
                 } else {
                     //console.log(err)
                 }
@@ -83,7 +83,7 @@ function onChangeChk(element, type) {
         case 'player':
             api.post('/admin/info/player/get').then(res => {
                 if (typeof res.data === 'object' && res.status === 200) {
-                    createTable(type, res.data, table, ['achievements', '__v'])
+                    createTable('player', res.data, table, ['achievements', '__v'])
                 } else {
                     //console.log(err)
                 }
@@ -92,7 +92,7 @@ function onChangeChk(element, type) {
         case 'match':
             api.post('/admin/info/match/get').then(res => {
                 if (typeof res.data === 'object' && res.status === 200) {
-                    createTable(type, res.data, table)
+                    createTable('match', res.data, table)
                 } else {
                     console.log(err)
                 }
@@ -190,7 +190,7 @@ function editCell(type, id, keys, current) {
         let object = {
             _id: id,
         }
-        keys.forEach(key => { 
+        keys.forEach(key => {
             let value = document.getElementById(key).value
             object[key] = value
         })
@@ -198,7 +198,17 @@ function editCell(type, id, keys, current) {
             console.log(res.data)
             if (res.status === 200) {
                 closeModal()
-                onChangeChk(document.getElementById('user_chk'), 'user')
+                onChangeChk(document.getElementById(`${type}_chk`), type)
+            }
+        })
+    }
+
+    const deleteEdit = () => () => {
+        api.post(`/admin/info/${type}/delete`, { id: id }).then(res => {
+            console.log(res.data)
+            if (res.status === 200) {
+                closeModal()
+                onChangeChk(document.getElementById(`${type}_chk`), type)
             }
         })
     }
@@ -213,11 +223,12 @@ function editCell(type, id, keys, current) {
             html += `<input id="${key}" type="text" value="${current[index]}" > <br>`
         })
         html += '</div>'
-        html += '<div>'
-        html += `<button id="save_button" >Save</button> <button onclick="closeModal()" >Close</button>`
+        html += '<div style="margin-top: 10px">'
+        html += `<button id="save_button" >Save</button> <button id="delete_button">Delete this document</button> <button onclick="closeModal()" >Close</button>`
         html += '</div>'
         modal_body.innerHTML = html
         document.getElementById("save_button").onclick = saveEdit()
+        document.getElementById("delete_button").onclick = deleteEdit()
         modal.style.display = 'block'
     }
 }

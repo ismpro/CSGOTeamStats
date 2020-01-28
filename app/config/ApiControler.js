@@ -3,8 +3,8 @@ const functions = require('../functions.js')
 const {
     HLTV
 } = require('hltv')
-const Teams = require('../models/Team')
-const Players = require('../models/Player')
+const Team = require('../models/Team')
+const Player = require('../models/Player')
 const Match = require('../models/Match')
 
 class ApiControler {
@@ -13,17 +13,19 @@ class ApiControler {
             hour: 0,
             minute: 1
         }, () => {
-            this.updateAll()
+            this.updateAll();
+            this.removeDuplicates();
         });
         this.secheduleFetchLastInfoJob = schedule.scheduleJob('01 * * * *', () => {
             this.fetchAllInfo(1)
+            this.removeDuplicates();
         }); */
     }
 
     updateAll() {
         return new Promise(resolve => {
-            let playersCursor = Players.find({}).cursor();
-            let teamsCursor = Teams.find({}).cursor();
+            let playersCursor = Player.find({}).cursor();
+            let teamsCursor = Team.find({}).cursor();
             let playerSaved = 0
             let teamSaved = 0
             let playerUpdater = playersCursor
@@ -134,10 +136,10 @@ class ApiControler {
         let newMatch = new Match(parsedMatch)
         await newMatch.save()
         let teamids = []
-        let team1 = await Teams.findOne({
+        let team1 = await Team.findOne({
             id: match.team1.id
         })
-        let team2 = await Teams.findOne({
+        let team2 = await Team.findOne({
             id: match.team2.id
         })
 
@@ -180,7 +182,7 @@ class ApiControler {
                     })),
                     recentResults: team.recentResults
                 }
-                let newTeam = new Teams(parsedTeam)
+                let newTeam = new Team(parsedTeam)
                 await newTeam.save()
                 teams.push(parsedTeam)
             } catch (error) {
@@ -207,7 +209,7 @@ class ApiControler {
                     await functions.sleep(2000)
                     console.log('Player: ' + playersIt)
                     let player = await this.fetchPlayerById(id)
-                    let newPlayer = new Players(player)
+                    let newPlayer = new Player(player)
                     await newPlayer.save()
                     players.push(player)
                 } catch (error) {
@@ -353,6 +355,68 @@ class ApiControler {
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
+    }
+
+    async removeDuplicates() {
+        const aggTeam = Team.aggregate([
+            {
+                "$group": {
+                    "_id": { "id": "$id" },
+                    "dups": { "$push": "$_id" },
+                    "count": { "$sum": 1 }
+                }
+            },
+            { "$match": { "count": { "$gt": 1 } } }
+        ]);
+        for await (const doc of aggTeam) {
+            Team.findByIdAndDelete(doc.dups[0], function (err, deletedTeam) {
+                if (!err) {
+                    console.log('Remove Duplicate:' + deletedTeam.name)
+                } else {
+                    console.log(err)
+                }
+            })
+        }
+
+        const aggPlayers = Player.aggregate([
+            {
+                "$group": {
+                    "_id": { "id": "$id" },
+                    "dups": { "$push": "$_id" },
+                    "count": { "$sum": 1 }
+                }
+            },
+            { "$match": { "count": { "$gt": 1 } } }
+        ]);
+        for await (const doc of aggPlayers) {
+            Player.findByIdAndDelete(doc.dups[0], function (err, deletedPlayer) {
+                if (!err) {
+                    console.log('Remove Duplicate:' + deletedPlayer.ign)
+                } else {
+                    console.log(err)
+                }
+            })
+        }
+
+        const aggMatch = Match.aggregate([
+            {
+                "$group": {
+                    "_id": { "id": "$id" },
+                    "dups": { "$push": "$_id" },
+                    "count": { "$sum": 1 }
+                }
+            },
+            { "$match": { "count": { "$gt": 1 } } }
+        ]);
+        for await (const doc of aggMatch) {
+            Match.findByIdAndDelete(doc.dups[0], function (err, deletedMatch) {
+                if (!err) {
+                    console.log('Remove Duplicate:' + deletedMatch.event)
+                } else {
+                    console.log(err)
+                }
+            })
+        }
     }
 }
 

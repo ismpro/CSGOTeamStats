@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 let teamsSchema = Schema({
-    id: Number,
+    id: { type: Number, index: true, unique: true, required: true },
     name: String,
     logo: String,
     location: Schema.Types.Mixed,
