@@ -1,0 +1,3 @@
+function pageLoad(cb) {
+    cb()
+}

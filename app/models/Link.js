@@ -8,7 +8,7 @@ let linkSchema = Schema({
     state: String,
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: 'User'
     },
     expireDate: Date
 }, {

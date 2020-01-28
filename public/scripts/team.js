@@ -56,6 +56,12 @@ function onsession() {
 function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
     document.getElementById("teamFav").innerHTML = ''
+    let group_buttons = document.getElementsByName('buttons_comments')
+    if (group_buttons.length > 1) {
+        for (const group_button of group_buttons) {
+            group_button.remove()
+        }
+    }
 }
 
 function favAnimation(type, fav) {

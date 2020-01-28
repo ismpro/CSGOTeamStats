@@ -65,6 +65,12 @@ function onsession() {
 function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
     document.getElementById("playerFav").innerHTML = ''
+    let group_buttons = document.getElementsByName('buttons_comments')
+    if (group_buttons.length > 1) {
+        for (const group_button of group_buttons) {
+            group_button.remove()
+        }
+    }
 }
 
 function favAnimation(type, fav) {
@@ -204,7 +210,6 @@ function loadComments() {
         } else {
             html += `${timeString} ago by `
         }
-
         if (comment.hasEdit) {
             html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
         }
@@ -214,7 +219,7 @@ function loadComments() {
             html += `<a href="#">${comment.user}</a>`
         }
         if (comment.isFromUser || admin) {
-            html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+            html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
             html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
         }
         html += '</div></blockquote></li>'
