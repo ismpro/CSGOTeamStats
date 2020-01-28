@@ -1,4 +1,7 @@
 /* eslint-disable */
+let favController = false
+let comments = []
+
 function pageLoad(cb) {
     api.post(window.location.pathname).then(res => {
         loadData(res.data)
@@ -7,8 +10,12 @@ function pageLoad(cb) {
 }
 
 function loadData(data) {
-    // nomes das equipas
+    let playersTeam1 = data.playersTeam1
+    let playersTeam2 = data.playersTeam2
+    data = data.match
+    console.log(data)
     document.title = data.event + 'Match';
+    // nomes das equipas
     let team1Name = data.team1.name
     let team2Name = data.team2.name
     document.getElementById('team1_name').innerHTML = team1Name
@@ -118,4 +125,189 @@ for (const player of statsTeam1) {
 stats += "</table>"
 
 */
+}
+
+function onsession() {
+    let path = window.location.pathname
+    let id = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf(''))
+    document.getElementById('comments_area').innerHTML = '<textarea placeholder="Write your comment here..." id="comment_text"></textarea> \
+        <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
+        <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
+    document.getElementById('comment_button').onclick = () => createComment()
+    /* api.post('/fav', {
+        type: 'match',
+        id: id
+    }).then((res) => {
+        if (typeof (res.data) !== "string") {
+            document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
+    <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
+            let fav = document.getElementsByClassName('clickFav')[0]
+            fav.addEventListener('click', () => {
+                if (!favController) {
+                    favController = true
+                    api.post('/fav/player', {
+                        id: id
+                    }).then((data) => {
+                        if (data.status === 200) {
+                            data = data.data
+                            favAnimation(data === 'added', fav)
+                        }
+                    }).catch(err => console.log(err))
+                }
+            })
+            let star = document.getElementsByClassName('clickFav')[0].firstElementChild
+            if (res.data) {
+                star.classList.add('fa-star')
+                star.classList.remove('fa-star-o')
+            } else {
+                star.classList.remove("fa-star")
+                star.classList.add("fa-star-o")
+            }
+        } else {
+            location.replace()
+        }
+    }) */
+}
+
+function onlogout() {
+    document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
+    /* document.getElementById("playerFav").innerHTML = '' */
+    let group_buttons = document.getElementsByName('buttons_comments')
+    if (group_buttons.length > 0) {
+        for (const group_button of group_buttons) {
+            group_button.remove()
+        }
+    }
+}
+
+function loadComments() {
+
+    let commentsDiv = document.getElementById('comments')
+    let html = ''
+    comments.forEach((comment, index) => {
+        html += `<li id="comment_${comment.id}"><blockquote class="comments-bubble${index % 2 ? ' comments_odd' : ''}"><div class="comments_bubble_text"><p id="comment_text_${comment.id}" contenteditable="false">`
+        html += comment.text;
+        html += '</p></div><div class="comments_madeby">'
+        if (comment.hasEdit) {
+            html += 'Edit '
+        }
+        let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
+        if (timeString === 'just now') {
+            html += 'Just now by '
+        } else {
+            html += `${timeString} ago by `
+        }
+        if (comment.hasEdit) {
+            html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
+        }
+        if (typeof comment.user === 'anon') {
+            html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
+        } else {
+            html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
+        }
+        if (comment.isFromUser || admin) {
+            html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+            html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+        }
+        html += '</div></blockquote></li>'
+    })
+    commentsDiv.innerHTML = html;
+    comments.forEach((comment) => {
+        if (comment.isFromUser || admin) {
+            document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
+            document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+        }
+    })
+}
+
+function createComment() {
+    let text = document.getElementById('comment_text').value;
+    let isAnon = document.getElementById('anonymous_check').checked;
+    let path = window.location.pathname
+    api.post('/comment/create', {
+        type: 'player',
+        id: path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('')),
+        text: text,
+        isAnon: isAnon
+    }).then((res) => {
+        if (res.data) {
+            let comment = res.data
+            comments.unshift(comment)
+            document.getElementById('comment_text').value = ''
+            loadComments()
+        } else {
+            location.reload();
+        }
+    })
+}
+
+function deleteComment(id) {
+    return function () {
+        api.post('/comment/delete', {
+            id: id
+        }).then((res) => {
+            if (res.data) {
+                var index = comments.findIndex((comment) => comment.id === id);
+                if (index !== -1) {
+                    comments.splice(index, 1);
+                    loadComments()
+                }
+            } else {
+                location.reload();
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+function editComment(id) {
+    const saveComment = () => () => {
+        let text = document.getElementById(`comment_text_${id}`).innerHTML;
+        if (text.includes('<br>')) text = text.replace('<br>', '') //Firefox adds <br> in input text
+        api.post('/comment/edit', {
+            id: id,
+            text: text
+        }).then((res) => {
+            if (res.data) {
+                var index = comments.findIndex((comment) => comment.id === id);
+                if (index !== -1) {
+                    comments[index] = res.data
+                    loadComments()
+                }
+            } else {
+                location.reload();
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+    const cancelComment = (beforeText) => () => {
+        let textTag = document.getElementById(`comment_text_${id}`);
+        let buttonsTag = document.getElementById(`comment_buttons_${id}`);
+
+        textTag.innerHTML = beforeText;
+        textTag.classList.remove('editable');
+        textTag.contentEditable = 'false'
+        buttonsTag.classList.remove('editableButtons');
+        buttonsTag.innerHTML = `<button id="comment_edit_${id}">edit</button>|<button id="comment_delete_${id}">delete</button>`
+
+        document.getElementById(`comment_delete_${id}`).onclick = deleteComment(id)
+        document.getElementById(`comment_edit_${id}`).onclick = editComment(id)
+    }
+    return function () {
+        let textTag = document.getElementById(`comment_text_${id}`);
+        let buttonsTag = document.getElementById(`comment_buttons_${id}`);
+        let beforeTextTag = textTag.innerHTML;
+
+        textTag.classList.add('editable')
+        textTag.contentEditable = 'true'
+        textTag.focus();
+        buttonsTag.classList.add('editableButtons')
+        buttonsTag.innerHTML = `<button id="comment_save_${id}">Save</button>|<button id="comment_cancel_${id}">Cancel</button>`
+
+        document.getElementById(`comment_cancel_${id}`).onclick = cancelComment(beforeTextTag);
+        document.getElementById(`comment_save_${id}`).onclick = saveComment();
+    }
 }

@@ -144,3 +144,148 @@
     display: none;
 }
 
+
+.comments_heading {
+    margin-top: 30px;
+}
+
+.comments_area {
+    width: 100%;
+}
+
+.comments_area textarea {
+    width: 100%;
+    padding: 15px;
+    height: 150px;
+    resize: none;
+    overflow: auto;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px 0 rgba(50, 50, 50, .4);
+}
+
+
+.comments_area div {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.comments_area button {
+
+    float: right;
+    width: 150px;
+    height: 30px;
+    background: rgb(199, 199, 199);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 4px;
+    margin: 5px;
+}
+
+.comments_area button:hover {
+    background: rgb(134, 134, 134);
+}
+
+.comments_area input[type=checkbox] {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 4px;
+    margin: 5px;
+}
+
+.comments {
+    border-top: 1px solid rgb(153, 153, 153);
+    clear: both;
+    list-style: none;
+    margin-top: 40px;
+    padding-top: 10px;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.comments-bubble {
+    position: relative;
+    background: #c0c0c0;
+    border: 1px solid #bebebe;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 75px;
+    padding: 15px 10px 10px 15px;
+}
+
+.comments-bubble:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 39px solid transparent;
+    border-right-color: #c0c0c0;
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -19.5px;
+    margin-left: -39px;
+}
+
+.comments_odd {
+    background: #e2e6ec;
+}
+
+.comments_odd:after {
+    border-right-color: #e2e6ec;
+}
+
+.comments_bubble_text {
+    padding: 0;
+    min-height: 0;
+    width: 100%;
+}
+
+.comments_madeby {
+    font-size: 10px;
+    line-height: 18px;
+}
+
+.comments_buttons_group {
+    bottom: 5px;
+    position: absolute;
+    right: 5px;
+}
+
+.comments_buttons {
+    float: right;
+    margin-right: 10px;
+}
+
+.comments_buttons button {
+    background: transparent;
+    color: grey;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.comments_buttons button:active {
+    color: blue;
+}
+
+.editable {
+    background-color: #d1d1d1;
+    outline: 0;
+}
+
+.editableButtons {
+    font-size: 30px;
+}
+
+.editableButtons buttons {
+    font-size: 30px;
+}
+

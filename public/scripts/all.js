@@ -59,7 +59,10 @@ function authLogout() {
         let button = document.getElementById('loginButton')
         button.style.display = "inline";
         button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
-        document.getElementById('profilelink').remove();
+        let profilelink = document.getElementById('profilelink');
+        if (profilelink) {
+            profilelink.remove();
+        }
     }
 }
 
