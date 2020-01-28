@@ -7,25 +7,59 @@ function pageLoad(cb) {
 }
 
 function loadData(data) {
+    
+    console.log(data)
+
+    let main_div = document.getElementById('main')
+    
+    let score = document.createElement('div')
+    score.classList.add('score')
+
+    let team1 = document.createElement('div')
+    let result = document.createElement('div')
+    let team2 = document.createElement('div')
+
+    team1.classList.add('score')
+    result.classList.add('score')
+    team2.classList.add('score')
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     // nomes das equipas
-    let team1Name = data.team1.name
-    let team2Name = data.team2.name
+    let team1Name = data.match.team1.name
+    let team2Name = data.match.team2.name
     document.getElementById('team1_name').innerHTML = team1Name
     document.getElementById('team2_name').innerHTML = team2Name
     // imagens das equipas
-    let logo_team1 = "https://static.hltv.org/images/team/logo/" + data.team1.id
-    let logo_team2 = "https://static.hltv.org/images/team/logo/" + data.team2.id
+    let logo_team1 = "https://static.hltv.org/images/team/logo/" + data.match.team1.id
+    let logo_team2 = "https://static.hltv.org/images/team/logo/" + data.match.team2.id
     document.getElementById('team1_logo').src = logo_team1
     document.getElementById('team2_logo').src = logo_team2
     // mapas
-    let maps = data.maps
+    let maps = data.match.maps
     // resultado
     let leftCounter = 0
     let rightCounter = 0
     // para cada mapa, vai aumentando o contador de cada equipa
+    
     for (const map of maps) {
-        let leftResult = parseInt(map.result.substr(0, map.result.indexOf(':')))
-        let rightResult = parseInt(map.result.substr(map.result.indexOf(':') + 1, map.result.indexOf(' ') - 2))
+        let leftResult = map.team1.score
+        let rightResult = map.team2.score
 
         if (leftResult) {
             if (leftResult > rightResult) {
@@ -37,37 +71,38 @@ function loadData(data) {
     }
     document.getElementById('result_team1').innerHTML = leftCounter
     document.getElementById('result_team2').innerHTML = rightCounter
+    
     // imagens, nomes e resultados dos mapas
     let i = 1
     for (const map of maps) {
         document.getElementById("map" + i).style.display = "block";
         let mapImage = "https://hltv.org/img/static/maps/"
         let mapName
-        if (map.name === "nuke") {
+        if (map.map === "nuke") {
             mapImage += "nuke"
             mapName = "Nuke"
-        } else if (map.name === "trn") {
+        } else if (map.map === "trn") {
             mapImage += "train"
             mapName = "Train"
-        } else if (map.name === "mrg") {
+        } else if (map.map === "mrg") {
             mapImage += "mirage"
             mapName = "Mirage"
-        } else if (map.name === "d2") {
+        } else if (map.map === "d2") {
             mapImage += "dust2"
             mapName = "Dust2"
-        } else if (map.name === "ovp") {
+        } else if (map.map === "ovp") {
             mapImage += "overpass"
             mapName = "Overpass"
-        } else if (map.name === "vertigo") {
+        } else if (map.map === "vertigo") {
             mapImage += "vertigo"
             mapName = "Vertigo"
-        } else if (map.name === "inf") {
+        } else if (map.map === "inf") {
             mapImage += "inferno"
             mapName = "Inferno"
         }
         mapImage += ".png"
-        let team1Score = map.result.substr(0, map.result.indexOf(':'))
-        let team2Score = map.result.substr(map.result.indexOf(':') + 1, map.result.indexOf(' ') - 2)
+        let team1Score = map.team1.score
+        let team2Score = map.team2.score
         // se não jogaram algum mapa que estava na lista, fica com menos opacidade
         if (!team1Score) {
             document.getElementById("map" + i).style.opacity = "0.5";
@@ -80,7 +115,7 @@ function loadData(data) {
         i++
     }
 
-    console.log(data.playersTeam1)
+    //console.log(data.playersTeam1)
     
     //let team1Players = data.players.team1
     /*

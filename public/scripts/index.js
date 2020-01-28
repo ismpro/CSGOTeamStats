@@ -189,7 +189,7 @@ function pageLoad(cb) {
                     mapsHTML += "</tr><tr>"
                     // resultados dos mapas
                     for (const map of result.maps) {
-                        mapsHTML += "<td><span>" + map.team1.score + "</span>-<span>" + map.team2.score + "</span></td>"
+                        mapsHTML += "<td><span>" + map.team1.score + "</span> - <span>" + map.team2.score + "</span></td>"
                     }
                     mapsHTML += "</tr>"
                     mapsTable.innerHTML = mapsHTML
