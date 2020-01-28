@@ -106,6 +106,7 @@ function loadData(data) {
     countrytag.src = `https://www.countryflags.io/${data.country.code}/shiny/24.png`
     countrytag.alt = data.country.name || 'World'
     document.getElementById('player_real').innerHTML = data.name || 'Not Specified'
+    document.title = playerNaming(data.name, data.ign)
     let socialDiv = document.getElementById('player_social')
     socialDiv.innerHTML = ""
     if (data.twitch) {

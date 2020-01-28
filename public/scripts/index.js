@@ -275,7 +275,7 @@ function search(e) {
                             divInfo.classList.add('search-info')
                             let aName = document.createElement('a')
                             aName.classList.add('search-text-link')
-                            aName.innerHTML = `${player.name || ''} "${player.ign || ''}"`
+                            aName.innerHTML = playerNaming(player.name, player.ign)
                             aName.href = `/player/${player.id}`
                             divInfo.appendChild(aName)
                             //When theres is no team the server sends a empty objects for some reason

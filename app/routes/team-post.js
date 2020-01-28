@@ -11,66 +11,72 @@ const {
     byCountry
 } = require('country-code-lookup')
 
-const getPlayer = async function (players) {
-    let parsedPlayer = [];
-    for (const player of players) {
-        let playerInfo = await Players.findOne({
-            id: player.id
-        })
-        if (playerInfo) {
-            parsedPlayer.push({
-                id: playerInfo.id,
-                name: playerInfo.ign,
-                fullName: playerInfo.name,
-                image: playerInfo.image,
-                country: playerInfo.country
-            })
-        } else {
-            api.fetchPlayerById(player.id)
-                .then(player => {
-                    let newPlayer = new Players(player)
-                    newPlayer.save()
-                    parsedPlayer.push({
-                        id: newPlayer.id,
-                        name: newPlayer.ign,
-                        fullName: newPlayer.name,
-                        image: newPlayer.image,
-                        country: newPlayer.country
-                    })
-                }).catch(() => {
-                    res.status(200).send(false)
-                })
-        }
-    }
-    return parsedPlayer
-}
-
-const getLastResults = async function (recent) {
-    let parsedLastResults = [];
-    for (const results of recent) {
-        let resultInfo = await Match.findOne({
-            id: results.matchID
-        })
-        if (resultInfo && resultInfo.status === "Match over") {
-            let teamInfo = await Teams.findOne({
-                id: results.enemyTeam.id
-            })
-            parsedLastResults.push({
-                id: resultInfo.id,
-                date: formatDate(resultInfo.date),
-                score: results.result,
-                enemyTeam: {
-                    id: teamInfo.id,
-                    name: teamInfo.name,
-                    logo: teamInfo.logo,
-                }
-            })
-        }
-    }
-    return parsedLastResults
-}
-
 module.exports = function (api) {
+
+    const getPlayer = async function (players) {
+        let parsedPlayer = [];
+        for (const player of players) {
+            let playerInfo = await Players.findOne({
+                id: player.id
+            })
+            if (playerInfo) {
+                parsedPlayer.push({
+                    id: playerInfo.id,
+                    name: playerInfo.ign,
+                    fullName: playerInfo.name,
+                    image: playerInfo.image,
+                    country: playerInfo.country
+                })
+            } else {
+                api.fetchPlayerById(player.id)
+                    .then(player => {
+                        let newPlayer = new Players(player)
+                        newPlayer.save()
+                        parsedPlayer.push({
+                            id: newPlayer.id,
+                            name: newPlayer.ign,
+                            fullName: newPlayer.name,
+                            image: newPlayer.image,
+                            country: newPlayer.country
+                        })
+                    }).catch((err) => {
+                        parsedPlayer.push({
+                            id: 0,
+                            name: '?',
+                            fullName: '?',
+                            image: 'https://static.hltv.org//images/playerprofile/bodyshot/unknown.png',
+                        })
+                    })
+            }
+        }
+        return parsedPlayer
+    }
+
+    const getLastResults = async function (recent) {
+        let parsedLastResults = [];
+        for (const results of recent) {
+            let resultInfo = await Match.findOne({
+                id: results.matchID
+            })
+            if (resultInfo && resultInfo.status === "Match over") {
+                let teamInfo = await Teams.findOne({
+                    id: results.enemyTeam.id
+                })
+                parsedLastResults.push({
+                    id: resultInfo.id,
+                    date: formatDate(resultInfo.date),
+                    score: results.result,
+                    enemyTeam: {
+                        id: teamInfo.id,
+                        name: teamInfo.name,
+                        logo: teamInfo.logo,
+                    }
+                })
+            }
+        }
+        return parsedLastResults
+    }
+
     return function (req, res) {
         let id = req.params.id;
         Teams.findOne({

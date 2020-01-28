@@ -94,6 +94,7 @@ function loadData(data) {
     imagetag.alt = data.name || 'Not Specified'
     imagetag.title = data.name || 'Not Specified'
     document.getElementById('team_name').innerHTML = data.name || 'Not Specified'
+    document.title = data.name
     let countrytag = document.getElementById('team_country')
     countrytag.src = `https://www.countryflags.io/${data.location.code}/shiny/24.png`
     countrytag.alt = data.location.name || 'World'
@@ -143,15 +144,17 @@ function loadData(data) {
 
         playerThirdDivTag.classList.add('playerFlagName')
 
-        playerSecondImgTag.src = `https://www.countryflags.io/${player.country.code}/shiny/24.png`
-        playerSecondImgTag.alt = player.country.name
-        playerSecondImgTag.title = player.country.name
-        playerSecondImgTag.classList.add('flag')
+        if (player.country) {
+            playerSecondImgTag.src = `https://www.countryflags.io/${player.country.code}/shiny/24.png`
+            playerSecondImgTag.alt = player.country.name
+            playerSecondImgTag.title = player.country.name
+            playerSecondImgTag.classList.add('flag')
+            playerThirdDivTag.appendChild(playerSecondImgTag)
+        }
 
         playerSpanTag.innerHTML = player.name
         playerSpanTag.classList.add('playerName')
 
-        playerThirdDivTag.appendChild(playerSecondImgTag)
         playerThirdDivTag.appendChild(playerSpanTag)
 
         playerSecondDivTag.appendChild(playerThirdDivTag)

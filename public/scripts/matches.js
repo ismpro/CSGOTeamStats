@@ -8,6 +8,7 @@ function pageLoad(cb) {
 
 function loadData(data) {
     // nomes das equipas
+    document.title = data.event + 'Match';
     let team1Name = data.team1.name
     let team2Name = data.team2.name
     document.getElementById('team1_name').innerHTML = team1Name
@@ -81,7 +82,7 @@ function loadData(data) {
     }
 
     console.log(data.playersTeam1)
-    
+
     //let team1Players = data.players.team1
     /*
     i = 1
@@ -95,26 +96,26 @@ function loadData(data) {
 
         document.getElementById("player" + i).innerHTML = playerStats
         */
-        /*
-        let playerSecondImgTag = document.createElement('img')
-        playerSecondImgTag.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+    /*
+    let playerSecondImgTag = document.createElement('img')
+    playerSecondImgTag.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
 
-        document.getElementById("player" + i).appendChild(playerSecondImgTag)
-        i++
-        
-    }
-
+    document.getElementById("player" + i).appendChild(playerSecondImgTag)
+    i++
     
-    let team2Players = data.players.team2
-    let statsTeam1 = data.playerStats.team1
-    let statsTeam2 = data.playerStats.team2
-    
-    // preencher a parte da estatística
-    stats = "<table>"
-    for (const player of statsTeam1) {
+}
 
-    }
-    stats += "</table>"
+ 
+let team2Players = data.players.team2
+let statsTeam1 = data.playerStats.team1
+let statsTeam2 = data.playerStats.team2
+ 
+// preencher a parte da estatística
+stats = "<table>"
+for (const player of statsTeam1) {
 
-    */
+}
+stats += "</table>"
+
+*/
 }
