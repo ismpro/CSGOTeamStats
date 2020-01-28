@@ -1,20 +1,43 @@
 const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
+const Types = mongoose.Schema.Types;
 
-let commentsSchema = Schema({
+/**
+ * Model Comment for mongodb
+ */
+const CommentsSchema = new mongoose.Schema({
+    /**
+     * Type of the ID ("Player"|"Team"|"Match")
+     */
     type: String,
+    /**
+    * The ID of the type
+    */
     id: Number,
+    /**
+    * The text of the comment
+    */
     text: String,
+    /**
+    * The date of the comment
+    */
     date: Date,
+    /**
+    * If is anonymous or not
+    */
     isAnon: Boolean,
-    hasEdit: Schema.Types.Mixed,
+    /**
+    * Information from last edit (Boolean|{user: Number, date: Date})
+    */
+    hasEdit: Types.Mixed,
+    /**
+    * The ObjectId of the user that made this comment
+    */
     user: {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: 'User'
     }
-}, {
-    collection: 'Comment'
 });
 
-module.exports = mongoose.model('Comment', commentsSchema);
+module.exports = mongoose.model('Comment', CommentsSchema);
+

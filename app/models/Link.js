@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
-let linkSchema = Schema({
+let linkSchema = new Schema({
     link: String,
     type: String,
     state: String,

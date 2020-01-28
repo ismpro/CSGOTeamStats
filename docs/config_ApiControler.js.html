@@ -1,4 +1,70 @@
-const schedule = require('node-schedule')
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: config/ApiControler.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                    
+                        <h1 class="navbar-item">Documentation</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="ApiControler.html">ApiControler</a></li><li><a href="Comments.html">Comments</a></li><li><a href="User.html">User</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>config/ApiControler.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const schedule = require('node-schedule')
 const functions = require('../functions.js')
 const {
     HLTV
@@ -36,7 +102,7 @@ class ApiControler {
     /**
      * Returns the information of all content from match including teams and players and saves also saves to database that information.
      * 
-     * @returns {Promise<void>}
+     * @returns {Promise&lt;void>}
      */
     updateAll() {
         return new Promise(resolve => {
@@ -83,7 +149,7 @@ class ApiControler {
      * WARNING: this take a long time!
      * @async
      * @param {Number} id The id of the match
-     * @returns {Promise<{match: Object,teams: Object,players: Object}>}
+     * @returns {Promise&lt;{match: Object,teams: Object,players: Object}>}
      */
     async fetchAllInfoFromMatch(id) {
         await functions.sleep(2000)
@@ -183,7 +249,7 @@ class ApiControler {
                 await functions.sleep(2000)
                 console.log('Team: ' + teamsIt)
                 let team = await this.fetchTeamById(id)
-                if (team.players && Array.isArray(team.players) && team.players.length < 5) {
+                if (team.players &amp;&amp; Array.isArray(team.players) &amp;&amp; team.players.length &lt; 5) {
                     for (let index = team.players.length + 1; index >= 5; index++) {
                         team.players.length[index] = {
                             id: 0,
@@ -253,7 +319,7 @@ class ApiControler {
      * @async
      * @param {Number} pages How pages do you want from (1 = 100 matches)
      * @see {@link https://www.hltv.org/results|HLTV Results Page}
-     * @returns {Promise<Array<{match: Object,teams: Object,players: Object}>>}
+     * @returns {Promise&lt;Array&lt;{match: Object,teams: Object,players: Object}>>}
      */
     async fetchAllInfo(pages) {
         let results = await this.fetchResultsByPages(pages)
@@ -281,7 +347,7 @@ class ApiControler {
     /**
      * Returns all information from a single player
      * @param {Number} id ID of the player
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchPlayerById(id) {
         return new Promise((resolve, reject) => {
@@ -296,7 +362,7 @@ class ApiControler {
     /**
      * Returns all information from a single team
      * @param {Number} id ID of the team
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchTeamById(id) {
         return new Promise((resolve, reject) => {
@@ -312,7 +378,7 @@ class ApiControler {
      * Returns all matches from the the results page
      * @param {Number} pages How pages do you want from (1 = 100 matches)
      * @see {@link https://www.hltv.org/results | HLTV Results Page}
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchResultsByPages(pages) {
         return new Promise((resolve, reject) => {
@@ -327,7 +393,7 @@ class ApiControler {
     /**
      * Returns all information from a single match
      * @param {Number} id ID of the match
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchMatchById(id) {
         return new Promise((resolve, reject) => {
@@ -342,7 +408,7 @@ class ApiControler {
     /**
      * Returns all stats information from a single match
      * @param {Number} id ID of the stats match (not the same as match ID)
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchMatchesStatsById(id) {
         return new Promise((resolve, reject) => {
@@ -355,7 +421,7 @@ class ApiControler {
     /**
      * Returns all stats information from a single map
      * @param {Number} id ID of the stats map (not the same as match ID)
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchMatchMapStatsById(id) {
         return new Promise((resolve, reject) => {
@@ -373,7 +439,7 @@ class ApiControler {
      * @param {String} endDate End Date of the rank (format yyyy-mm-dd)
      * @param {('Lan'|'Online'|'BigEvents'|'Majors')} matchType What type of matches that the ranking is going to be based on
      * @param {('Top5'|'Top10'|'Top20'|'Top30'|'Top50')} rankingFilter The number of player that you want to be returned
-     * @returns {Promise<Object>}
+     * @returns {Promise&lt;Object>}
      */
     fetchPlayerRanking(startDate, endDate, matchType, rankingFilter) {
         return new Promise((resolve, reject) => {
@@ -393,7 +459,7 @@ class ApiControler {
     /**
      * Removes all duplicates from the data base
      * @async
-     * @returns {Promise<void>}
+     * @returns {Promise&lt;void>}
      */
     async removeDuplicates() {
         const aggTeam = await Team.aggregate([
@@ -458,4 +524,31 @@ class ApiControler {
     }
 }
 
-module.exports = ApiControler
+module.exports = ApiControler</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Jan 28 2020 23:35:33 GMT+0000 (GMT)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

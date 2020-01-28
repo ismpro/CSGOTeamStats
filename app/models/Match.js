@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
-let playerStats = Schema({
+let playerStats = new Schema({
     id: Number,
     name: String,
     kills: Number,
@@ -17,7 +17,7 @@ let playerStats = Schema({
     rating: Number
 })
 
-let matchSchema = Schema({
+let matchSchema = new Schema({
     id: { type: Number, index: true, unique: true, required: true },
     statsId: Number,
     team1: {

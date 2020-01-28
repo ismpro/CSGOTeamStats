@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: logger.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                    
+                        <h1 class="navbar-item">Documentation</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="ApiControler.html">ApiControler</a></li><li><a href="Comments.html">Comments</a></li><li><a href="User.html">User</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>logger.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-unused-vars */
+const functions = require('./functions')
+const iplocate = require('node-iplocate')
+const path = require('path')
+const chalk = require('chalk')
+/**
+ * 
+ * @param 
+ */
+module.exports = function (options) {
+    return function (req, res, next) {
+        let startTime = new Date().getTime()
+        res.on('finish', () => {
+            const fileLocation = path.resolve('./db/logs/requests.json');
+            let ip = req.headers['x-forwarded-for'] || req.ip
+            var promise1 = new Promise((resolve, reject) => {
+                functions.logger(res.statusCode).then(resolve).catch(reject)
+            });
+            var promise2 = new Promise((resolve, reject) => {
+                //iplocate(ip).then(resolve).catch(reject)
+                resolve({ ip: '[::1]' })
+            });
+            Promise.all([promise1, promise2]).then((values) => {
+                let results = values[1]
+                let code = values[0]
+                const isLocalhost = Boolean(
+                    results.ip === '[::1]' ||
+                    results.ip === '::1' ||
+                    results.ip.match(
+                        /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+                    ) ||
+                    results.ip === '0000:0000:0000:0000:0000:0000:0000:0001'
+                );
+                let localion = isLocalhost ? 'localhost' : results.country + (results.city ? ' - ' + results.city : '')
+                let endTime = new Date().getTime()
+                console.log(`\nRequest ${req.method} -> ${req.path} : ${isLocalhost ? 'localhost' : `${results.ip} - ${localion}`} ${(req.session.name ? 'by ' + req.session.name : '')} Time: ${endTime - startTime} ms`)
+                console.log(`Code: ${chalk.hex(code.color)(code.code)} -> ${code.message}`);
+                if (!global.NODE_MODE) {
+                    functions.jsonReader(fileLocation, function (err, object) {
+                        if (!err) {
+                            object.requests.push({
+                                id: object.requests.length + 1,
+                                date: new Date().toISOString().replace('T', ' ').replace('Z', ''),
+                                method: req.method,
+                                path: req.path,
+                                ip: results.ip,
+                                localion: localion,
+                                user: req.session.name ? req.session.name : 'Not specific',
+                                code: code.code,
+                                message: code.message
+                            })
+                            functions.jsonWriter(fileLocation, object)
+                        } else {
+                            console.log('Logger Error:')
+                            console.log(err)
+                        }
+                    })
+                }
+            }).catch((err) => {
+                console.log('Logger Error:')
+                console.log(err)
+            });
+        })
+        next()
+    };
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Jan 28 2020 23:35:33 GMT+0000 (GMT)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
