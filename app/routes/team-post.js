@@ -77,57 +77,89 @@ module.exports = function (api) {
         return parsedLastResults
     }
 
+    const getComments = (id, user_id) => {
+        return new Promise((resolve, reject) => {
+            console.log(user_id)
+            Comment.find({
+                type: 'player',
+                id: id
+            }, function (err, comments) {
+                if (!err) {
+                    parseComments(comments, user_id)
+                        .then(parsedComments => resolve(parsedComments))
+                        .catch(err => reject(err.message))
+                } else {
+                    reject(err.message)
+                }
+            })
+        })
+    }
+
+
     return function (req, res) {
         let id = req.params.id;
         Teams.findOne({
             id: id
         }, function (err, team) {
             if (!err) {
-                let code = byCountry(team.location)
-                team.location = code ? {
-                    code: code.iso2,
-                    name: code.country
-                } : {
-                        code: 'World',
-                        name: 'World'
-                    }
-                Promise.all([getPlayer(team.players), getLastResults(team.recentResults)]).then(data => {
-                    Comment.find({
-                        type: 'team',
-                        id: id
-                    }, function (err, comments) {
-                        if (!err) {
-                            if (req.session.userid) {
-                                User.findById(req.session.userid, function (err, user) {
-                                    if (!err) {
-                                        parseComments(comments, user._id).then(parsedComments => {
-                                            res.status(200).json({
-                                                players: data[0],
-                                                recentResults: data[1],
-                                                team: team,
-                                                fav: user.favorite.players.includes(id),
-                                                comments: parsedComments
-                                            })
-                                        })
-                                    } else {
-                                        res.status(500).send('Error on server! Try again later!')
-                                    }
-                                })
-                            } else {
-                                parseComments(comments).then(parsedComments => {
-                                    res.status(200).json({
-                                        players: data[0],
-                                        recentResults: data[1],
-                                        team: team,
-                                        comments: parsedComments
-                                    })
-                                })
-                            }
-                        } else {
-                            res.status(500).send('Error on server! Try again later!')
+                if (team) {
+                    let code = byCountry(team.location)
+                    team.location = code ? {
+                        code: code.iso2,
+                        name: code.country
+                    } : {
+                            code: 'World',
+                            name: 'World'
                         }
+                    Promise.all([getPlayer(team.players), getLastResults(team.recentResults), getComments(id, req.session.userid)]).then(data => {
+                        res.status(200).json({
+                            players: data[0],
+                            recentResults: data[1],
+                            team: team,
+                            comments: data[2]
+                        })
                     })
-                })
+                } else {
+                    api.fetchTeamById(id).then(unparsedTeam => {
+                        if (unparsedTeam.players && Array.isArray(unparsedTeam.players) && unparsedTeam.players.length < 5) {
+                            for (let index = unparsedTeam.players.length + 1; index >= 5; index++) {
+                                unparsedTeam.players.length[index] = {
+                                    id: 0,
+                                    name: ''
+                                }
+                            }
+                        }
+                        let parsedTeam = {
+                            id: unparsedTeam.id,
+                            name: unparsedTeam.name,
+                            logo: unparsedTeam.logo,
+                            location: unparsedTeam.location,
+                            facebook: unparsedTeam.facebook,
+                            twitter: newunparsedTeamTeam.twitter,
+                            rank: unparsedTeam.rank,
+                            players: unparsedTeam.players.map(player => ({
+                                id: Number.isNaN(player.id) ? 0 : player.id,
+                                name: player.name || ''
+                            })),
+                            recentResults: team.recentResults
+                        }
+                        let newTeam = new Teams(parsedTeam)
+                        Promise.all([getPlayer(team.players), getLastResults(team.recentResults), getComments(id, req.session.userid), newTeam.save()])
+                            .then(data => {
+                                res.status(200).json({
+                                    players: data[0],
+                                    recentResults: data[1],
+                                    team: team,
+                                    comments: data[2]
+                                })
+                            })
+                            .catch(err => {
+                                res.status(500).send(err)
+                            })
+                    }).catch(() => {
+                        res.status(200).json(false)
+                    })
+                }
             } else {
                 res.status(500).send('Error on server! Try again later!')
             }

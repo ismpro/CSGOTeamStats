@@ -36,7 +36,6 @@ function authLogin() {
         }).catch(err => console.log(err))
     }
     let nav = document.getElementById('mySidenav')
-    //<a href="/profile/-">Profile</a>
     let a = document.createElement('a')
     a.href = '/profile/-';
     a.textContent = 'My Profile';

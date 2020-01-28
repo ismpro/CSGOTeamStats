@@ -22,8 +22,8 @@ module.exports = function () {
             if (!err) {
                 if (user && user.admin && user.validPassword(data.password)) {
                     req.session.userid = user._id
-                    req.session.session = createdSessionId
-                    user.atribuitesessionid = createdSessionId
+                    req.session.adminsessionId = createdSessionId
+                    user.adminatribuitesessionid = createdSessionId
                     let userSave = user.save()
                     let sessionSave = req.session.save()
                     Promise.all([userSave, sessionSave]).then(() => {
