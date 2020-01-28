@@ -371,7 +371,7 @@ class ApiControler {
         for await (const doc of aggTeam) {
             Team.findByIdAndDelete(doc.dups[0], function (err, deletedTeam) {
                 if (!err) {
-                    console.log('Remove Duplicate:' + deletedTeam.name)
+                    console.log('Remove Duplicate: ' + deletedTeam.name)
                 } else {
                     console.log(err)
                 }
@@ -391,7 +391,7 @@ class ApiControler {
         for await (const doc of aggPlayers) {
             Player.findByIdAndDelete(doc.dups[0], function (err, deletedPlayer) {
                 if (!err) {
-                    console.log('Remove Duplicate:' + deletedPlayer.ign)
+                    console.log('Remove Duplicate: ' + deletedPlayer.ign)
                 } else {
                     console.log(err)
                 }
@@ -411,7 +411,7 @@ class ApiControler {
         for await (const doc of aggMatch) {
             Match.findByIdAndDelete(doc.dups[0], function (err, deletedMatch) {
                 if (!err) {
-                    console.log('Remove Duplicate:' + deletedMatch.event)
+                    console.log('Remove Duplicate: ' + deletedMatch.event)
                 } else {
                     console.log(err)
                 }
