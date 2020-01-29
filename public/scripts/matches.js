@@ -113,12 +113,9 @@ function loadData(data) {
         mapNameDiv.innerHTML = mapName
 
 
+
+
         
-
-
-
-
-
 
 
 
