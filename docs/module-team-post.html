@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: team-post</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,8 +51,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Global</h1>
+                        <p>Module</p>
+                        <h1>team-post</h1>
                     </header>
                     
                     
@@ -64,7 +64,8 @@
 
 <header>
     
-        <h2></h2>
+        
+            
         
     
 </header>
@@ -73,97 +74,25 @@
     <div class="container-overview">
     
         
-
+            <div class="description">Module that deals with the information of a team post request. In the body is expeted an id then returns all the information of that team. If the id doens't exit in the Database then is going to search in the api.</div>
         
 
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-</dl>
-
-
         
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h3 class="title"><span>Type Definitions</span></h3>
-            <div class="members">
             
-                <div class="member">
-
-<h4 class="name" id="PlayerStats">
-    <a class="href-link" href="#PlayerStats">#</a>
-    
-    <span class="code-name">
-        PlayerStats
-    </span>
-    
-</h4>
-
-
-
-
-<div class="description">
-    Player Stats for the Match Model
-</div>
 
 
 
 
 
-    <h5 class="subsection-title">Properties:</h5>
 
+
+
+
+
+    <h5>Parameters:</h5>
     
 
-<table class="props">
+<table class="params">
     <thead>
     <tr>
         
@@ -182,353 +111,34 @@
 
     <tbody>
     
+
         
 <tr class="deep-level-0">
-    
-        <td class="name"><code>id</code></td>
-    
+  
+      <td class="name"><code>api</code></td>
+  
 
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
+  <td class="type">
+  
+      
+<span class="param-type"><a href="ApiControler.html">ApiControler</a></span>
 
 
-    
-    </td>
+  
+  </td>
 
-    
+  
 
-    
+  
 
-    <td class="description last"></td>
+  <td class="description last">The api controller</td>
 </tr>
 
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>name</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">String</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>kills</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>killsPerRound</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>hsKills</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>assists</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>deathsPerRound</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>flashAssists</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>deaths</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>KAST</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>killDeathsDifference</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>ADR</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>firstKillsDifference</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>flasratinghAssists</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
-
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>impact</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Number</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"></td>
-</tr>
 
     
     </tbody>
 </table>
+
 
 
 
@@ -566,9 +176,9 @@
 
     
         <p class="tag-source">
-            <a href="models_Match.js.html" class="button">View Source</a>
+            <a href="routes_team-post.js.html" class="button">View Source</a>
             <span>
-                <a href="models_Match.js.html">models/Match.js</a>, <a href="models_Match.js.html#line3">line 3</a>
+                <a href="routes_team-post.js.html">routes/team-post.js</a>, <a href="routes_team-post.js.html#line15">line 15</a>
             </span>
         </p>
     
@@ -578,10 +188,292 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">function</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getComments">
+        <a class="href-link" href="#~getComments">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getComments<span class="signature">(id, user_id<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Array>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Function return the parsed comments or an empty [].
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>id</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">number</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last">The id of the Player</td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>user_id</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last">The id of the User</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="routes_team-post.js.html" class="button">View Source</a>
+            <span>
+                <a href="routes_team-post.js.html">routes/team-post.js</a>, <a href="routes_team-post.js.html#line95">line 95</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise.&lt;Array></span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
 </div>
             
             </div>
         </div>
+    
+
     
 
     

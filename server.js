@@ -92,7 +92,9 @@ app.use(logger())
 
 //Serving statics files
 app.use('/static', express.static('public'))
-app.use('/jsdoc', express.static('docs'))
+if (global.NODE_MODE) {
+    app.use('/jsdoc', express.static('docs'))
+}
 
 //Shameless Plug
 app.use((req, res, next) => {

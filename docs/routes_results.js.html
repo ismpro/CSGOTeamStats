@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: routes/results.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,8 +53,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>routes/results.js</h1>
                     </header>
                     
                     
@@ -60,25 +62,33 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Match = require('../models/Match');
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Module that deals with search request. 
+ * In the body is expeted an limit then returns all the matches within that limit.
+ * @module results
+ * @returns {Function}
+ */
+module.exports = function () {
+    return function (req, res) {
+        let limit = req.body.limit;
+        Match.find()
+            .sort({ date: 'desc' })
+            .limit(limit)
+            .exec(function (err, docs) {
+                if (!err) {
+                    res.status(200).json(docs)
+                } else {
+                    res.status(500).send('Server Error')
+                }
+            });
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 

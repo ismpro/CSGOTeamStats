@@ -57,6 +57,9 @@ const UserSchema = new mongoose.Schema({
         matches: [Number],
     }
 }, {
+    /**
+    * Warning: Ignore this!
+    */
     collection: 'User'
 });
 
@@ -76,5 +79,12 @@ UserSchema.methods.validPassword = function (password) {
     // @ts-ignore
     return bcrypt.compareSync(password, this.password);
 }
+
+/**
+* The full name of the user
+*/
+UserSchema.virtual('fullName').get(function () {
+    return this.firstName + ' ' + this.lastName;
+});
 
 module.exports = mongoose.model('User', UserSchema);

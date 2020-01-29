@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: models/Team.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,8 +53,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>models/Team.js</h1>
                     </header>
                     
                     
@@ -60,25 +62,69 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose')
 
+const Types = mongoose.Schema.Types;
 
-    <h3> </h3>
+const TeamsSchema = new mongoose.Schema({
+    /**
+    * ID of the team
+    */
+    id: { type: Number, index: true, unique: true, required: true },
+    /**
+    * Name of the team
+    */
+    name: String,
+    /**
+    * Url of image
+    */
+    logo: String,
+    /**
+    * Country of the team where is located
+    */
+    location: Types.Mixed,
+    /**
+    * The url of the facebook
+    */
+    facebook: String,
+    /**
+    * The url of the twitter
+    */
+    twitter: String,
+    /**
+    * The number where this team is located on the global ranking
+    */
+    rank: Number,
+    /**
+    * The players on this team
+    */
+    players: [{
+        name: String,
+        id: Number
+    }],
+    /**
+    * Some recent matches
+    */
+    recentResults: [{
+        matchID: Number,
+        enemyTeam: {
+            id: Number,
+            name: String
+        },
+        result: String
+    }]
+}, {
+    /**
+    * Warning: Ignore this!
+    */
+    collection: 'Team'
+});
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = mongoose.model('Team', TeamsSchema);</code></pre>
+        </article>
+    </section>
 
 
 

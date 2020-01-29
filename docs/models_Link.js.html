@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: models/Link.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,8 +53,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>models/Link.js</h1>
                     </header>
                     
                     
@@ -60,25 +62,49 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose')
 
+const Types = mongoose.Schema.Types;
 
-    <h3> </h3>
+/**
+ * Model Links for mongodb
+ */
+const LinkSchema = new mongoose.Schema({
+    /**
+    * ID part of the url 
+    */
+    link: String,
+    /**
+    * The type of the url
+    */
+    type: String,
+    /**
+    * The state of the url ative, expire, etc
+    */
+    state: String,
+    /**
+    * The user linked to the url
+    */
+    user: {
+        type: Types.ObjectId,
+        ref: 'User'
+    },
+    /**
+    * The Expire Date
+    */
+    expireDate: Date
+}, {
+    /**
+    * Warning: Ignore this!
+    */
+    collection: 'Link'
+});
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = mongoose.model('Link', LinkSchema);</code></pre>
+        </article>
+    </section>
 
 
 

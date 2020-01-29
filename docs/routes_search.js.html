@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: routes/search.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,8 +53,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>routes/search.js</h1>
                     </header>
                     
                     
@@ -60,25 +62,64 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Teams = require('../models/Team');
+const Players = require('../models/Player');
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Module that deals with search request. 
+ * In the body is expeted an data.text with the text for the search then returns all results of the query.
+ * @module search
+ * @returns {Function}
+ */
+module.exports = function () {
+    return function (req, res) {
+        let data = req.body;
+        let teamsPromise = Teams.find({
+            name: {
+                '$regex': `^${data.text}`,
+                '$options': 'i'
+            }
+        }).limit(3).exec()
+        let playerPromise = Players.find({
+            $or: [{
+                name: {
+                    '$regex': `^${data.text}`,
+                    '$options': 'i'
+                }
+            }, {
+                ign: {
+                    '$regex': `^${data.text}`,
+                    '$options': 'i'
+                }
+            }]
+        }).limit(3).exec()
+        Promise.all([teamsPromise, playerPromise]).then(data => {
+            let players = data[1];
+            let teams = data[0];
+            res.status(200).send({
+                teams: teams.map((team) => ({
+                    id: team.id,
+                    name: team.name,
+                    logo: team.logo,
+                })),
+                players: players.map((player) => ({
+                    id: player.id,
+                    ign: player.ign,
+                    name: player.name,
+                    image: player.image,
+                    team: player.team,
+                }))
+            })
+        }).catch(err => {
+            console.log(err)
+            res.status(500).send(err)
+        })
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 

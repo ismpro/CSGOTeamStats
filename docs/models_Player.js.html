@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: models/Player.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,8 +53,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>models/Player.js</h1>
                     </header>
                     
                     
@@ -60,25 +62,88 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose')
 
+const PlayersSchema = new mongoose.Schema({
+    /**
+    * ID of the player
+    */
+    id: { type: Number, index: true, unique: true, required: true },
+    /**
+    * The Full Name of the player
+    */
+    name: String,
+    /**
+    * In game Name of the player
+    */
+    ign: String,
+    /**
+    * Url of image
+    */
+    image: String,
+    /**
+    * Age of the player
+    */
+    age: Number,
+    /**
+    * The url of the twitter
+    */
+    twitter: String,
+    /**
+    * The url of the twitch
+    */
+    twitch: String,
+    /**
+    * The url of the facebook
+    */
+    facebook: String,
+    /**
+    * The country information of the player
+    */
+    country: {
+        name: String,
+        code: String
+    },
+    /**
+    * Which team is the player in
+    */
+    team: {
+        name: String,
+        id: Number
+    },
+    /**
+    * Some stats of the player
+    */
+    statistics: {
+        rating: Number,
+        killsPerRound: Number,
+        headshots: Number,
+        mapsPlayed: Number,
+        deathsPerRound: Number,
+        roundsContributed: Number
+    },
+    /**
+    * Some achievements of the player (matches)
+    */
+    achievements: [{
+        place: String,
+        event: {
+            name: String,
+            id: Number
+        }
+    },],
+}, {
+    /**
+    * Warning: Ignore this!
+    */
+    collection: 'Player'
+});
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = mongoose.model('Player', PlayersSchema);</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 let favController = false
 let comments = []
