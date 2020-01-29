@@ -1,3 +1,4 @@
+// @ts-nocheck
 const User = require('../../models/User')
 const Players = require('../../models/Player')
 const Teams = require('../../models/Team')
@@ -5,15 +6,21 @@ const Match = require('../../models/Match')
 const { formatDate } = require('../../functions')
 
 /**
- * Module that set user information with the data on the body.
+ * Module that returns all necessary information of the user for a profile page
  * In the url is expeted an id (/:id)
- * If the session and aksing for an id='-' is not correcty set this modules will response with false.
+ * If the session is not correcty set and aksing for an id='-' this module will response with false.
  * @module Profile/Get
  * @async
  * @returns {Function}
  */
 module.exports = function () {
 
+    /**
+     * Function that deals with the information of all favorites players, teams and matches.
+     * @async
+     * @param {{players: Array, teams: Array, matches: Array}} favorite The id of the Team
+     * @returns {Promise<{players: Array, teams: Array, matches: Array}>}
+     */
     const parseFav = async (favorite) => {
         if (favorite) {
             let parsedplayers = []

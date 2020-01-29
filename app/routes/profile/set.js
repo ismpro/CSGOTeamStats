@@ -5,7 +5,7 @@ const User = require('../../models/User')
  * Module that set user information with the data on the body.
  * In the body is expeted the new user info 
  * (data.email, data.name - Full name and data.password[the old password, the new password] - Optional)
- * If the session is not correcty set this modules will response with false.
+ * If the session is not correcty set this module will response with false.
  * @module Profile/Set
  * @returns {Function}
  */

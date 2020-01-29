@@ -1,3 +1,3 @@
-function loadData(cb) {
+function pageLoad(cb) {
     cb()
 }
