@@ -1,5 +1,11 @@
 const Match = require('../models/Match');
 
+/**
+ * Module that deals with search request. 
+ * In the body is expeted an limit then returns all the matches within that limit.
+ * @module results
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         let limit = req.body.limit;

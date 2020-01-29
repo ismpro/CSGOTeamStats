@@ -1,13 +1,29 @@
+// @ts-nocheck
 const {
     parseComments
 } = require('../functions.js');
+const ApiControler = require('../config/ApiControler');
 const Teams = require('../models/Team');
 const Players = require('../models/Player');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
 
+/**
+ * Module that deals with the information of a team post request.
+ * In the body is expeted an id then returns all the information of that player.
+ * If the id doens't exit in the Database then is going to search in the api.
+ * @module player-post
+ * @param {ApiControler} api The api controller
+ * @returns {Function}
+ */
 module.exports = function (api) {
 
+    /**
+     * Function that deals with the information of a team.
+     * If the id doens't exit in the Database then is going to search in the api.
+     * @param {number} id The id of the Team
+     * @returns {Promise<{id: Number, name: String, logo: String}>}
+     */
     const getTeam = (id) => {
         return new Promise((resolve, reject) => {
             Teams.findOne({
@@ -63,6 +79,12 @@ module.exports = function (api) {
         })
     }
 
+    /**
+     * Function return the parsed comments or an empty [].
+     * @param {number} id The id of the Player
+     * @param {String} [user_id] The id of the User 
+     * @returns {Promise<Array>}
+     */
     const getComments = (id, user_id) => {
         return new Promise((resolve, reject) => {
             console.log(user_id)

@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: models/Match.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                    
+                        <h1 class="navbar-item">Documentation</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-player-post.html">player-post</a></li><li><a href="module-results.html">results</a></li><li><a href="module-search.html">search</a></li><li><a href="module-team-post.html">team-post</a></li></ul><h3>Classes</h3><ul><li><a href="ApiControler.html">ApiControler</a></li><li><a href="Comments.html">Comments</a></li><li><a href="Link.html">Link</a></li><li><a href="Match.html">Match</a></li><li><a href="Players.html">Players</a></li><li><a href="Teams.html">Teams</a></li><li><a href="User.html">User</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>models/Match.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose')
+
+/**
+ * Player Stats for the Match Model
+ * @typedef PlayerStats
+ * @property {Number} id
+ * @property {String} name
+ * @property {Number} kills
+ * @property {Number} killsPerRound
+ * @property {Number} hsKills
+ * @property {Number} assists
+ * @property {Number} deathsPerRound
+ * @property {Number} flashAssists
+ * @property {Number} deaths
+ * @property {Number} KAST
+ * @property {Number} killDeathsDifference
+ * @property {Number} ADR
+ * @property {Number} firstKillsDifference
+ * @property {Number} flasratinghAssists
+ * @property {Number} impact
+ */
+const PlayerStats = new mongoose.Schema({
+    id: Number,
+    name: String,
+    kills: Number,
+    killsPerRound: Number,
+    hsKills: Number,
+    assists: Number,
+    deathsPerRound: Number,
+    flashAssists: Number,
+    deaths: Number,
+    KAST: Number,
+    killDeathsDifference: Number,
+    ADR: Number,
+    firstKillsDifference: Number,
+    rating: Number,
+    impact: Number
+})
+
+/**
+ * Model Match for mongodb
+ */
+let MatchSchema = new mongoose.Schema({
+    /**
+    * ID of the match
+    */
+    id: { type: Number, index: true, unique: true, required: true },
+    /**
+    * Stats ID of the match
+    */
+    statsId: Number,
+    /**
+    * Information of team 1
+    */
+    team1: {
+        name: String,
+        id: Number
+    },
+    /**
+    * Information of team 1
+    */
+    team2: {
+        name: String,
+        id: Number
+    },
+    /**
+    * The information of the winning team
+    */
+    winnerTeam: {
+        name: String,
+        id: Number
+    },
+    /**
+    * Date of the match
+    */
+    date: Date,
+    /**
+    * Which of match was ex: bo3
+    */
+    format: String,
+    /**
+    * Name of the event
+    */
+    event: String,
+    /**
+    * Information of the maps
+    */
+    maps: [{
+        map: String,
+        team1: {
+            name: String,
+            id: Number,
+            score: Number
+        },
+        team2: {
+            name: String,
+            id: Number,
+            score: Number
+        },
+        playerStats: {
+            team1: [PlayerStats],
+            team2: [PlayerStats]
+        },
+        performanceOverview: {
+            team1: {
+                assists: Number,
+                deaths: Number,
+                kills: Number,
+            },
+            team2: {
+                assists: Number,
+                deaths: Number,
+                kills: Number,
+            }
+        }
+    }],
+    /**
+    * All the players of the match
+    */
+    players: {
+        team1: [{
+            name: String,
+            id: Number
+        }],
+        team2: [{
+            name: String,
+            id: Number
+        }]
+    },
+    /**
+    * Status of the match ex: Match over
+    */
+    status: String,
+    /**
+    * The title of the match
+    */
+    title: String,
+    /**
+    * The Highlighted Player of the match
+    */
+    highlightedPlayer: {
+        name: String,
+        id: Number
+    },
+    vetoes: [{
+        map: String,
+        team: { name: String, id: Number },
+        type: String
+    }],
+    highlights: [{
+        link: String,
+        title: String
+    }],
+    demos: [{
+        name: String,
+        link: String
+    }],
+    /**
+    * Some stats of the match
+    */
+    overview: {
+        mostKills: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostDamage: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostAssists: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostAWPKills: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        mostFirstKills: {
+            id: Number,
+            name: String,
+            value: Number
+        },
+        bestRating: {
+            id: Number,
+            name: String,
+            value: Number
+        }
+    },
+    /**
+    * Some player stats of the match
+    */
+    playerStats: {
+        team1: [PlayerStats],
+        team2: [PlayerStats]
+    }
+}, {
+    /**
+    * Warning: Ignore this!
+    */
+    collection: 'Match'
+});
+
+module.exports = mongoose.model('Match', MatchSchema);</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Jan 29 2020 02:10:43 GMT+0000 (GMT)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

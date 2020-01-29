@@ -36,7 +36,6 @@ function authLogin() {
         }).catch(err => console.log(err))
     }
     let nav = document.getElementById('mySidenav')
-    //<a href="/profile/-">Profile</a>
     let a = document.createElement('a')
     a.href = '/profile/-';
     a.textContent = 'My Profile';
@@ -60,7 +59,10 @@ function authLogout() {
         let button = document.getElementById('loginButton')
         button.style.display = "inline";
         button.innerHTML = '<a href="/login" class="loginButton">Log in</a>'
-        document.getElementById('profilelink').remove();
+        let profilelink = document.getElementById('profilelink');
+        if (profilelink) {
+            profilelink.remove();
+        }
     }
 }
 

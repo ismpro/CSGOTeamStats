@@ -44,13 +44,12 @@ const redirectProfile = (req, res, next) => {
 }
 
 const checkAdminSession = (req, res, next) => {
-    next()
-    /* if (req.session.userid) {
+    if (req.session.userid) {
         User.findById(req.session.userid, (err, user) => {
             if (err) {
                 res.status(500).send(err.message)
             } else {
-                if (user && user.atribuitesessionid === req.session.sessionId && typeof user.admin !== 'string' && user.admin) {
+                if (user && user.adminatribuitesessionid === req.session.adminsessionId && typeof user.admin !== 'string' && user.admin) {
                     next()
                 } else {
                     res.status(401).send('Unauthorized')
@@ -59,7 +58,7 @@ const checkAdminSession = (req, res, next) => {
         })
     } else {
         res.status(401).send('Unauthorized')
-    } */
+    }
 }
 
 module.exports = function (app, api, transporter) {

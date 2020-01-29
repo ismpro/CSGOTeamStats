@@ -1,0 +1,17 @@
+{
+    "source": {
+        "include": [
+            "app"
+        ],
+        "includePattern": ".js$",
+        "excludePattern": "(node_modules/|docs)"
+    },
+    "plugins": [
+        "plugins/jsdoc-plugin-mongoose"
+    ],
+    "opts": {
+        "template": "node_modules/better-docs",
+        "recurse": true,
+        "destination": "./docs/"
+    }
+}

@@ -13,6 +13,18 @@ function login(e) {
             if (code === 220) {
                 document.getElementById('login').style.display = "none"
                 document.getElementById('tables').style.display = "block"
+                let inputs = Array.from(document.getElementById('checkboxs').getElementsByTagName('input'))
+                inputs.forEach(input => {
+                    input.checked = false
+                })
+                document.getElementById('user_chk').checked = true
+                api.post('/admin/info/user/get').then(res => {
+                    if (typeof res.data === 'object' && res.status === 200) {
+                        createTable('user', res.data, table, ['favorite', 'password', '__v', 'creationDate', 'atribuitesessionid'])
+                    } else {
+                        //console.log(err)
+                    }
+                }).catch(err => console.log(err))
             } else {
                 document.getElementById('mgsLogin').innerHTML = res.data
             }
@@ -22,6 +34,17 @@ function login(e) {
             document.getElementById('mgsLogin').innerHTML = "Connection Error"
         });
 }
+
+function logout() {
+    api.post('/auth/logout').then((res) => {
+        if (res.data) {
+            document.getElementById('login').style.display = "block"
+            document.getElementById('tables').style.display = "none"
+            document.getElementById('table').innerHTML = ""
+        }
+    }).catch(err => console.log(err))
+}
+
 
 function sendEmail(e) {
     e.preventDefault()
@@ -103,19 +126,6 @@ function onChangeChk(element, type) {
             break;
     }
 }
-
-let inputs = Array.from(document.getElementById('checkboxs').getElementsByTagName('input'))
-inputs.forEach(input => {
-    input.checked = false
-})
-document.getElementById('user_chk').checked = true
-api.post('/admin/info/user/get').then(res => {
-    if (typeof res.data === 'object' && res.status === 200) {
-        createTable('user', res.data, table, ['favorite', 'password', '__v', 'creationDate', 'atribuitesessionid'])
-    } else {
-        //console.log(err)
-    }
-}).catch(err => console.log(err))
 
 function createTable(type, tableData, table, rejectKeys = []) {
     let tableBody = document.createElement('tbody');

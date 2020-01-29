@@ -1,19 +1,46 @@
 const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
+const Types = mongoose.Schema.Types;
 
-let teamsSchema = Schema({
+const TeamsSchema = new mongoose.Schema({
+    /**
+    * ID of the team
+    */
     id: { type: Number, index: true, unique: true, required: true },
+    /**
+    * Name of the team
+    */
     name: String,
+    /**
+    * Url of image
+    */
     logo: String,
-    location: Schema.Types.Mixed,
+    /**
+    * Country of the team where is located
+    */
+    location: Types.Mixed,
+    /**
+    * The url of the facebook
+    */
     facebook: String,
+    /**
+    * The url of the twitter
+    */
     twitter: String,
+    /**
+    * The number where this team is located on the global ranking
+    */
     rank: Number,
+    /**
+    * The players on this team
+    */
     players: [{
         name: String,
         id: Number
     }],
+    /**
+    * Some recent matches
+    */
     recentResults: [{
         matchID: Number,
         enemyTeam: {
@@ -23,7 +50,10 @@ let teamsSchema = Schema({
         result: String
     }]
 }, {
+    /**
+    * Warning: Ignore this!
+    */
     collection: 'Team'
 });
 
-module.exports = mongoose.model('Team', teamsSchema);
+module.exports = mongoose.model('Team', TeamsSchema);

@@ -68,8 +68,7 @@ module.exports = function () {
                             res.status(200).json({
                                 favorites: parsedFavorite,
                                 email: user.email,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
+                                name: user.fullName,
                                 creationDate: formatDate(user.creationDate),
                             })
                         } else {
@@ -91,15 +90,13 @@ module.exports = function () {
                             res.status(200).json({
                                 favorites: parsedFavorite,
                                 email: user.email,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
+                                name: user.fullName,
                                 creationDate: formatDate(user.creationDate),
                             })
                         } else {
                             res.status(200).json({
                                 email: user.email,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
+                                name: user.fullName,
                                 creationDate: formatDate(user.creationDate),
                             })
                         }

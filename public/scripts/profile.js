@@ -1,3 +1,4 @@
+// @ts-nocheck
 let favs = false
 let editMode = false
 function pageLoad(cb) {
@@ -111,7 +112,7 @@ function onlogout() {
 function loadData(data) {
     document.getElementById('user_creation').textContent = data.creationDate
     document.getElementById('user_email').textContent = data.email
-    document.getElementById('user_name').textContent = data.firstName + ' ' + data.lastName
+    document.getElementById('user_name').textContent = data.name
 
     favs = data.favorites
 }

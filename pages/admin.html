@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div style="display: none;" id="login">
+    <div style="display: block;" id="login">
         <form onsubmit="login(event)">
             <label for="uname"><b>Email</b></label>
             <input type="text" placeholder="Enter Email..." name="eamil" id="eamil" required>
@@ -37,12 +37,13 @@
         <button onclick="changeMode()" class="button_a">Go back for login</button>
         <p id="mgsAsk"></p>
     </div>
-    <div id="tables" style="display: block;">
+    <div id="tables" style="display: none;">
         <div id="checkboxs">
-            Users <input type="checkbox" onchange="onChangeChk(this, 'user')" id="user_chk" checked>
+            Users <input type="checkbox" onchange="onChangeChk(this, 'user')" id="user_chk">
             | Teams <input type="checkbox" onchange="onChangeChk(this, 'team')" id="team_chk">
             | Players <input type="checkbox" onchange="onChangeChk(this, 'player')" id="player_chk">
             | Matches <input type="checkbox" onchange="onChangeChk(this, 'match')" id="match_chk">
+            <button onclick="logout()">Logout</button>
         </div>
         <div class="table-wrapper">
             <div class="table-scroll">
@@ -59,9 +60,9 @@
         <div id="modal_body" class="modal-body">
             <p>Some text in the Modal Body</p>
             <p>Some other text...</p>
-        </divid="modal">
-    </div>
-    <script src="/static/scripts/admin.js"></script>
+            </divid="modal">
+        </div>
+        <script src="/static/scripts/admin.js"></script>
 </body>
 
 </html>

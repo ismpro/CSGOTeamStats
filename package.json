@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start-dev": "nodemon server.js"
+    "start-dev": "nodemon server.js",
+    "doc": "jsdoc -c jsdoc.json"
   },
   "nodemonConfig": {
     "ignore": [
@@ -17,6 +18,7 @@
   "author": "Ismael Lourenço",
   "license": "ISC",
   "devDependencies": {
+    "better-docs": "^1.4.7",
     "eslint": "^6.5.1"
   },
   "dependencies": {

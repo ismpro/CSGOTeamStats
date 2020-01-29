@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-nocheck
 const express = require('express')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
@@ -25,6 +26,7 @@ dotenv.config()
 
 app.set("port", process.env.PORT || 3001);
 app.set("pin", process.env.PIN || 1234);
+
 global.appRoot = path.resolve(__dirname);
 global.NODE_MODE = Boolean(process.env.NODE_DEV === 'true');
 console.log(chalk.green(`  Node Mode: ${(global.NODE_MODE ? 'DEV' : 'PRD')}`));
@@ -41,6 +43,7 @@ mongoose.connect(process.env.DB, {
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', async function () {
+
     console.log(chalk.green('\n  MongoDB Connected'));
     api.removeDuplicates();
 });
@@ -89,6 +92,9 @@ app.use(logger())
 
 //Serving statics files
 app.use('/static', express.static('public'))
+if (global.NODE_MODE) {
+    app.use('/jsdoc', express.static('docs'))
+}
 
 //Shameless Plug
 app.use((req, res, next) => {
@@ -100,6 +106,7 @@ app.use((req, res, next) => {
 require('./app/routes.js')(app, api, transporter)
 
 //Handling erros inside of server
+
 app.use(function (err, req, res) {
     res.status(500).send('Something broke!')
 })

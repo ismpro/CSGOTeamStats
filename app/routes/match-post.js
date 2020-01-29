@@ -4,7 +4,7 @@ const {
     byCountry
 } = require('country-code-lookup')
 
-const getPlayer = async function (players) {
+const getPlayers = async function (players) {
     let parsedPlayer = [];
     for (const player of players) {
         let playerInfo = await Players.findOne({
@@ -42,7 +42,7 @@ module.exports = function (api) {
         }, function (err, match) {
             if (!err) {
                 //res.status(200).json(match)                
-                Promise.all([getPlayer(match.players.team1), getPlayer(match.players.team2)]).then(data => {
+                Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)]).then(data => {
                     res.status(200).json({
                         match: match,
                         playersTeam1: data[0],

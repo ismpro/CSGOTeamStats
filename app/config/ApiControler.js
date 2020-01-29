@@ -7,8 +7,15 @@ const Team = require('../models/Team')
 const Player = require('../models/Player')
 const Match = require('../models/Match')
 
+/**
+ * Class thats helps with HLTV api by extracting information from HLTV and schedules jobs for updates and new matches.
+ */
 class ApiControler {
     constructor() {
+        /**
+         * @property {object} secheduleUpdatedJob Object that has timer information about updates
+         * Fires every day at 00:01
+         */
         this.secheduleUpdatedJob = schedule.scheduleJob({
             hour: 0,
             minute: 1
@@ -16,12 +23,21 @@ class ApiControler {
             this.updateAll();
             this.removeDuplicates();
         });
+        /**
+         * @property {object} secheduleFetchLastInfoJob Object that has timer information about new Matches
+         * Fires every hour
+         */
         this.secheduleFetchLastInfoJob = schedule.scheduleJob('01 * * * *', () => {
             this.fetchAllInfo(1)
             this.removeDuplicates();
         });
     }
 
+    /**
+     * Returns the information of all content from match including teams and players and saves also saves to database that information.
+     * 
+     * @returns {Promise<void>}
+     */
     updateAll() {
         return new Promise(resolve => {
             let playersCursor = Player.find({}).cursor();
@@ -62,6 +78,13 @@ class ApiControler {
         })
     }
 
+    /**
+     * Returns the information of all content from a single match including teams and players and saves also saves to database that information.
+     * WARNING: this take a long time!
+     * @async
+     * @param {Number} id The id of the match
+     * @returns {Promise<{match: Object,teams: Object,players: Object}>}
+     */
     async fetchAllInfoFromMatch(id) {
         await functions.sleep(2000)
         let match = await this.fetchMatchById(id)
@@ -200,7 +223,7 @@ class ApiControler {
         let players = []
         let playersIt = 0
         for (const id of playersids) {
-            let findedPlayer = await Players.findOne({
+            let findedPlayer = await Player.findOne({
                 id: id
             })
             if (!findedPlayer) {
@@ -224,6 +247,14 @@ class ApiControler {
         }
     }
 
+    /**
+     * Returns the information of all content from all the matches from a results page including teams and players and saves also saves to database that information.
+     * WARNING: this take a long time!
+     * @async
+     * @param {Number} pages How pages do you want from (1 = 100 matches)
+     * @see {@link https://www.hltv.org/results|HLTV Results Page}
+     * @returns {Promise<Array<{match: Object,teams: Object,players: Object}>>}
+     */
     async fetchAllInfo(pages) {
         let results = await this.fetchResultsByPages(pages)
         results = results.map(result => result.id)
@@ -247,6 +278,11 @@ class ApiControler {
         return info
     }
 
+    /**
+     * Returns all information from a single player
+     * @param {Number} id ID of the player
+     * @returns {Promise<Object>}
+     */
     fetchPlayerById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayer({
@@ -257,6 +293,11 @@ class ApiControler {
         })
     }
 
+    /**
+     * Returns all information from a single team
+     * @param {Number} id ID of the team
+     * @returns {Promise<Object>}
+     */
     fetchTeamById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeam({
@@ -267,16 +308,12 @@ class ApiControler {
         })
     }
 
-    fetchTeamStatsById(id) {
-        return new Promise((resolve, reject) => {
-            HLTV.getTeamStats({
-                id: id
-            })
-                .then(res => resolve(res))
-                .catch(err => reject(err))
-        })
-    }
-
+    /**
+     * Returns all matches from the the results page
+     * @param {Number} pages How pages do you want from (1 = 100 matches)
+     * @see {@link https://www.hltv.org/results | HLTV Results Page}
+     * @returns {Promise<Object>}
+     */
     fetchResultsByPages(pages) {
         return new Promise((resolve, reject) => {
             HLTV.getResults({
@@ -287,6 +324,11 @@ class ApiControler {
         })
     }
 
+    /**
+     * Returns all information from a single match
+     * @param {Number} id ID of the match
+     * @returns {Promise<Object>}
+     */
     fetchMatchById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatch({
@@ -297,6 +339,11 @@ class ApiControler {
         })
     }
 
+    /**
+     * Returns all stats information from a single match
+     * @param {Number} id ID of the stats match (not the same as match ID)
+     * @returns {Promise<Object>}
+     */
     fetchMatchesStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchStats({ id: id })
@@ -305,17 +352,11 @@ class ApiControler {
         })
     }
 
-    fetchMatchesStatsByDates(startDate, endDate) {
-        return new Promise((resolve, reject) => {
-            HLTV.getMatchesStats({
-                startDate: functions.formatDate(startDate),
-                endDate: functions.formatDate(endDate)
-            })
-                .then(res => resolve(res))
-                .catch(err => reject(err))
-        })
-    }
-
+    /**
+     * Returns all stats information from a single map
+     * @param {Number} id ID of the stats map (not the same as match ID)
+     * @returns {Promise<Object>}
+     */
     fetchMatchMapStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchMapStats({
@@ -326,30 +367,22 @@ class ApiControler {
         })
     }
 
-    fetchTeamRanking() {
-        return new Promise((resolve, reject) => {
-            HLTV.getTeamRanking()
-                .then(res => resolve(res))
-                .catch(err => reject(err))
-        })
-    }
-
-    fetchRankingByCountry(country) {
-        return new Promise((resolve, reject) => {
-            HLTV.getTeamRanking({
-                country: country
-            })
-                .then(res => resolve(res))
-                .catch(err => reject(err))
-        })
-    }
-
+    /**
+     * Returns the players rank
+     * @param {String} startDate Start Date of the rank (format yyyy-mm-dd)
+     * @param {String} endDate End Date of the rank (format yyyy-mm-dd)
+     * @param {('Lan'|'Online'|'BigEvents'|'Majors')} matchType What type of matches that the ranking is going to be based on
+     * @param {('Top5'|'Top10'|'Top20'|'Top30'|'Top50')} rankingFilter The number of player that you want to be returned
+     * @returns {Promise<Object>}
+     */
     fetchPlayerRanking(startDate, endDate, matchType, rankingFilter) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayerRanking({
                 startDate: startDate,
                 endDate: endDate,
+                // @ts-ignore
                 matchType: matchType,
+                // @ts-ignore
                 rankingFilter: rankingFilter
             })
                 .then(res => resolve(res))
@@ -357,8 +390,13 @@ class ApiControler {
         })
     }
 
+    /**
+     * Removes all duplicates from the data base
+     * @async
+     * @returns {Promise<void>}
+     */
     async removeDuplicates() {
-        const aggTeam = Team.aggregate([
+        const aggTeam = await Team.aggregate([
             {
                 "$group": {
                     "_id": { "id": "$id" },
@@ -378,7 +416,7 @@ class ApiControler {
             })
         }
 
-        const aggPlayers = Player.aggregate([
+        const aggPlayers = await Player.aggregate([
             {
                 "$group": {
                     "_id": { "id": "$id" },
@@ -398,7 +436,7 @@ class ApiControler {
             })
         }
 
-        const aggMatch = Match.aggregate([
+        const aggMatch = await Match.aggregate([
             {
                 "$group": {
                     "_id": { "id": "$id" },

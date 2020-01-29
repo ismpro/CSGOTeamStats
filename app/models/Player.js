@@ -1,24 +1,55 @@
 const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
-
-let playersSchema = Schema({
+const PlayersSchema = new mongoose.Schema({
+    /**
+    * ID of the player
+    */
     id: { type: Number, index: true, unique: true, required: true },
+    /**
+    * The Full Name of the player
+    */
     name: String,
+    /**
+    * In game Name of the player
+    */
     ign: String,
+    /**
+    * Url of image
+    */
     image: String,
+    /**
+    * Age of the player
+    */
     age: Number,
+    /**
+    * The url of the twitter
+    */
     twitter: String,
+    /**
+    * The url of the twitch
+    */
     twitch: String,
+    /**
+    * The url of the facebook
+    */
     facebook: String,
+    /**
+    * The country information of the player
+    */
     country: {
         name: String,
         code: String
     },
+    /**
+    * Which team is the player in
+    */
     team: {
         name: String,
         id: Number
     },
+    /**
+    * Some stats of the player
+    */
     statistics: {
         rating: Number,
         killsPerRound: Number,
@@ -27,6 +58,9 @@ let playersSchema = Schema({
         deathsPerRound: Number,
         roundsContributed: Number
     },
+    /**
+    * Some achievements of the player (matches)
+    */
     achievements: [{
         place: String,
         event: {
@@ -35,11 +69,10 @@ let playersSchema = Schema({
         }
     },],
 }, {
+    /**
+    * Warning: Ignore this!
+    */
     collection: 'Player'
 });
 
-playersSchema.virtual('fullName').get(function () {
-    return this.first_name + ' ' + this.last_name;
-});
-
-module.exports = mongoose.model('Player', playersSchema);
+module.exports = mongoose.model('Player', PlayersSchema);

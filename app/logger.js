@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-unused-vars */
 const functions = require('./functions')
 const iplocate = require('node-iplocate')
@@ -5,7 +6,7 @@ const path = require('path')
 const chalk = require('chalk')
 /**
  * 
- * @param 
+ * @param {Object} [options]
  */
 module.exports = function (options) {
     return function (req, res, next) {
