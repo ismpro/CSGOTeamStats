@@ -10,7 +10,7 @@ const Comment = require('../models/Comment');
 
 /**
  * Module that deals with the information of a player post request.
- * In the body is expeted an id then returns all the information of that player.
+ * In the url is expeted an id (/:id) then returns all the information of that player.
  * If the id doens't existis in the Database then is going to search in the api.
  * @module Player_Post
  * @param {ApiControler} api The api controller

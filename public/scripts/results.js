@@ -1,4 +1,3 @@
-function loadData(data) {
-    
+function loadData(cb) {
     cb()
 }
