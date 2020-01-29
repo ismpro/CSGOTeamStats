@@ -3,7 +3,7 @@ const Match = require('../models/Match');
 /**
  * Module that deals with search request. 
  * In the body is expeted an limit then returns all the matches within that limit.
- * @module results
+ * @module Results
  * @returns {Function}
  */
 module.exports = function () {

@@ -1,11 +1,26 @@
+// @ts-nocheck
 const {
     formatDate
 } = require('../../functions.js')
 const Players = require('../../models/Player')
 const Teams = require('../../models/Team')
 
+/**
+ * Module that deals with the information of current ranking of players.
+ * If the ids doens't existis in the Database then is going to search in the api.
+ * @module Ranking/Players
+ * @async
+ * @param {ApiControler} api The api controller
+ * @returns {Function}
+ */
 module.exports = function (api) {
 
+    /**
+     * Function that deals with the information of a team.
+     * If the id doens't existis in the Database then is going to search in the api.
+     * @param {number} id The id of the Team
+     * @returns {Promise<{id: Number, name: String, logo: String}>}
+     */
     const getTeam = async (id) => {
         return new Promise((resolve, reject) => {
             Teams.findOne({

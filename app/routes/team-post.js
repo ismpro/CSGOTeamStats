@@ -1,3 +1,4 @@
+// @ts-nocheck
 const ApiControler = require('../config/ApiControler');
 const Teams = require('../models/Team');
 const Players = require('../models/Player');
@@ -16,12 +17,19 @@ const {
  * Module that deals with the information of a team post request. 
  * In the body is expeted an id then returns all the information of that team. 
  * If the id doens't exit in the Database then is going to search in the api.
- * @module team-post
+ * @module Team_Post
  * @param {ApiControler} api The api controller
  * @returns {Function}
  */
 module.exports = function (api) {
 
+    /**
+     * Function that deals with the information of all players.
+     * If the players doens't existis in the Database then is going to search in the api.
+     * @async
+     * @param {Array<{name: String, id: Number}>} players Array with players information
+     * @returns {Promise<Array<{id: Number, name: String, fullName: String, image: String, country: Object}>>}
+     */
     const getPlayer = async function (players) {
         let parsedPlayer = [];
         for (const player of players) {
@@ -61,6 +69,12 @@ module.exports = function (api) {
         return parsedPlayer
     }
 
+    /**
+     * Function that deals with the information of all last results from a team.
+     * @async
+     * @param {Array<Object>} recent Array with players information
+     * @returns {Promise<Array<Object>>}
+     */
     const getLastResults = async function (recent) {
         let parsedLastResults = [];
         for (const results of recent) {
@@ -119,7 +133,6 @@ module.exports = function (api) {
             if (!err) {
                 if (team) {
                     let code = byCountry(team.location)
-                    // @ts-ignore
                     team.location = code ? {
                         code: code.iso2,
                         name: code.country

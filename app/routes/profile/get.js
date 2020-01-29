@@ -4,6 +4,15 @@ const Teams = require('../../models/Team')
 const Match = require('../../models/Match')
 const { formatDate } = require('../../functions')
 
+/**
+ * Module that set user information with the data on the body.
+ * In the body is expeted the new user info
+ * (data.email, data.name - Full name and data.password[the old password, the new password] - Optional)
+ * If the session is not correcty set this modules will response with false.
+ * @module Profile/Get
+ * @async
+ * @returns {Function}
+ */
 module.exports = function () {
 
     const parseFav = async (favorite) => {
