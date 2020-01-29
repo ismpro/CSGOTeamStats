@@ -42,11 +42,6 @@ mongoose.connect(process.env.DB, {
 });
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', async function () {
-
-    console.log(chalk.green('\n  MongoDB Connected'));
-    api.removeDuplicates();
-});
 
 //Mailer
 var transporter = nodemailer.createTransport({
@@ -106,13 +101,16 @@ app.use((req, res, next) => {
 require('./app/routes.js')(app, api, transporter)
 
 //Handling erros inside of server
-
 app.use(function (err, req, res) {
     res.status(500).send('Something broke!')
 })
 
-//Starting to listen to requests
-var server = app.listen(app.get('port'),
-    () => {
-        console.log(chalk.green(`\n  Server Listing on: ${server.address().address === '::' ? 'localhost' : server.address().address}:${server.address().port}`))
-    })
+db.once('open', function () {
+    console.log(chalk.green('\n  MongoDB Connected'));
+    //Starting to listen to requests
+    var server = app.listen(app.get('port'),
+        () => {
+            console.log(chalk.green(`\n  Server Listing on: ${server.address().address === '::' ? 'localhost' : server.address().address}:${server.address().port}`));
+            api.removeDuplicates();
+        })
+});

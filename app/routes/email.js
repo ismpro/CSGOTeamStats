@@ -1,5 +1,13 @@
 const User = require('../models/User')
 
+/**
+ * Module that sends emails from the contact route.
+ * In the body is expeted data.name with the user name, data.email the user email, 
+ * data.text with the content of the messages and data.check telling if the user wants a cody for himself
+ * @module Email
+ * @param {*} transporter The module that sends emails
+ * @returns {Function}
+ */
 module.exports = function (transporter) {
     return function (req, res) {
         let data = req.body;

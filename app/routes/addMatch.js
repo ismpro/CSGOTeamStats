@@ -1,5 +1,15 @@
 const Match = require('../models/Match')
 
+/**
+ * Module that helps you fetching all the information from a single match including teams and players.
+ * In the url query is expeted the correct access pin and the id of the match.
+ * This is deprecated, dont use this, the program will do it automatically for you.
+ * @module Add_Match
+ * @deprecated
+ * @param {*} app The Express app
+ * @param {*} api The api controller
+ * @returns {Function}
+ */
 module.exports = function (app, api) {
     return async function (req, res) {
         let pin = req.query.pin;
@@ -17,10 +27,7 @@ module.exports = function (app, api) {
                     console.log(error)
                 }
             } else {
-                let matchDeleted = await Match.deleteOne({
-                    id: id
-                })
-                res.status(200).send(matchDeleted)
+                res.status(200).send('Match already in database')
             }
         } else {
             res.status(403).send('Unauthorized')

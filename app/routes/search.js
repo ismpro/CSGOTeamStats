@@ -4,7 +4,7 @@ const Players = require('../models/Player');
 /**
  * Module that deals with search request. 
  * In the body is expeted an data.text with the text for the search then returns all results of the query.
- * @module search
+ * @module Search
  * @returns {Function}
  */
 module.exports = function () {

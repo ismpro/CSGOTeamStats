@@ -9,10 +9,10 @@ const User = require('../models/User');
 const Comment = require('../models/Comment');
 
 /**
- * Module that deals with the information of a team post request.
+ * Module that deals with the information of a player post request.
  * In the body is expeted an id then returns all the information of that player.
- * If the id doens't exit in the Database then is going to search in the api.
- * @module player-post
+ * If the id doens't existis in the Database then is going to search in the api.
+ * @module Player_Post
  * @param {ApiControler} api The api controller
  * @returns {Function}
  */
@@ -20,7 +20,7 @@ module.exports = function (api) {
 
     /**
      * Function that deals with the information of a team.
-     * If the id doens't exit in the Database then is going to search in the api.
+     * If the id doens't existis in the Database then is going to search in the api.
      * @param {number} id The id of the Team
      * @returns {Promise<{id: Number, name: String, logo: String}>}
      */
