@@ -1,9 +1,15 @@
 // @ts-nocheck
 /* eslint-disable no-unused-vars */
 const path = require('path');
+const express = require('express')
 const User = require('./models/User')
 
-//Redirect Function for when you are log in
+/**
+ * Redirect Middleware for when you are log in
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.Next} next
+ */
 const redirectHome = (req, res, next) => {
     if (req.session.userid) {
         User.findById(req.session.userid, (err, user) => {
@@ -22,6 +28,12 @@ const redirectHome = (req, res, next) => {
     }
 }
 
+/**
+ * Redirect Middleware for when trying to go into a unathorized route '/profile/-'
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.Next} next
+ */
 const redirectProfile = (req, res, next) => {
     if (req.params.id === '-') {
         if (req.session.userid) {
@@ -44,6 +56,12 @@ const redirectProfile = (req, res, next) => {
     }
 }
 
+/**
+ * Middleware that checks if the session is on and if the user is admin
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.Next} next
+ */
 const checkAdminSession = (req, res, next) => {
     if (req.session.userid) {
         User.findById(req.session.userid, (err, user) => {

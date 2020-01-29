@@ -1,13 +1,13 @@
+// @ts-nocheck
 const fs = require('fs');
 const path = require('path')
 const User = require('./models/User')
 
-function validateEmail(email) {
-    // eslint-disable-next-line
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
+/**
+ * Used by the logger module
+ * @function logger
+ * @param {Number} code The hppt code
+ */
 exports.logger = function (code) {
     return new Promise((resolve, reject) => {
         exports.jsonReader(path.resolve('./app/config/severConfig.json'), (err, object) => {
@@ -33,8 +33,14 @@ exports.logger = function (code) {
             }
         })
     })
-}
+};
 
+/**
+ * Parser json from a file into a js object
+ * @function jsonReader
+ * @param {String} filePath Path of the json file
+ * @param {Function} cb Path of the json file
+ */
 exports.jsonReader = function (filePath, cb) {
     if (filePath)
         fs.readFile(filePath, (err, fileData) => {
@@ -49,8 +55,15 @@ exports.jsonReader = function (filePath, cb) {
                 return cb && cb(err)
             }
         })
-}
+};
 
+/**
+ * Parser json from a js object into a json file
+ * @function jsonWriter
+ * @param {String} filePath Path of the json file
+ * @param {Object} object js object
+ * @param {Function} cb Path of the json file
+ */
 exports.jsonWriter = function (filePath, object, cb) {
     if (filePath && object)
         fs.writeFile(filePath, JSON.stringify(object), (err) => {
@@ -60,16 +73,14 @@ exports.jsonWriter = function (filePath, object, cb) {
                 return cb && cb(null)
             }
         })
-}
+};
 
-exports.asyncForEach = async function (array, callback) {
-    if (array) {
-        for (let index = 0; index < array.length; index++) {
-            await callback(array[index], index, array);
-        }
-    }
-}
-
+/**
+ * Creates an String with random chars
+ * @function createid
+ * @param {Number} length The length of the string
+ * @returns {String}
+ */
 exports.createid = function (length) {
     let result = '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -78,38 +89,14 @@ exports.createid = function (length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
-}
+};
 
-function average(data) {
-    var sum = data.reduce(function (sum, value) {
-        return sum + value;
-    }, 0);
-
-    var avg = sum / data.length;
-    return avg;
-}
-
-exports.minuteToHourConvert = function (n) {
-    var mins_num = parseFloat(n, 10); // don't forget the second param
-    var hours = Math.floor(mins_num / 60);
-    var minutes = Math.floor((mins_num - ((hours * 3600)) / 60));
-
-    // Appends 0 when unit is less than 10
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    return hours + ':' + minutes;
-}
-
-exports.getMonday = function (d = new Date()) {
-    var day = d.getDay(),
-        diff = d.getDate() - day + (day == 0 ? -6 : 1)
-    return exports.formatDate(new Date(d.setDate(diff)));
-}
-
+/**
+ * Formats a date to a string with the format yyyy-mm-dd
+ * @function formatDate
+ * @param {Date} date The date to be formated
+ * @returns {String}
+ */
 exports.formatDate = function (date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -122,26 +109,25 @@ exports.formatDate = function (date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
-}
+};
 
-exports.standardDeviation = function (values) {
-    var avg = average(values);
-
-    var squareDiffs = values.map(function (value) {
-        var diff = value - avg;
-        var sqrDiff = diff * diff;
-        return sqrDiff;
-    });
-
-    var avgSquareDiff = average(squareDiffs);
-
-    var stdDev = Math.sqrt(avgSquareDiff);
-    return [Math.round(stdDev), Math.round(avg)];
-}
+/**
+ * Used to make your wait for a determine amount of time
+ * @function sleep
+ * @param {Number} time Number in ms
+ * @returns {Promise}
+ */
 exports.sleep = function (time) {
     return new Promise(resolve => setTimeout(resolve, time))
-}
+};
 
+/**
+ * Used for the Comments routes to parse comments into object readable by the browser
+ * @function parseComments
+ * @param {Array} [comments] Array of unparsed comments
+ * @param {String} [id] id of the user log in now
+ * @returns {Array}
+ */
 exports.parseComments = async function (comments, id) {
     if (comments.length === 0) {
         return []
@@ -186,4 +172,4 @@ exports.parseComments = async function (comments, id) {
         return a > b ? -1 : a < b ? 1 : 0;
     });
     return parseComments
-}
+};

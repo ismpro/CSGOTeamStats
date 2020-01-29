@@ -1,5 +1,10 @@
 const Player = require('../../../../models/Player')
 
+/**
+ * Returns all the Players
+ * @module Admin/Player/Get
+ * @deprecated
+ */
 module.exports = function () {
     return function (req, res) {
         Player.find({}, function (err, players) {

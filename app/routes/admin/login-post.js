@@ -3,6 +3,11 @@ const {
 } = require('../../functions.js');
 const User = require('../../models/User');
 
+/**
+ * Logins a new Admin
+ * @module Admin/Login_Post
+ * @deprecated
+ */
 module.exports = function () {
     return function (req, res) {
         let ip = req.headers['x-forwarded-for'] || req.ip

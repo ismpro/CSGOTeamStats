@@ -4,6 +4,11 @@ const {
 const User = require('../../models/User');
 const Link = require('../../models/Link');
 
+/**
+ * Create a process for a new admin
+ * @module Admin/Ask_Post
+ * @deprecated
+ */
 module.exports = function (transporter) {
     return function (req, res) {
         let data = req.body

@@ -44,7 +44,7 @@
             <div class="column is-3" id="sidebarNav">
                 <div class="sidebar">
                     <nav>
-                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-player-post.html">player-post</a></li><li><a href="module-results.html">results</a></li><li><a href="module-search.html">search</a></li><li><a href="module-team-post.html">team-post</a></li></ul><h3>Classes</h3><ul><li><a href="ApiControler.html">ApiControler</a></li><li><a href="Comments.html">Comments</a></li><li><a href="Link.html">Link</a></li><li><a href="Match.html">Match</a></li><li><a href="Players.html">Players</a></li><li><a href="Teams.html">Teams</a></li><li><a href="User.html">User</a></li></ul><h3><a href="global.html">Global</a></h3></div>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Add_Match.html">Add_Match</a></li><li><a href="module-Admin_Ask_Post.html">Admin/Ask_Post</a></li><li><a href="module-Admin_Login_Post.html">Admin/Login_Post</a></li><li><a href="module-Admin_Match_Create.html">Admin/Match/Create</a></li><li><a href="module-Admin_Match_Delete.html">Admin/Match/Delete</a></li><li><a href="module-Admin_Match_Edit.html">Admin/Match/Edit</a></li><li><a href="module-Admin_Match_Get.html">Admin/Match/Get</a></li><li><a href="module-Admin_Player_Create.html">Admin/Player/Create</a></li><li><a href="module-Admin_Player_Delete.html">Admin/Player/Delete</a></li><li><a href="module-Admin_Player_Edit.html">Admin/Player/Edit</a></li><li><a href="module-Admin_Player_Get.html">Admin/Player/Get</a></li><li><a href="module-Admin_Program_Id_Post.html">Admin/Program_Id_Post</a></li><li><a href="module-Admin_Team_Create.html">Admin/Team/Create</a></li><li><a href="module-Admin_Team_Delete.html">Admin/Team/Delete</a></li><li><a href="module-Admin_Team_Edit.html">Admin/Team/Edit</a></li><li><a href="module-Admin_Team_Get.html">Admin/Team/Get</a></li><li><a href="module-Admin_User_Create.html">Admin/User/Create</a></li><li><a href="module-Admin_User_Delete.html">Admin/User/Delete</a></li><li><a href="module-Admin_User_Edit.html">Admin/User/Edit</a></li><li><a href="module-Admin_User_Get.html">Admin/User/Get</a></li><li><a href="module-Auth_Logins.html">Auth/Logins</a></li><li><a href="module-Auth_Logout.html">Auth/Logout</a></li><li><a href="module-Auth_Register.html">Auth/Register</a></li><li><a href="module-Auth_Validate.html">Auth/Validate</a></li><li><a href="module-Comment_Create.html">Comment/Create</a></li><li><a href="module-Comment_Delete.html">Comment/Delete</a></li><li><a href="module-Comment_Edit.html">Comment/Edit</a></li><li><a href="module-Email.html">Email</a></li><li><a href="module-Fav_Post.html">Fav/Post</a></li><li><a href="module-Fav_Type_Post.html">Fav/Type_Post</a></li><li><a href="module-Fetch_All_Info.html">Fetch_All_Info</a></li><li><a href="module-Match_Post.html">Match_Post</a></li><li><a href="module-Player_Post.html">Player_Post</a></li><li><a href="module-Profile_Get.html">Profile/Get</a></li><li><a href="module-Profile_Set.html">Profile/Set</a></li><li><a href="module-Ranking_Players.html">Ranking/Players</a></li><li><a href="module-Results.html">Results</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-Team_Post.html">Team_Post</a></li></ul><h3>Classes</h3><ul><li><a href="ApiControler.html">ApiControler</a></li><li><a href="Comments.html">Comments</a></li><li><a href="Link.html">Link</a></li><li><a href="Match.html">Match</a></li><li><a href="Players.html">Players</a></li><li><a href="Teams.html">Teams</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createid">createid</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#jsonReader">jsonReader</a></li><li><a href="global.html#jsonWriter">jsonWriter</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#parseComments">parseComments</a></li><li><a href="global.html#sleep">sleep</a></li></ul></div>
                     </nav>
                 </div>
             </div>
@@ -130,6 +130,1256 @@
 
     
 
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="createid">
+        <a class="href-link" href="#createid">#</a>
+        
+        <span class="code-name">
+            
+                createid<span class="signature">(length)</span><span class="type-signature"> &rarr; {String}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Creates an String with random chars
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>length</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Number</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The length of the string</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line78">line 78</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">String</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="formatDate">
+        <a class="href-link" href="#formatDate">#</a>
+        
+        <span class="code-name">
+            
+                formatDate<span class="signature">(date)</span><span class="type-signature"> &rarr; {String}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Formats a date to a string with the format yyyy-mm-dd
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>date</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Date</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The date to be formated</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line94">line 94</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">String</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="jsonReader">
+        <a class="href-link" href="#jsonReader">#</a>
+        
+        <span class="code-name">
+            
+                jsonReader<span class="signature">(filePath, cb)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Parser json from a file into a js object
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>filePath</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Path of the json file</td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>cb</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">function</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Path of the json file</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line38">line 38</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="jsonWriter">
+        <a class="href-link" href="#jsonWriter">#</a>
+        
+        <span class="code-name">
+            
+                jsonWriter<span class="signature">(filePath, object, cb)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Parser json from a js object into a json file
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>filePath</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Path of the json file</td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>object</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">js object</td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>cb</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">function</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Path of the json file</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line60">line 60</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="logger">
+        <a class="href-link" href="#logger">#</a>
+        
+        <span class="code-name">
+            
+                logger<span class="signature">(code)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Used by the logger module
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>code</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Number</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The hppt code</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line6">line 6</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="parseComments">
+        <a class="href-link" href="#parseComments">#</a>
+        
+        <span class="code-name">
+            
+                parseComments<span class="signature">(comments<span class="signature-attributes">opt</span>, id<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Used for the Comments routes to parse comments into object readable by the browser
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>comments</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last">Array of unparsed comments</td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>id</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last">id of the user log in now</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line124">line 124</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="sleep">
+        <a class="href-link" href="#sleep">#</a>
+        
+        <span class="code-name">
+            
+                sleep<span class="signature">(time)</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Used to make your wait for a determine amount of time
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>time</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Number</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Number in ms</td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="functions.js.html" class="button">View Source</a>
+            <span>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line114">line 114</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
     
 
     
@@ -600,7 +1850,7 @@
 
 <footer class="footer">
     <div class="content has-text-centered">
-        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Jan 29 2020 02:10:43 GMT+0000 (GMT)</p>
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Jan 29 2020 20:47:27 GMT+0000 (GMT)</p>
         <p class="sidebar-created-by">
             <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
             <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

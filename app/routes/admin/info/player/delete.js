@@ -1,5 +1,10 @@
 const Player = require('../../../../models/Player')
 
+/**
+ * Deletes a single user
+ * @module Admin/Player/Delete
+ * @deprecated
+ */
 module.exports = function () {
     return function (req, res) {
         let id = req.body.id;

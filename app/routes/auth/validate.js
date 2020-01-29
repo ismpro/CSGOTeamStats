@@ -1,5 +1,10 @@
 const User = require('../../models/User');
 
+/**
+ * Function that return true if the user is with session
+ * @module Auth/Validate
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         if (req.session.userid) {

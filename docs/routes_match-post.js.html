@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: routes/match-post.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                    
+                        <h1 class="navbar-item">Documentation</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Add_Match.html">Add_Match</a></li><li><a href="module-Admin_Ask_Post.html">Admin/Ask_Post</a></li><li><a href="module-Admin_Login_Post.html">Admin/Login_Post</a></li><li><a href="module-Admin_Match_Create.html">Admin/Match/Create</a></li><li><a href="module-Admin_Match_Delete.html">Admin/Match/Delete</a></li><li><a href="module-Admin_Match_Edit.html">Admin/Match/Edit</a></li><li><a href="module-Admin_Match_Get.html">Admin/Match/Get</a></li><li><a href="module-Admin_Player_Create.html">Admin/Player/Create</a></li><li><a href="module-Admin_Player_Delete.html">Admin/Player/Delete</a></li><li><a href="module-Admin_Player_Edit.html">Admin/Player/Edit</a></li><li><a href="module-Admin_Player_Get.html">Admin/Player/Get</a></li><li><a href="module-Admin_Program_Id_Post.html">Admin/Program_Id_Post</a></li><li><a href="module-Admin_Team_Create.html">Admin/Team/Create</a></li><li><a href="module-Admin_Team_Delete.html">Admin/Team/Delete</a></li><li><a href="module-Admin_Team_Edit.html">Admin/Team/Edit</a></li><li><a href="module-Admin_Team_Get.html">Admin/Team/Get</a></li><li><a href="module-Admin_User_Create.html">Admin/User/Create</a></li><li><a href="module-Admin_User_Delete.html">Admin/User/Delete</a></li><li><a href="module-Admin_User_Edit.html">Admin/User/Edit</a></li><li><a href="module-Admin_User_Get.html">Admin/User/Get</a></li><li><a href="module-Auth_Logins.html">Auth/Logins</a></li><li><a href="module-Auth_Logout.html">Auth/Logout</a></li><li><a href="module-Auth_Register.html">Auth/Register</a></li><li><a href="module-Auth_Validate.html">Auth/Validate</a></li><li><a href="module-Comment_Create.html">Comment/Create</a></li><li><a href="module-Comment_Delete.html">Comment/Delete</a></li><li><a href="module-Comment_Edit.html">Comment/Edit</a></li><li><a href="module-Email.html">Email</a></li><li><a href="module-Fav_Post.html">Fav/Post</a></li><li><a href="module-Fav_Type_Post.html">Fav/Type_Post</a></li><li><a href="module-Fetch_All_Info.html">Fetch_All_Info</a></li><li><a href="module-Match_Post.html">Match_Post</a></li><li><a href="module-Player_Post.html">Player_Post</a></li><li><a href="module-Profile_Get.html">Profile/Get</a></li><li><a href="module-Profile_Set.html">Profile/Set</a></li><li><a href="module-Ranking_Players.html">Ranking/Players</a></li><li><a href="module-Results.html">Results</a></li><li><a href="module-Search.html">Search</a></li><li><a href="module-Team_Post.html">Team_Post</a></li></ul><h3>Classes</h3><ul><li><a href="ApiControler.html">ApiControler</a></li><li><a href="Comments.html">Comments</a></li><li><a href="Link.html">Link</a></li><li><a href="Match.html">Match</a></li><li><a href="Players.html">Players</a></li><li><a href="Teams.html">Teams</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createid">createid</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#jsonReader">jsonReader</a></li><li><a href="global.html#jsonWriter">jsonWriter</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#parseComments">parseComments</a></li><li><a href="global.html#sleep">sleep</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>routes/match-post.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// @ts-nocheck
+const Match = require('../models/Match');
+const Players = require('../models/Player');
+const {
+    byCountry
+} = require('country-code-lookup')
+
+/**
+ * Module that deals with the information of a team post request.
+ * In the url is expeted an id (/:id) then returns all the information of that player.
+ * If the id doens't existis in the Database then is going to search in the api.
+ * @module Match_Post
+ * @param {ApiControler} api The api controller
+ * @returns {Function}
+ */
+module.exports = function (api) {
+
+    /**
+     * Function that deals with the information of all players.
+     * If the players doens't existis in the Database then is going to search in the api.
+     * @async
+     * @param {Array&lt;{name: String, id: Number}>} players Array with players information
+     * @returns {Promise&lt;Array&lt;{id: Number, name: String, fullName: String, image: String, country: Object}>>}
+     */
+    const getPlayers = async function (players) {
+        let parsedPlayer = [];
+        for (const player of players) {
+            let playerInfo = await Players.findOne({
+                id: player.id
+            })
+            if (playerInfo) {
+                parsedPlayer.push({
+                    id: playerInfo.id,
+                    name: playerInfo.ign,
+                    fullName: playerInfo.name,
+                    image: playerInfo.image,
+                    country: playerInfo.country
+                })
+            } else {
+                api.fetchPlayerById(player.id)
+                    .then(player => {
+                        let newPlayer = new Players(player)
+                        newPlayer.save()
+                        parsedPlayer.push({
+                            id: newPlayer.id,
+                            name: newPlayer.ign,
+                            fullName: newPlayer.name,
+                            image: newPlayer.image,
+                            country: newPlayer.country
+                        })
+                    }).catch((err) => {
+                        parsedPlayer.push({
+                            id: 0,
+                            name: '?',
+                            fullName: '?',
+                            image: 'https://static.hltv.org//images/playerprofile/bodyshot/unknown.png',
+                        })
+                    })
+            }
+        }
+        return parsedPlayer
+    }
+
+    /**
+     * Function return the parsed comments or an empty [].
+     * @param {number} id The id of the Player
+     * @param {String} [user_id] The id of the User 
+     * @returns {Promise&lt;Array>}
+     */
+    const getComments = (id, user_id) => {
+        return new Promise((resolve, reject) => {
+            console.log(user_id)
+            Comment.find({
+                type: 'match',
+                id: id
+            }, function (err, comments) {
+                if (!err) {
+                    parseComments(comments, user_id)
+                        .then(parsedComments => resolve(parsedComments))
+                        .catch(err => reject(err.message))
+                } else {
+                    reject(err.message)
+                }
+            })
+        })
+    }
+
+    return function (req, res) {
+        let id = req.params.id;
+        Match.findOne({
+            id: id
+        }, function (err, match) {
+            if (!err) {
+                Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)], getComments(id, req.session.userid)).then(data => {
+                    res.status(200).json({
+                        match: match,
+                        playersTeam1: data[0],
+                        playersTeam2: data[1],
+                        comments: data[2]
+                    })
+                })
+            } else {
+                res.status(500).send('Error on server! Try again later!')
+            }
+        })
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Jan 29 2020 20:47:27 GMT+0000 (GMT)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

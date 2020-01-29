@@ -1,5 +1,10 @@
 const Team = require('../../../../models/Team')
 
+/**
+ * Returns all the Teams
+ * @module Admin/Team/Get
+ * @deprecated
+ */
 module.exports = function () {
     return function (req, res) {
         Team.find({}, function (err, teams) {

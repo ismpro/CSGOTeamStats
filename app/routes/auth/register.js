@@ -1,5 +1,12 @@
+// @ts-nocheck
 const User = require('../../models/User');
 
+/**
+ * Function that resgiter a new user
+ * The body is expected an the email, password, firstName and lastname;
+ * @module Auth/Register
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         let data = req.body;
