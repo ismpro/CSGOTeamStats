@@ -14,6 +14,16 @@ function loadData(data) {
     
     console.log(data)
 
+    let scoreTeam1 = 0
+    let scoreTeam2 = 0
+    for (const map of data.match.maps) {
+        if (map.team1.score > map.team2.score) {
+            scoreTeam1++
+        } else {
+            scoreTeam2++
+        }
+    }
+
     let main_div = document.getElementById('main')
     
     let score = document.createElement('div')
@@ -22,12 +32,88 @@ function loadData(data) {
     let team1 = document.createElement('div')
     let result = document.createElement('div')
     let team2 = document.createElement('div')
+    team1.classList.add('team1')
+    result.classList.add('result')
+    team2.classList.add('team2')
 
-    team1.classList.add('score')
-    result.classList.add('score')
-    team2.classList.add('score')
+    let logoTeam1 = document.createElement("img")
+    let logoTeam2 = document.createElement("img")
+    logoTeam1.src = "https://static.hltv.org/images/team/logo/" + data.match.team1.id
+    logoTeam2.src = "https://static.hltv.org/images/team/logo/" + data.match.team2.id
+    logoTeam1.classList.add("logo")
+    logoTeam2.classList.add("logo")
 
+    let nameTeam1 = document.createElement("span")
+    let nameTeam2 = document.createElement("span")
+    nameTeam1.innerHTML = data.match.team1.name
+    nameTeam2.innerHTML = data.match.team2.name
+
+    result.innerHTML = "<span class=\"team1\">" + scoreTeam1 + "</span><span class=\"team2\">" + scoreTeam2 + "</span>"
+
+    team1.appendChild(logoTeam1)
+    team1.appendChild(nameTeam1)
+    team2.appendChild(logoTeam2)
+    team2.appendChild(nameTeam2)
+
+    score.appendChild(team1)
+    score.appendChild(result)
+    score.appendChild(team2)
+
+    main_div.appendChild(score)
+
+    //------------------------------------------------------------------------------------------------//
     
+    let maps = document.createElement('div')
+    maps.classList.add('maps')
+
+    for (const map of data.match.maps) {
+        let mapImage = "https://hltv.org/img/static/maps/"
+        let mapName
+        if (map.map === "nuke") {
+            mapImage += "nuke"
+            mapName = "Nuke"
+        } else if (map.map === "trn") {
+            mapImage += "train"
+            mapName = "Train"
+        } else if (map.map === "mrg") {
+            mapImage += "mirage"
+            mapName = "Mirage"
+        } else if (map.map === "d2") {
+            mapImage += "dust2"
+            mapName = "Dust2"
+        } else if (map.map === "ovp") {
+            mapImage += "overpass"
+            mapName = "Overpass"
+        } else if (map.map === "vertigo") {
+            mapImage += "vertigo"
+            mapName = "Vertigo"
+        } else if (map.map === "inf") {
+            mapImage += "inferno"
+            mapName = "Inferno"
+        }
+        mapImage += ".png"
+
+        let mapDiv = document.createElement('div')
+        let image = document.createElement('img')
+        let scoreTeam1Div = document.createElement('div')
+        let scoreTeam2Div = document.createElement('div')
+        let mapNameDiv = document.createElement('div')
+
+        mapDiv.classList.add('map')
+        scoreTeam1Div.classList.add('team1_score')
+        scoreTeam2Div.classList.add('team2_score')
+        mapNameDiv.classList.add('map_name')
+        image.classList.add('map_image')
+
+        image.src = mapImage
+        image.alt = mapName
+
+        scoreTeam1Div.innerHTML = map.team1.score
+        scoreTeam2Div.innerHTML = map.team2.score
+        mapNameDiv.innerHTML = mapName
+
+
+        
 
 
 
@@ -39,7 +125,15 @@ function loadData(data) {
 
 
 
+        mapDiv.appendChild(image)
+        mapDiv.appendChild(scoreTeam1Div)
+        mapDiv.appendChild(mapNameDiv)
+        mapDiv.appendChild(scoreTeam2Div)
 
+        maps.appendChild(mapDiv)
+    }
+    
+    main_div.appendChild(maps)
 
 
 

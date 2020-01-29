@@ -54,7 +54,8 @@ function pageLoad(cb) {
                     td1.textContent = formatDate(result.date)
                     td1.setAttribute("style", "min-width: 100px;")
                     let td2 = document.createElement('td')
-                    td2.textContent = result.team1.name
+                    //td2.textContent = result.team1.name
+                    td2.innerHTML = "<a class=\"\" href=\"/team/" + result.team1.id + "\">" + result.team1.name + "</a>"
                     td2.setAttribute("style", "min-width: 180px; text-align: right;")
                     let td3 = document.createElement('td')
                     td3.innerHTML = `<img alt="${result.team1.name}" src="https://static.hltv.org/images/team/logo/${result.team1.id}"
@@ -77,7 +78,8 @@ function pageLoad(cb) {
                     td5.innerHTML = `<img alt="${result.team2.name}" src="https://static.hltv.org/images/team/logo/${result.team2.id}"
                                             style="width: 20px; height: 20px" title="${result.team2.name}">`
                     let td6 = document.createElement('td')
-                    td6.textContent = result.team2.name
+                    //td6.textContent = result.team2.name
+                    td6.innerHTML = "<a class=\"\" href=\"/team/" + result.team2.id + "\">" + result.team2.name + "</a>"
                     td6.setAttribute("style", "min-width: 150px; text-align: left;")
                     let td7 = document.createElement('td')
                     td7.setAttribute("style", "min-width: 120px; float: right")
@@ -96,67 +98,69 @@ function pageLoad(cb) {
                     main_div.appendChild(matchDiv)
 
                     //--------------------------------------------------------------------------------------//
-
+                    // divs para os detalhes
                     let detailsDiv = document.createElement('div')
                     let team1Div = document.createElement('div')
                     let team2Div = document.createElement('div')
                     let team1Players = document.createElement('table')
                     let team2Players = document.createElement('table')
-
                     detailsDiv.classList.add('details')
                     team1Div.classList.add('team1')
                     team2Div.classList.add('team2')
                     team1Players.classList.add('team1_players')
                     team2Players.classList.add('team2_players')
 
-                    let tr1 = document.createElement('tr')
-                    let tr2 = document.createElement('tr')
-                    let tr3 = document.createElement('tr')
-                    let tr4 = document.createElement('tr')
-                    let tr5 = document.createElement('tr')
-                    let tr6 = document.createElement('tr')
-                    let tr7 = document.createElement('tr')
-                    let tr8 = document.createElement('tr')
-                    let tr9 = document.createElement('tr')
-                    let tr10 = document.createElement('tr')
+                    // imagens das equipas
+                    let logoTeam1 = document.createElement("img")
+                    let logoTeam2 = document.createElement("img")
+                    let team1Ref = document.createElement("a")
+                    let team2Ref = document.createElement("a")
+                    logoTeam1.alt = result.team1.name
+                    logoTeam2.alt = result.team2.name
+                    logoTeam1.src = "https://static.hltv.org/images/team/logo/" + result.team1.id
+                    logoTeam2.src = "https://static.hltv.org/images/team/logo/" + result.team2.id
+                    logoTeam1.title = result.team1.name
+                    logoTeam2.title = result.team2.name
+                    logoTeam1.classList.add('logo')
+                    logoTeam2.classList.add('logo')
+                    team1Ref.href = "/team/" + result.team1.id
+                    team2Ref.href = "/team/" + result.team2.id
+                    team1Ref.title = result.team1.name
+                    team2Ref.title = result.team2.name
+                    team1Ref.appendChild(logoTeam1)
+                    team2Ref.appendChild(logoTeam2)
+                    team1Div.appendChild(team1Ref)
+                    team2Div.appendChild(team2Ref)
 
-                    tr1.innerHTML = `<td>${result.players.team1[0].name}</td>`
-                    tr2.innerHTML = `<td>${result.players.team1[1].name}</td>`
-                    tr3.innerHTML = `<td>${result.players.team1[2].name}</td>`
-                    tr4.innerHTML = `<td>${result.players.team1[3].name}</td>`
-                    tr5.innerHTML = `<td>${result.players.team1[4].name}</td>`
-                    tr6.innerHTML = `<td>${result.players.team2[0].name}</td>`
-                    tr7.innerHTML = `<td>${result.players.team2[1].name}</td>`
-                    tr8.innerHTML = `<td>${result.players.team2[2].name}</td>`
-                    tr9.innerHTML = `<td>${result.players.team2[3].name}</td>`
-                    tr10.innerHTML = `<td>${result.players.team2[4].name}</td>`
-
-                    team1Players.appendChild(tr1)
-                    team1Players.appendChild(tr2)
-                    team1Players.appendChild(tr3)
-                    team1Players.appendChild(tr4)
-                    team1Players.appendChild(tr5)
-                    team2Players.appendChild(tr6)
-                    team2Players.appendChild(tr7)
-                    team2Players.appendChild(tr8)
-                    team2Players.appendChild(tr9)
-                    team2Players.appendChild(tr10)
-
-                    let team1Image = document.createElement('div')
-                    let team2Image = document.createElement('div')
-
-                    team1Div.innerHTML = `<img alt="${result.team1.name}" src="https://static.hltv.org/images/team/logo/${result.team1.id}"
-                    class="logo" title="${result.team1.name}">`
+                    // players equipa 1
+                    for (const player of result.players.team1) {
+                        let tr = document.createElement("tr")
+                        let a = document.createElement("a")
+                        a.href = "/player/" + player.id
+                        a.title = player.name
+                        a.innerHTML = player.name
+                        //a.classList.add('')
+                        tr.appendChild(a)
+                        team1Players.appendChild(tr)
+                    }
+                    // players equipa 2
+                    for (const player of result.players.team2) {
+                        let tr = document.createElement("tr")
+                        let a = document.createElement("a")
+                        a.href = "/player/" + player.id
+                        a.title = player.name
+                        a.innerHTML = player.name
+                        //a.classList.add('')
+                        tr.appendChild(a)
+                        team2Players.appendChild(tr)
+                    }
                     team1Div.appendChild(team1Players)
-                    team2Div.innerHTML = `<img alt="${result.team2.name}" src="https://static.hltv.org/images/team/logo/${result.team2.id}"
-                    class="logo" title="${result.team2.name}">`
                     team2Div.appendChild(team2Players)
 
                     // resultado final
                     let resultDiv = document.createElement('div')
                     resultDiv.classList.add('result')
                     resultDiv.innerHTML = "<span>" + team1Counter + "</span>-<span>" + team2Counter + "</span>"
-
                     // divisão entre os players e os mapas
                     let br1 = document.createElement('br')
                     let hr = document.createElement('hr')
@@ -164,7 +168,6 @@ function pageLoad(cb) {
                     let mapsDiv = document.createElement('div')
                     let mapsTable = document.createElement('table')
                     mapsTable.classList.add('maps')
-
                     let mapsHTML = "<tr>"
                     // nomes dos mapas
                     for (const map of result.maps) {
