@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 let playersSchema = Schema({
-    id: Number,
+    id: { type: Number, index: true, unique: true, required: true },
     name: String,
     ign: String,
     image: String,
@@ -33,7 +33,7 @@ let playersSchema = Schema({
             name: String,
             id: Number
         }
-    }, ],
+    },],
 }, {
     collection: 'Player'
 });

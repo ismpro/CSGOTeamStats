@@ -40,9 +40,9 @@ mongoose.connect(process.env.DB, {
 });
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.once('open', async function () {
     console.log(chalk.green('\n  MongoDB Connected'));
-    api.fetchAllInfo(10)
+    api.removeDuplicates();
 });
 
 //Mailer

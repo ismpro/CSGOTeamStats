@@ -56,6 +56,12 @@ function onsession() {
 function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
     document.getElementById("teamFav").innerHTML = ''
+    let group_buttons = document.getElementsByName('buttons_comments')
+    if (group_buttons.length > 0) {
+        for (const group_button of group_buttons) {
+            group_button.remove()
+        }
+    }
 }
 
 function favAnimation(type, fav) {
@@ -94,6 +100,7 @@ function loadData(data) {
     imagetag.alt = data.name || 'Not Specified'
     imagetag.title = data.name || 'Not Specified'
     document.getElementById('team_name').innerHTML = data.name || 'Not Specified'
+    document.title = data.name
     let countrytag = document.getElementById('team_country')
     countrytag.src = `https://www.countryflags.io/${data.location.code}/shiny/24.png`
     countrytag.alt = data.location.name || 'World'
@@ -143,15 +150,17 @@ function loadData(data) {
 
         playerThirdDivTag.classList.add('playerFlagName')
 
-        playerSecondImgTag.src = `https://www.countryflags.io/${player.country.code}/shiny/24.png`
-        playerSecondImgTag.alt = player.country.name
-        playerSecondImgTag.title = player.country.name
-        playerSecondImgTag.classList.add('flag')
+        if (player.country) {
+            playerSecondImgTag.src = `https://www.countryflags.io/${player.country.code}/shiny/24.png`
+            playerSecondImgTag.alt = player.country.name
+            playerSecondImgTag.title = player.country.name
+            playerSecondImgTag.classList.add('flag')
+            playerThirdDivTag.appendChild(playerSecondImgTag)
+        }
 
         playerSpanTag.innerHTML = player.name
         playerSpanTag.classList.add('playerName')
 
-        playerThirdDivTag.appendChild(playerSecondImgTag)
         playerThirdDivTag.appendChild(playerSpanTag)
 
         playerSecondDivTag.appendChild(playerThirdDivTag)
@@ -269,17 +278,16 @@ function loadComments() {
         } else {
             html += `${timeString} ago by `
         }
-
         if (comment.hasEdit) {
             html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
         }
-        if (comment.user === 'anon') {
-            html += 'Anonymous'
+        if (typeof comment.user === 'anon') {
+            html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
         } else {
-            html += `<a href="#">${comment.user}</a>`
+            html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
         }
         if (comment.isFromUser || admin) {
-            html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+            html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
             html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
         }
         html += '</div></blockquote></li>'

@@ -65,6 +65,12 @@ function onsession() {
 function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
     document.getElementById("playerFav").innerHTML = ''
+    let group_buttons = document.getElementsByName('buttons_comments')
+    if (group_buttons.length > 0) {
+        for (const group_button of group_buttons) {
+            group_button.remove()
+        }
+    }
 }
 
 function favAnimation(type, fav) {
@@ -106,6 +112,7 @@ function loadData(data) {
     countrytag.src = `https://www.countryflags.io/${data.country.code}/shiny/24.png`
     countrytag.alt = data.country.name || 'World'
     document.getElementById('player_real').innerHTML = data.name || 'Not Specified'
+    document.title = playerNaming(data.name, data.ign)
     let socialDiv = document.getElementById('player_social')
     socialDiv.innerHTML = ""
     if (data.twitch) {
@@ -203,17 +210,16 @@ function loadComments() {
         } else {
             html += `${timeString} ago by `
         }
-
         if (comment.hasEdit) {
             html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
         }
-        if (comment.user === 'anon') {
-            html += 'Anonymous'
+        if (typeof comment.user === 'anon') {
+            html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
         } else {
-            html += `<a href="#">${comment.user}</a>`
+            html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
         }
         if (comment.isFromUser || admin) {
-            html += `<div class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+            html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
             html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
         }
         html += '</div></blockquote></li>'

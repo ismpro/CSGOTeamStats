@@ -158,3 +158,8 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
+
+function playerNaming(name, ign) {
+    let nameArray = name.split(" ");
+    return `${nameArray[0]} "${ign}" ${nameArray[nameArray.length - 1]}`
+}

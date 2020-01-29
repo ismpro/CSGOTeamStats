@@ -7,4 +7,5 @@ function pageLoad(cb) {
 
 function loadData(data) {
     
+    cb()
 }

@@ -3,6 +3,7 @@ const User = require('../../models/User');
 module.exports = function () {
     return function (req, res) {
         let data = req.body;
+        console.log(data)
         User.findOne({
             email: data.email
         }, function (err, user) {
@@ -10,8 +11,8 @@ module.exports = function () {
                 if (!user) {
                     let newUser = new User();
                     newUser.email = data.email;
-                    newUser.firstName = data.firstName
-                    newUser.lastName = data.lastName
+                    newUser.firstName = data.first_name
+                    newUser.lastName = data.last_name
                     newUser.password = newUser.generateHash(data.password);
                     newUser.creationDate = new Date();
                     newUser.admin = false;

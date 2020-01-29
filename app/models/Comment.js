@@ -11,7 +11,7 @@ let commentsSchema = Schema({
     hasEdit: Schema.Types.Mixed,
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: 'User'
     }
 }, {
     collection: 'Comment'
