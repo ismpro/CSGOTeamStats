@@ -108,9 +108,11 @@ app.use(function (err, req, res) {
 db.once('open', function () {
     console.log(chalk.green('\n  MongoDB Connected'));
     //Starting to listen to requests
-    var server = app.listen(app.get('port'),
-        () => {
-            console.log(chalk.green(`\n  Server Listing on: ${server.address().address === '::' ? 'localhost' : server.address().address}:${server.address().port}`));
-            api.removeDuplicates();
-        })
+    var server = app.listen(app.get('port'), () => {
+        console.log(chalk.green(`\n  Server Listing on: ${server.address().address === '::' ? 'localhost' : server.address().address}:${server.address().port}`));
+        api.removeDuplicates();
+    })
+    api.fetchAllInfo(1).then(() => {
+        api.removeDuplicates();
+    });
 });
