@@ -58,17 +58,17 @@
             <br>
             <div class="login" id="login">
                 <div id="login_form" style="display: block;">
-                    <form onsubmit="loginSubmit(event)">
+                    <form novalidate onsubmit="loginSubmit(event)">
                         <input type="email" placeholder="Email..." id="email_login"><br>
                         <input type="password" placeholder="Password..." id="password_login"><br>
                         <input type="submit" value="Login"><br />
                     </form>
                     <br>
-                    <p id="mgsLogin"></p>
+                    <p style="color: red" id="mgsLogin"></p>
                     <button onclick="changeMode()" class="button_a">Don't have an account? Sign Up</button>
                 </div>
                 <div id="register_form" style="display: none;">
-                    <form onsubmit="registerSubmit(event)">
+                    <form novalidate onsubmit="registerSubmit(event)">
                         <input type="email" placeholder="Email..." id="email_register"><br>
                         <input type="password" placeholder="Password..." id="password_register"><br>
                         <input type="text" placeholder="First Name..." id="first_name_register"><br>
@@ -76,7 +76,7 @@
                         <input type="submit" value="Register"><br />
                     </form>
                     <br>
-                    <p id="mgsRegister"></p>
+                    <p style="color: red" id="mgsRegister"></p>
                     <button onclick="changeMode()" class="button_a">Have an account? Sign In</button>
                 </div>
             </div>
