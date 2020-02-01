@@ -63,8 +63,6 @@
 
 .matches {
     background-color: lightgray;
-    border-left: 2px solid black;
-    border-right: 2px solid black;
     display: inline-block;
     color: #16a085;
     padding-left: 10px;

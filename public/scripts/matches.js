@@ -11,7 +11,7 @@ function pageLoad(cb) {
 }
 
 function loadData(data) {
-    
+
     console.log(data)
 
     let scoreTeam1 = 0
@@ -25,7 +25,7 @@ function loadData(data) {
     }
 
     let main_div = document.getElementById('main')
-    
+
     let score = document.createElement('div')
     score.classList.add('score')
 
@@ -45,6 +45,8 @@ function loadData(data) {
 
     let nameTeam1 = document.createElement("span")
     let nameTeam2 = document.createElement("span")
+    nameTeam1.setAttribute("style", "text-align: center")
+    nameTeam2.setAttribute("style", "text-align: center")
     nameTeam1.innerHTML = data.match.team1.name
     nameTeam2.innerHTML = data.match.team2.name
 
@@ -62,7 +64,7 @@ function loadData(data) {
     main_div.appendChild(score)
 
     //------------------------------------------------------------------------------------------------//
-    
+
     let maps = document.createElement('div')
     maps.classList.add('maps')
 
@@ -112,151 +114,366 @@ function loadData(data) {
         scoreTeam2Div.innerHTML = map.team2.score
         mapNameDiv.innerHTML = mapName
 
+        let statsTeam1 = document.createElement('table')
+        let statsTeam2 = document.createElement('table')
 
+        statsTeam2.setAttribute("style", "float: right")
+        // header das estatísticas
+        for (let i = 0; i < 2; i++) {
+            let trHeader = document.createElement('tr')
+            let th1 = document.createElement('th')
+            let th2 = document.createElement('th')
+            let th3 = document.createElement('th')
+            let th4 = document.createElement('th')
+            let th5 = document.createElement('th')
+            let th6 = document.createElement('th')
+            let imgTeam = document.createElement('img')
+            if (i === 0) {
+                imgTeam.src = "https://static.hltv.org/images/team/logo/" + map.team1.id
+            } else {
+                imgTeam.src = "https://static.hltv.org/images/team/logo/" + map.team2.id
+            }
+            imgTeam.alt = map.team1.name
+            imgTeam.classList.add("logo_team")
+            th2.setAttribute("style", "min-width: 85px")
+            th1.appendChild(imgTeam)
+            th2.innerHTML = "Game Tag"
+            th3.innerHTML = "K/D"
+            th4.innerHTML = "Assists"
+            th5.innerHTML = "ADR"
+            th6.innerHTML = "KDR"
+            trHeader.appendChild(th1)
+            trHeader.appendChild(th2)
+            trHeader.appendChild(th3)
+            trHeader.appendChild(th4)
+            trHeader.appendChild(th5)
+            trHeader.appendChild(th6)
+            if (i === 0) {
+                statsTeam1.appendChild(trHeader)
+            } else {
+                statsTeam2.appendChild(trHeader)
+            }
+        }
 
+        // estatísticas de cada jogador para cada mapa
+        for (const player of map.playerStats.team1) {
+            let tr = document.createElement('tr')
+            let td1 = document.createElement('td')
+            let td2 = document.createElement('td')
+            let td3 = document.createElement('td')
+            let td4 = document.createElement('td')
+            let td5 = document.createElement('td')
+            let td6 = document.createElement('td')
+            let countryFlag = document.createElement('img')
+            for (const p of data.playersTeam1) {
+                if (p.id === player.id) {
+                    countryFlag.src = "https://www.countryflags.io/" + p.country.code + "/shiny/24.png"
+                    countryFlag.alt = p.country.name
+                }
+            }
+            td1.appendChild(countryFlag)
+            td2.innerHTML = player.name
+            td3.innerHTML = player.kills + "/" + player.deaths
+            td4.innerHTML = player.assists
+            td5.innerHTML = player.ADR
+            td6.innerHTML = player.rating
+            tr.appendChild(td1)
+            tr.appendChild(td2)
+            tr.appendChild(td3)
+            tr.appendChild(td4)
+            tr.appendChild(td5)
+            tr.appendChild(td6)
+            statsTeam1.appendChild(tr)
+        }
 
-        
-
-
-
-
-
+        for (const player of map.playerStats.team2) {
+            let tr = document.createElement('tr')
+            let td1 = document.createElement('td')
+            let td2 = document.createElement('td')
+            let td3 = document.createElement('td')
+            let td4 = document.createElement('td')
+            let td5 = document.createElement('td')
+            let td6 = document.createElement('td')
+            let countryFlag = document.createElement('img')
+            for (const p of data.playersTeam2) {
+                if (p.id === player.id) {
+                    countryFlag.src = "https://www.countryflags.io/" + p.country.code + "/shiny/24.png"
+                    countryFlag.alt = p.country.name
+                }
+            }
+            td1.appendChild(countryFlag)
+            td2.innerHTML = player.name
+            td3.innerHTML = player.kills + "/" + player.deaths
+            td4.innerHTML = player.assists
+            td5.innerHTML = player.ADR
+            td6.innerHTML = player.rating
+            tr.appendChild(td1)
+            tr.appendChild(td2)
+            tr.appendChild(td3)
+            tr.appendChild(td4)
+            tr.appendChild(td5)
+            tr.appendChild(td6)
+            statsTeam2.appendChild(tr)
+        }
 
         mapDiv.appendChild(image)
         mapDiv.appendChild(scoreTeam1Div)
         mapDiv.appendChild(mapNameDiv)
         mapDiv.appendChild(scoreTeam2Div)
+        mapDiv.appendChild(statsTeam1)
+        mapDiv.appendChild(statsTeam2)
 
         maps.appendChild(mapDiv)
     }
-    
+
+    // highlighted players
+    highlightsDiv = document.createElement('div')
+    mostKillsDiv = document.createElement('div')
+    mvpDiv = document.createElement('div')
+    mostDamageDiv = document.createElement('div')
+
+    highlightsDiv.classList.add("highlights")
+    mostKillsDiv.setAttribute("style", "display: inline-block; width: 100px; text-align: center; margin-left: 45px; margin-right: 70px; font-size: 12px;")
+    mvpDiv.setAttribute("style", "display: inline-block; width: 170px;  text-align: center; margin-right: 70px;")
+    mostDamageDiv.setAttribute("style", "display: inline-block; width: 100px;  text-align: center; font-size: 12px;")
+
+    // iteração a todos os jogadores do jogo
+    for (const player of data.playersTeam1) {
+        // guarda jogador com mais kills
+        if (player.name === data.match.overview.mostKills.name) {
+            div = document.createElement('div')
+
+            highlight = document.createElement('span')
+            highlight.innerHTML = "<b>Most Kills</b>"
+            //highlight.setAttribute("style", "color:red")
+            div.setAttribute("style", "border-top: 5px solid red;")
+
+            playerImg = document.createElement('img')
+            playerDiv = document.createElement('div')
+            countryImg = document.createElement('img')
+            nameTag = document.createElement('span')
+            value = document.createElement('span')
+            playerImg.src = player.image
+            playerImg.alt = player.name
+            nameTag.setAttribute("style", "margin-left: 5px;")
+            countryImg.setAttribute("style", "margin-top: 5px;")
+            playerDiv.setAttribute("style", "display: inline-block; width:100%")
+            playerImg.setAttribute("style", "width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto")
+            countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+            nameTag.innerHTML = player.name
+            value.innerHTML = "Total kills: " + data.match.overview.mostKills.value
+            value.setAttribute("style", "color: red")
+
+            playerDiv.appendChild(countryImg)
+            playerDiv.appendChild(nameTag)
+
+            div.appendChild(playerImg)
+            div.appendChild(playerDiv)
+            div.appendChild(value)
+
+            mostKillsDiv.appendChild(highlight)
+            mostKillsDiv.appendChild(div)
+        }
+        // guarda jogador MVP
+        if (player.name === data.match.highlightedPlayer.name) {
+            div = document.createElement('div')
+
+            highlight = document.createElement('span')
+            highlight.innerHTML = "<b>MVP</b>"
+            //highlight.setAttribute("style", "color:gold")
+            div.setAttribute("style", "border-top: 5px solid gold;")
+
+            playerImg = document.createElement('img')
+            playerDiv = document.createElement('div')
+            countryImg = document.createElement('img')
+            nameTag = document.createElement('span')
+            playerImg.src = player.image
+            playerImg.alt = player.name
+            nameTag.setAttribute("style", "margin-left: 5px;")
+            countryImg.setAttribute("style", "margin-top: 5px;")
+            playerDiv.setAttribute("style", "display: inline-block; width:100%")
+            playerImg.setAttribute("style", "width: 170px; height: 170px; display: block; margin-left: auto; margin-right: auto;")
+            countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+            nameTag.innerHTML = player.name
+
+            playerDiv.appendChild(countryImg)
+            playerDiv.appendChild(nameTag)
+
+            div.appendChild(playerImg)
+            div.appendChild(playerDiv)
+
+            mvpDiv.appendChild(highlight)
+            mvpDiv.appendChild(div)
+        }
+        // guarda jogador com mais ADR
+        if (player.name === data.match.overview.mostDamage.name) {
+            div = document.createElement('div')
+
+            highlight = document.createElement('span')
+            highlight.innerHTML = "<b>Most Damage</b>"
+            //highlight.setAttribute("style", "color:blue")
+            div.setAttribute("style", "border-top: 5px solid blue;")
+
+            playerImg = document.createElement('img')
+            playerDiv = document.createElement('div')
+            countryImg = document.createElement('img')
+            nameTag = document.createElement('span')
+            value = document.createElement('span')
+            playerImg.src = player.image
+            playerImg.alt = player.name
+            nameTag.setAttribute("style", "margin-left: 5px;")
+            countryImg.setAttribute("style", "margin-top: 5px;")
+            playerDiv.setAttribute("style", "display: inline-block; width:100%")
+            playerImg.setAttribute("style", "width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto")
+            countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+            nameTag.innerHTML = player.name
+            value.innerHTML = "ADR: " + data.match.overview.mostDamage.value.toFixed(1).toString()
+            value.setAttribute("style", "color: blue")
+
+            playerDiv.appendChild(countryImg)
+            playerDiv.appendChild(nameTag)
+
+            div.appendChild(playerImg)
+            div.appendChild(playerDiv)
+            div.appendChild(value)
+
+            mostDamageDiv.appendChild(highlight)
+            mostDamageDiv.appendChild(div)
+        }
+    }
+    for (const player of data.playersTeam2) {
+
+        // guarda jogador com mais kills
+        if (player.name === data.match.overview.mostKills.name) {
+
+            div = document.createElement('div')
+
+            highlight = document.createElement('span')
+            highlight.innerHTML = "<b>Most Kills</b>"
+            //highlight.setAttribute("style", "color:red")
+            div.setAttribute("style", "border-top: 5px solid red;")
+
+            playerImg = document.createElement('img')
+            playerDiv = document.createElement('div')
+            countryImg = document.createElement('img')
+            nameTag = document.createElement('span')
+            value = document.createElement('span')
+            playerImg.src = player.image
+            playerImg.alt = player.name
+            nameTag.setAttribute("style", "margin-left: 5px;")
+            countryImg.setAttribute("style", "margin-top: 5px;")
+            playerDiv.setAttribute("style", "display: inline-block; width:100%")
+            playerImg.setAttribute("style", "width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto")
+            countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+            nameTag.innerHTML = player.name
+            value.innerHTML = "Total kills: " + data.match.overview.mostKills.value
+            value.setAttribute("style", "color: red")
+
+            playerDiv.appendChild(countryImg)
+            playerDiv.appendChild(nameTag)
+
+            div.appendChild(playerImg)
+            div.appendChild(playerDiv)
+            div.appendChild(value)
+
+            mostKillsDiv.appendChild(highlight)
+            mostKillsDiv.appendChild(div)
+            
+        }
+        // guarda jogador MVP
+        if (player.name === data.match.highlightedPlayer.name) {
+
+            div = document.createElement('div')
+
+            highlight = document.createElement('span')
+            highlight.innerHTML = "<b>MVP</b>"
+            //highlight.setAttribute("style", "color:gold")
+            div.setAttribute("style", "border-top: 5px solid gold;")
+
+            playerImg = document.createElement('img')
+            playerDiv = document.createElement('div')
+            countryImg = document.createElement('img')
+            nameTag = document.createElement('span')
+            playerImg.src = player.image
+            playerImg.alt = player.name
+            nameTag.setAttribute("style", "margin-left: 5px;")
+            countryImg.setAttribute("style", "margin-top: 5px;")
+            playerDiv.setAttribute("style", "display: inline-block; width:100%")
+            playerImg.setAttribute("style", "width: 170px; height: 170px; display: block; margin-left: auto; margin-right: auto;")
+            countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+            nameTag.innerHTML = player.name
+
+            playerDiv.appendChild(countryImg)
+            playerDiv.appendChild(nameTag)
+
+            div.appendChild(playerImg)
+            div.appendChild(playerDiv)
+
+            mvpDiv.appendChild(highlight)
+            mvpDiv.appendChild(div)
+        }
+        // guarda jogador com mais ADR
+        if (player.name === data.match.overview.mostDamage.name) {
+
+            div = document.createElement('div')
+
+            highlight = document.createElement('span')
+            highlight.innerHTML = "<b>Most Damage</b>"
+            //highlight.setAttribute("style", "color:blue")
+            div.setAttribute("style", "border-top: 5px solid blue;")
+
+            playerImg = document.createElement('img')
+            playerDiv = document.createElement('div')
+            countryImg = document.createElement('img')
+            nameTag = document.createElement('span')
+            value = document.createElement('span')
+            playerImg.src = player.image
+            playerImg.alt = player.name
+            nameTag.setAttribute("style", "margin-left: 5px;")
+            countryImg.setAttribute("style", "margin-top: 5px;")
+            playerDiv.setAttribute("style", "display: inline-block; width:100%")
+            playerImg.setAttribute("style", "width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto")
+            countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
+            nameTag.innerHTML = player.name
+            value.innerHTML = "ADR: " + data.match.overview.mostDamage.value.toFixed(1).toString()
+            value.setAttribute("style", "color: blue")
+
+            playerDiv.appendChild(countryImg)
+            playerDiv.appendChild(nameTag)
+
+            div.appendChild(playerImg)
+            div.appendChild(playerDiv)
+            div.appendChild(value)
+
+            mostDamageDiv.appendChild(highlight)
+            mostDamageDiv.appendChild(div)
+        }
+    }
+
+    highlightsDiv.appendChild(mostKillsDiv)
+    highlightsDiv.appendChild(mvpDiv)
+    highlightsDiv.appendChild(mostDamageDiv)
+    maps.appendChild(highlightsDiv)
+    /*
+    let comments_h3 = document.createElement("h3")
+    comments_h3.classList.add("comments_heading")
+    comments_h3.innerHTML = "Comments:"
+    let commentsDiv = document.createElement("div")
+    commentsDiv.id = "comments_area"
+    commentsDiv.classList.add("comments_area")
+    let p = document.createElement("p")
+    p.innerHTML = "You need to login to write comments"
+    commentsDiv.appendChild(p)
+    let comments = document.createElement("ul")
+    comments.id = "comments"
+    comments.classList.add("comments")
+
+    maps.appendChild(comments_h3)
+    maps.appendChild(commentsDiv)
+    maps.appendChild(comments)
+
     main_div.appendChild(maps)
-
-
-
-    /*
-    // nomes das equipas
-    let team1Name = data.match.team1.name
-    let team2Name = data.match.team2.name
-    let playersTeam1 = data.playersTeam1
-    let playersTeam2 = data.playersTeam2
-    data = data.match
-    console.log(data)
-    document.title = data.event + 'Match';
-    // nomes das equipas
-    let team1Name = data.team1.name
-    let team2Name = data.team2.name
-    document.getElementById('team1_name').innerHTML = team1Name
-    document.getElementById('team2_name').innerHTML = team2Name
-    // imagens das equipas
-    let logo_team1 = "https://static.hltv.org/images/team/logo/" + data.match.team1.id
-    let logo_team2 = "https://static.hltv.org/images/team/logo/" + data.match.team2.id
-    document.getElementById('team1_logo').src = logo_team1
-    document.getElementById('team2_logo').src = logo_team2
-    // mapas
-    let maps = data.match.maps
-    // resultado
-    let leftCounter = 0
-    let rightCounter = 0
-    // para cada mapa, vai aumentando o contador de cada equipa
-    
-    for (const map of maps) {
-        let leftResult = map.team1.score
-        let rightResult = map.team2.score
-
-        if (leftResult) {
-            if (leftResult > rightResult) {
-                leftCounter++
-            } else {
-                rightCounter++
-            }
-        }
-    }
-    document.getElementById('result_team1').innerHTML = leftCounter
-    document.getElementById('result_team2').innerHTML = rightCounter
-    
-    // imagens, nomes e resultados dos mapas
-    let i = 1
-    for (const map of maps) {
-        document.getElementById("map" + i).style.display = "block";
-        let mapImage = "https://hltv.org/img/static/maps/"
-        let mapName
-        if (map.map === "nuke") {
-            mapImage += "nuke"
-            mapName = "Nuke"
-        } else if (map.map === "trn") {
-            mapImage += "train"
-            mapName = "Train"
-        } else if (map.map === "mrg") {
-            mapImage += "mirage"
-            mapName = "Mirage"
-        } else if (map.map === "d2") {
-            mapImage += "dust2"
-            mapName = "Dust2"
-        } else if (map.map === "ovp") {
-            mapImage += "overpass"
-            mapName = "Overpass"
-        } else if (map.map === "vertigo") {
-            mapImage += "vertigo"
-            mapName = "Vertigo"
-        } else if (map.map === "inf") {
-            mapImage += "inferno"
-            mapName = "Inferno"
-        }
-        mapImage += ".png"
-        let team1Score = map.team1.score
-        let team2Score = map.team2.score
-        // se não jogaram algum mapa que estava na lista, fica com menos opacidade
-        if (!team1Score) {
-            document.getElementById("map" + i).style.opacity = "0.5";
-        }
-
-        document.getElementById("map" + i + "_image").src = mapImage
-        document.getElementById("map" + i + "_name").innerHTML = mapName
-        document.getElementById("map" + i + "_team1_score").innerHTML = team1Score
-        document.getElementById("map" + i + "_team2_score").innerHTML = team2Score
-        i++
-    }
-
-    //console.log(data.playersTeam1)
-    
-    console.log(data.playersTeam1)
-
-    //let team1Players = data.players.team1
-    /*
-    i = 1
-    for (player of team1Players) {
-        console.log(player.age)
-        /*
-        let playerStats = "<td>"
-        playerStats+="<img src=\"https://static.hltv.org/images/bigflags/30x20/" + player.country.code + ".gif\" class=\"player_flag\">"
-        playerStats+="<td>" + player.ign + "</td>"
-        
-
-        document.getElementById("player" + i).innerHTML = playerStats
-        */
-    /*
-    let playerSecondImgTag = document.createElement('img')
-    playerSecondImgTag.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
-
-    document.getElementById("player" + i).appendChild(playerSecondImgTag)
-    i++
-    
-}
-
- 
-let team2Players = data.players.team2
-let statsTeam1 = data.playerStats.team1
-let statsTeam2 = data.playerStats.team2
- 
-// preencher a parte da estatística
-stats = "<table>"
-for (const player of statsTeam1) {
-
-}
-stats += "</table>"
-
-*/
+    */
 }
 
 function onsession() {

@@ -55,7 +55,7 @@ function pageLoad(cb) {
                     td1.setAttribute("style", "min-width: 100px;")
                     let td2 = document.createElement('td')
                     //td2.textContent = result.team1.name
-                    td2.innerHTML = "<a class=\"\" href=\"/team/" + result.team1.id + "\">" + result.team1.name + "</a>"
+                    td2.innerHTML = "<a class=\"\" style=\"text-decoration: none; color: black\" title=\"" + result.team1.name + "\" href=\"/team/" + result.team1.id + "\">" + result.team1.name + "</a>"
                     td2.setAttribute("style", "min-width: 180px; text-align: right;")
                     let td3 = document.createElement('td')
                     td3.innerHTML = `<img alt="${result.team1.name}" src="https://static.hltv.org/images/team/logo/${result.team1.id}"
@@ -79,12 +79,11 @@ function pageLoad(cb) {
                                             style="width: 20px; height: 20px" title="${result.team2.name}">`
                     let td6 = document.createElement('td')
                     //td6.textContent = result.team2.name
-                    td6.innerHTML = "<a class=\"\" href=\"/team/" + result.team2.id + "\">" + result.team2.name + "</a>"
-                    td6.setAttribute("style", "min-width: 150px; text-align: left;")
+                    td6.innerHTML = "<a class=\"\" style=\"text-decoration: none; color: black\" title=\"" + result.team2.name + "\"  href=\"/team/" + result.team2.id + "\">" + result.team2.name + "</a>"
+                    td6.setAttribute("style", "min-width: 190px; text-align: left;")
                     let td7 = document.createElement('td')
-                    td7.setAttribute("style", "min-width: 120px; float: right")
-                    td7.innerHTML = `<a href="/match/${result.id}"><img src="/static/images/game-details.png"
-                                                style="width: 15px; height: 15px; float: right"></a>`
+                    td7.setAttribute("style", "min-width: 130px; float: right;")
+                    td7.innerHTML = `<a href="/match/${result.id}" style="text-decoration: underline; color:black;">More</a>`
                     table.appendChild(td1)
                     table.appendChild(td2)
                     table.appendChild(td3)
@@ -98,6 +97,7 @@ function pageLoad(cb) {
                     main_div.appendChild(matchDiv)
 
                     //--------------------------------------------------------------------------------------//
+
                     // divs para os detalhes
                     let detailsDiv = document.createElement('div')
                     let team1Div = document.createElement('div')
@@ -139,6 +139,7 @@ function pageLoad(cb) {
                         a.href = "/player/" + player.id
                         a.title = player.name
                         a.innerHTML = player.name
+                        a.setAttribute("style", "text-decoration: none; color: white")
                         //a.classList.add('')
                         tr.appendChild(a)
                         team1Players.appendChild(tr)
@@ -150,6 +151,7 @@ function pageLoad(cb) {
                         a.href = "/player/" + player.id
                         a.title = player.name
                         a.innerHTML = player.name
+                        a.setAttribute("style", "text-decoration: none; color: white;")
                         //a.classList.add('')
                         tr.appendChild(a)
                         team2Players.appendChild(tr)
