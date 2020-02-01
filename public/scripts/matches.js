@@ -471,9 +471,8 @@ function loadData(data) {
     maps.appendChild(comments_h3)
     maps.appendChild(commentsDiv)
     maps.appendChild(comments)
-
-    main_div.appendChild(maps)
     */
+    main_div.appendChild(maps)
 }
 
 function onsession() {
