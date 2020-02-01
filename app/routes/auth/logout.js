@@ -1,5 +1,10 @@
 const User = require('../../models/User');
 
+/**
+ * Module that logout a user
+ * @module Auth/Logout
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         if (req.session.userid) {

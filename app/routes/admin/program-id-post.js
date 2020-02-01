@@ -1,6 +1,11 @@
 const User = require('../../models/User');
 const Link = require('../../models/Link');
 
+/**
+ * Recesives a new link from a request for the admin program
+ * @module Admin/Program_Id_Post
+ * @deprecated
+ */
 module.exports = function () {
     return function (req, res) {
         let id = req.params.id;

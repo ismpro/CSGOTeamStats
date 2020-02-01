@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-ignore
 const api = axios.create({
     baseURL: window.location.origin,
     withCredentials: true,
@@ -6,6 +7,9 @@ const api = axios.create({
 
 let admin = false;
 
+/**
+ * Function that is executed when the page is loaded
+ */
 function loadPage() {
     pageLoad(() => {
         setTimeout(() => {
@@ -13,25 +17,40 @@ function loadPage() {
         }, 100)
     })
     if (location.pathname !== '/login' && location.pathname !== '/contact') {
+        /**
+         * @param {{ data: any; }} res
+         */
+        /**
+         * @param {any} err
+         */
         api.post('/auth/validate').then((res) => {
             if (typeof res.data === 'string') {
-                authLogin()
+                authValidated()
             } else {
-                authLogout()
+                authNotSession()
             }
         }).catch(err => console.log(err))
     }
 }
 
-function authLogin() {
+/**
+ * Function that is executed when the session is validated by the server
+ */
+function authValidated() {
     //sessionId = res.data  <- WTF is this ?????? TODO
     let button = document.getElementById('loginButton')
     button.style.display = "inline";
     button.innerHTML = '<button class="loginButton">Log out</button>'
     button.firstElementChild.onclick = () => {
+        /**
+         * @param {{ data: any; }} res
+         */
+        /**
+         * @param {any} err
+         */
         api.post('/auth/logout').then((res) => {
             if (res.data) {
-                authLogout()
+                authNotSession()
             }
         }).catch(err => console.log(err))
     }
@@ -42,18 +61,21 @@ function authLogin() {
     a.id = "profilelink";
     nav.insertBefore(a, nav.children[1]);
     try {
+        // @ts-ignore
         onsession()
     } catch (error) {
-        console.log(error) //DELETE
         console.warn('onsession not define')
     }
 }
 
-function authLogout() {
+/**
+ * Function that is executed when the session is not logged in by the server
+ */
+function authNotSession() {
     try {
+        // @ts-ignore
         onlogout()
     } catch (error) {
-        console.log(error) //DELETE
         console.warn('onlogout not define')
     } finally {
         let button = document.getElementById('loginButton')
@@ -66,6 +88,13 @@ function authLogout() {
     }
 }
 
+/**
+ * Used for making 2 DOM elements fadeout and fadein
+ * @param {boolean} isOut Use always true - the false value doenst work
+ * @param {string} element1 the id of a dom element that is going to fade out
+ * @param {string} element2 the id of a dom element that is going to fade in
+ * @returns {Promise}
+ */
 function fade(isOut, element1, element2) {
     return new Promise((resolve, reject) => {
         try {
@@ -74,12 +103,12 @@ function fade(isOut, element1, element2) {
                 if ((op <= 0.1 && isOut) || (op >= 0.9 && !isOut)) {
                     clearInterval(timer);
                     document.getElementById(element1).style.display = "none";
-                    document.getElementById(element2).style.opacity = 0;
+                    document.getElementById(element2).style.opacity = '0';
                     document.getElementById(element2).style.display = "block";
-                    document.getElementById(element2).style.opacity = 1;
+                    document.getElementById(element2).style.opacity = '1';
                     resolve()
                 }
-                document.getElementById(element1).style.opacity = op;
+                document.getElementById(element1).style.opacity = String(op);
                 document.getElementById(element1).style.filter = 'alpha(opacity=' + op * 100 + ")";
                 if (isOut) {
                     op -= 0.1;
@@ -93,7 +122,14 @@ function fade(isOut, element1, element2) {
     })
 }
 let isOpen = false;
-/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+
+/**
+ * Animation of the side Nav
+ * Set the width of the side navigation to 250px 
+ * and the left margin of the page content to 250px 
+ * and add a black background color to body
+ * @param {Element} e An dom element
+ */
 function sideNav(e) {
     if (isOpen) {
         e.classList.toggle("change");
@@ -108,6 +144,7 @@ function sideNav(e) {
         let tabs = document.getElementsByClassName("details")
         if (tabs) {
             for (const tab of tabs) {
+                // @ts-ignore
                 tab.style.maxHeight = null;
             }
         }
@@ -115,10 +152,16 @@ function sideNav(e) {
     isOpen = !isOpen;
 }
 
+/**
+ * Returns a string telling how much time as passed since the date until now
+ * @param {Date} date The date
+ * @returns {string}
+ */
 function timeSince(date) {
 
     date = new Date(date)
 
+    // @ts-ignore
     var seconds = Math.floor((new Date() - date) / 1000);
 
     if (seconds < 20) {
@@ -147,6 +190,12 @@ function timeSince(date) {
     return seconds + " seconds";
 }
 
+/**
+ * Formats a date to a string with the format yyyy-mm-dd
+ * @function formatDate
+ * @param {Date} date The date to be formated
+ * @returns {String}
+ */
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -161,7 +210,24 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+/**
+ * Used create a string a complete name a of a player
+ * with in game name in the middle
+ * @param {string} name The full name
+ * @param {string} ign In game name
+ * @returns {string}
+ */
 function playerNaming(name, ign) {
     let nameArray = name.split(" ");
     return `${nameArray[0]} "${ign}" ${nameArray[nameArray.length - 1]}`
+}
+
+/**
+ * Validates an email
+ * @param {string} email The email to be compared
+ * @returns {boolean}
+ */
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
 }

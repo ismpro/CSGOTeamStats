@@ -1,8 +1,15 @@
+// @ts-nocheck
 const User = require('../../models/User');
 const {
     createid
 } = require('../../functions.js');
 
+/**
+ * Module that logins a user
+ * The body is expected an the email and password
+ * @module Auth/Logins
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         let data = req.body;

@@ -20,16 +20,19 @@ class ApiControler {
             hour: 0,
             minute: 1
         }, () => {
-            this.updateAll();
-            this.removeDuplicates();
+            this.updateAll().then(() => {
+                this.removeDuplicates();
+            });
+
         });
         /**
          * @property {object} secheduleFetchLastInfoJob Object that has timer information about new Matches
          * Fires every hour
          */
         this.secheduleFetchLastInfoJob = schedule.scheduleJob('01 * * * *', () => {
-            this.fetchAllInfo(1)
-            this.removeDuplicates();
+            this.fetchAllInfo(1).then(() => {
+                this.removeDuplicates();
+            });
         });
     }
 
@@ -53,6 +56,7 @@ class ApiControler {
                                 playerSaved++
                                 console.log('\nPlayers Saved: ' + playerSaved)
                                 resolve()
+                            // @ts-ignore
                             }).catch(err => resolve())
                         })
                     })
@@ -68,6 +72,7 @@ class ApiControler {
                                 console.log('\nTeams Saved: ' + teamSaved)
                                 resolve()
                             })
+                        // @ts-ignore
                         }).catch(err => resolve())
                     })
                 })
@@ -143,7 +148,11 @@ class ApiControler {
             status: match.status,
             title: match.title,
             highlightedPlayer: match.highlightedPlayer,
-            vetoes: match.vetoes,
+            vetoes: match.vetoes.map(veto => ({
+                map: veto.map,
+                team: { name: veto.team.name, id: veto.team.id },
+                type: veto.type
+            })),
             highlights: match.highlights,
             demos: match.demos,
             overview: {
@@ -176,6 +185,7 @@ class ApiControler {
         teamids = teamids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
         let teams = []
         let teamsIt = 0
+        // @ts-ignore
         let teamsCount = 0
         for (const id of teamids) {
             try {
@@ -409,6 +419,7 @@ class ApiControler {
         for await (const doc of aggTeam) {
             Team.findByIdAndDelete(doc.dups[0], function (err, deletedTeam) {
                 if (!err) {
+                    // @ts-ignore
                     console.log('Remove Duplicate: ' + deletedTeam.name)
                 } else {
                     console.log(err)
@@ -429,6 +440,7 @@ class ApiControler {
         for await (const doc of aggPlayers) {
             Player.findByIdAndDelete(doc.dups[0], function (err, deletedPlayer) {
                 if (!err) {
+                    // @ts-ignore
                     console.log('Remove Duplicate: ' + deletedPlayer.ign)
                 } else {
                     console.log(err)
@@ -449,6 +461,7 @@ class ApiControler {
         for await (const doc of aggMatch) {
             Match.findByIdAndDelete(doc.dups[0], function (err, deletedMatch) {
                 if (!err) {
+                    // @ts-ignore
                     console.log('Remove Duplicate: ' + deletedMatch.event)
                 } else {
                     console.log(err)

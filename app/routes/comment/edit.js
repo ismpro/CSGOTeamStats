@@ -1,8 +1,15 @@
+// @ts-nocheck
 const {
     parseComments
 } = require('../../functions.js');
 const Comment = require('../../models/Comment');
 
+/**
+ * Function that edits comments made the user
+ * The body is expected an id of the comment and the new text
+ * @module Comment/Edit
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         if (req.session.userid) {

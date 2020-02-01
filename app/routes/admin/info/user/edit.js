@@ -1,5 +1,10 @@
 const User = require('../../../../models/User')
 
+/**
+ * Edits a single user
+ * @module Admin/User/Edit
+ * @deprecated
+ */
 module.exports = function () {
     return function (req, res) {
         let userEdit = req.body

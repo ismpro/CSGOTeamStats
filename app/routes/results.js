@@ -8,9 +8,11 @@ const Match = require('../models/Match');
  */
 module.exports = function () {
     return function (req, res) {
-        let limit = req.body.limit;
+        let limit = req.body.limit || 0;
+        let skip = req.body.skip || 0;
         Match.find()
             .sort({ date: 'desc' })
+            .skip(skip)
             .limit(limit)
             .exec(function (err, docs) {
                 if (!err) {

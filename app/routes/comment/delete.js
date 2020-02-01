@@ -1,5 +1,11 @@
 const Comment = require('../../models/Comment');
 
+/**
+ * Function that deletes comments
+ * The body is expected an id of the comment
+ * @module Comment/Delete
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         if (req.session.userid) {

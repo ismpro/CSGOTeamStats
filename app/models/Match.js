@@ -142,11 +142,7 @@ let MatchSchema = new mongoose.Schema({
         name: String,
         id: Number
     },
-    vetoes: [{
-        map: String,
-        team: { name: String, id: Number },
-        type: String
-    }],
+    vetoes: [mongoose.Schema.Types.Mixed],
     highlights: [{
         link: String,
         title: String

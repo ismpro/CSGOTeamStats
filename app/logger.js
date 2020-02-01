@@ -5,7 +5,7 @@ const iplocate = require('node-iplocate')
 const path = require('path')
 const chalk = require('chalk')
 /**
- * 
+ * This is a personal project doenst influence the rest of the program
  * @param {Object} [options]
  */
 module.exports = function (options) {

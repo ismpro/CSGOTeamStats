@@ -1,8 +1,15 @@
+// @ts-nocheck
 const {
     parseComments
 } = require('../../functions.js');
 const Comment = require('../../models/Comment');
 
+/**
+ * Function that creates comments made by the user
+ * The body is expected an the type of the comment, the id of the type, the text, and if isAnon 
+ * @module Comment/Create
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         let comment = req.body

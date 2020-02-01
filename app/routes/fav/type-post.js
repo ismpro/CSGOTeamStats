@@ -1,5 +1,13 @@
+// @ts-nocheck
 const User = require('../../models/User');
 
+/**
+ * Function that set favorites
+ * The body is expected an id
+ * And Url is expected an type (/:type) player | team | match
+ * @module Fav/Type_Post
+ * @returns {Function}
+ */
 module.exports = function () {
     return function (req, res) {
         let id = req.body.id
