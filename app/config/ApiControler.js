@@ -57,7 +57,7 @@ class ApiControler {
                                 playerSaved++
                                 console.log('\nPlayers Saved: ' + playerSaved)
                                 resolve()
-                            // @ts-ignore
+                                // @ts-ignore
                             }).catch(() => resolve())
                         })
                     })
@@ -73,7 +73,7 @@ class ApiControler {
                                 console.log('\nTeams Saved: ' + teamSaved)
                                 resolve()
                             })
-                        // @ts-ignore
+                            // @ts-ignore
                         }).catch(() => resolve())
                     })
                 })
@@ -115,144 +115,149 @@ class ApiControler {
                 }
             }
         }
-
-        let matchStats = {}
-        if (mapsInfo.length > 1) {
-            console.log('getting stats for match: ' + match.statsId)
-            await functions.sleep(2000)
-            matchStats = await this.fetchMatchesStatsById(match.statsId)
-        } else {
-            console.log('already have stats')
-            let tempMapStats = mapsInfo[0]
-            matchStats = {
-                overview: tempMapStats.overview,
-                playerStats: tempMapStats.playerStats
-            }
-        }
-        let parsedMatch = {
-            id: match.id,
-            statsId: match.statsId,
-            team1: match.team1,
-            team2: match.team2,
-            winnerTeam: match.winnerTeam,
-            date: new Date(match.date),
-            format: match.format,
-            event: match.event.name,
-            maps: mapsInfo.map(mapInfo => ({
-                map: mapInfo.map,
-                team1: mapInfo.team1,
-                team2: mapInfo.team2,
-                playerStats: mapInfo.playerStats,
-                performanceOverview: mapInfo.performanceOverview
-            })),
-            players: match.players,
-            status: match.status,
-            title: match.title,
-            highlightedPlayer: match.highlightedPlayer,
-            vetoes: match.vetoes.map(veto => ({
-                map: veto.map,
-                team: { name: veto.team.name, id: veto.team.id },
-                type: veto.type
-            })),
-            highlights: match.highlights,
-            demos: match.demos,
-            overview: {
-                mostKills: matchStats.overview.mostKills,
-                mostDamage: matchStats.overview.mostDamage,
-                mostAssists: matchStats.overview.mostAssists,
-                mostAWPKills: matchStats.overview.mostAWPKills,
-                mostFirstKills: matchStats.overview.mostFirstKills,
-                bestRating: matchStats.overview.bestRating
-            },
-            playerStats: matchStats.playerStats
-        }
-        let newMatch = new Match(parsedMatch)
-        await newMatch.save()
-        let teamids = []
-        let team1 = await Team.findOne({
-            id: match.team1.id
-        })
-        let team2 = await Team.findOne({
-            id: match.team2.id
-        })
-
-        if (!team1) {
-            teamids.push(match.team1.id)
-        }
-        if (!team2) {
-            teamids.push(match.team2.id)
-        }
-
-        teamids = teamids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
-        let teams = []
-        let teamsIt = 0
-        for (const id of teamids) {
-            try {
-                teamsIt++
+        if (mapsInfo.length > 0) {
+            let matchStats = {}
+            if (mapsInfo.length > 1) {
+                console.log('getting stats for match: ' + match.statsId)
                 await functions.sleep(2000)
-                console.log('Team: ' + teamsIt)
-                let team = await this.fetchTeamById(id)
-                if (team.players && Array.isArray(team.players) && team.players.length < 5) {
-                    for (let index = team.players.length + 1; index >= 5; index++) {
-                        team.players.length[index] = {
-                            id: 0,
-                            name: ''
+                matchStats = await this.fetchMatchesStatsById(match.statsId)
+            } else {
+                console.log('already have stats')
+                let tempMapStats = mapsInfo[0]
+                matchStats = {
+                    overview: tempMapStats.overview,
+                    playerStats: tempMapStats.playerStats
+                }
+            }
+            let parsedMatch = {
+                id: match.id,
+                statsId: match.statsId,
+                team1: match.team1,
+                team2: match.team2,
+                winnerTeam: match.winnerTeam,
+                date: new Date(match.date),
+                format: match.format,
+                event: match.event.name,
+                maps: mapsInfo.map(mapInfo => ({
+                    map: mapInfo.map,
+                    team1: mapInfo.team1,
+                    team2: mapInfo.team2,
+                    playerStats: mapInfo.playerStats,
+                    performanceOverview: mapInfo.performanceOverview
+                })),
+                players: match.players,
+                status: match.status,
+                title: match.title,
+                highlightedPlayer: match.highlightedPlayer,
+                vetoes: match.vetoes.map(veto => ({
+                    map: veto.map,
+                    team: { name: veto.team.name, id: veto.team.id },
+                    type: veto.type
+                })),
+                highlights: match.highlights,
+                demos: match.demos,
+                overview: {
+                    mostKills: matchStats.overview.mostKills,
+                    mostDamage: matchStats.overview.mostDamage,
+                    mostAssists: matchStats.overview.mostAssists,
+                    mostAWPKills: matchStats.overview.mostAWPKills,
+                    mostFirstKills: matchStats.overview.mostFirstKills,
+                    bestRating: matchStats.overview.bestRating
+                },
+                playerStats: matchStats.playerStats
+            }
+            let newMatch = new Match(parsedMatch)
+            await newMatch.save()
+            let teamids = []
+            let team1 = await Team.findOne({
+                id: match.team1.id
+            })
+            let team2 = await Team.findOne({
+                id: match.team2.id
+            })
+
+            if (!team1) {
+                teamids.push(match.team1.id)
+            }
+            if (!team2) {
+                teamids.push(match.team2.id)
+            }
+
+            teamids = teamids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
+            let teams = []
+            let teamsIt = 0
+            for (const id of teamids) {
+                try {
+                    teamsIt++
+                    await functions.sleep(2000)
+                    console.log('Team: ' + teamsIt)
+                    let team = await this.fetchTeamById(id)
+                    if (team.players && Array.isArray(team.players) && team.players.length < 5) {
+                        for (let index = team.players.length + 1; index >= 5; index++) {
+                            team.players.length[index] = {
+                                id: 0,
+                                name: ''
+                            }
                         }
                     }
-                }
-                let parsedTeam = {
-                    id: team.id,
-                    name: team.name,
-                    logo: team.logo,
-                    location: team.location,
-                    facebook: team.facebook,
-                    twitter: team.twitter,
-                    rank: team.rank,
-                    players: team.players.map(player => ({
-                        id: Number.isNaN(player.id) ? 0 : player.id,
-                        name: player.name || ''
-                    })),
-                    recentResults: team.recentResults
-                }
-                let newTeam = new Team(parsedTeam)
-                await newTeam.save()
-                teams.push(parsedTeam)
-            } catch (error) {
-                console.log(error.message)
-            }
-        }
-        let playersids = []
-        for (const team of teams) {
-            team.players.forEach(player => {
-                if (player.id !== 0)
-                    playersids.push(player.id)
-            });
-        }
-        playersids = playersids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
-        let players = []
-        let playersIt = 0
-        for (const id of playersids) {
-            let findedPlayer = await Player.findOne({
-                id: id
-            })
-            if (!findedPlayer) {
-                try {
-                    playersIt++
-                    await functions.sleep(2000)
-                    console.log('Player: ' + playersIt)
-                    let player = await this.fetchPlayerById(id)
-                    let newPlayer = new Player(player)
-                    await newPlayer.save()
-                    players.push(player)
+                    let parsedTeam = {
+                        id: team.id,
+                        name: team.name,
+                        logo: team.logo,
+                        location: team.location,
+                        facebook: team.facebook,
+                        twitter: team.twitter,
+                        rank: team.rank,
+                        players: team.players.map(player => ({
+                            id: Number.isNaN(player.id) ? 0 : player.id,
+                            name: player.name || ''
+                        })),
+                        recentResults: team.recentResults
+                    }
+                    let newTeam = new Team(parsedTeam)
+                    await newTeam.save()
+                    teams.push(parsedTeam)
                 } catch (error) {
                     console.log(error.message)
                 }
             }
-        }
-        return {
-            match: parsedMatch,
-            teams: teams,
-            players: players
+            let playersids = []
+            for (const team of teams) {
+                team.players.forEach(player => {
+                    if (player.id !== 0)
+                        playersids.push(player.id)
+                });
+            }
+            playersids = playersids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
+            let players = []
+            let playersIt = 0
+            for (const id of playersids) {
+                let findedPlayer = await Player.findOne({
+                    id: id
+                })
+                if (!findedPlayer) {
+                    try {
+                        playersIt++
+                        await functions.sleep(2000)
+                        console.log('Player: ' + playersIt)
+                        let player = await this.fetchPlayerById(id)
+                        let newPlayer = new Player(player)
+                        await newPlayer.save()
+                        players.push(player)
+                    } catch (error) {
+                        console.log(error.message)
+                    }
+                }
+            }
+            return {
+                match: parsedMatch,
+                teams: teams,
+                players: players
+            }
+        } else {
+            let newMatch = new Match({ id: id, broke: true })
+            await newMatch.save()
+            throw Error('Match Broke')
         }
     }
 

@@ -192,7 +192,11 @@ let MatchSchema = new mongoose.Schema({
     playerStats: {
         team1: [PlayerStats],
         team2: [PlayerStats]
-    }
+    },
+    /**
+    * If the match was already search but no info from hltv was returned or broken info
+    */
+    broke: Boolean
 }, {
     /**
     * Warning: Ignore this!
