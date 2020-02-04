@@ -70,10 +70,12 @@
     position: relative;
 }
 
-.maps table, th, td {
+.maps table,
+th,
+td {
     margin-top: 10px;
     background-color: #fff;
-    box-shadow: 0 1px 2px 0 rgba(50,50,50,.4);
+    box-shadow: 0 1px 2px 0 rgba(50, 50, 50, .4);
     font-size: 14px;
     text-align: center;
     padding-right: 4px;
@@ -146,8 +148,9 @@
     margin-bottom: 100px;
 }
 
-
-
+.commentsDiv {
+    margin-bottom: 150px;
+}
 
 .comments_heading {
     margin-top: 30px;
@@ -292,4 +295,3 @@
 .editableButtons buttons {
     font-size: 30px;
 }
-

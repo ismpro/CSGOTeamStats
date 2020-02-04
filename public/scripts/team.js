@@ -273,41 +273,45 @@ function loadData(data) {
 function loadComments() {
 
     let commentsDiv = document.getElementById('comments')
-    let html = ''
-    comments.forEach((comment, index) => {
-        html += `<li id="comment_${comment.id}"><blockquote class="comments-bubble${index % 2 ? ' comments_odd' : ''}"><div class="comments_bubble_text"><p id="comment_text_${comment.id}" contenteditable="false">`
-        html += comment.text;
-        html += '</p></div><div class="comments_madeby">'
-        if (comment.hasEdit) {
-            html += 'Edit '
-        }
-        let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
-        if (timeString === 'just now') {
-            html += 'Just now by '
-        } else {
-            html += `${timeString} ago by `
-        }
-        if (comment.hasEdit) {
-            html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
-        }
-        if (typeof comment.user === 'anon') {
-            html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
-        } else {
-            html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
-        }
-        if (comment.isFromUser || admin) {
-            html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
-            html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
-        }
-        html += '</div></blockquote></li>'
-    })
-    commentsDiv.innerHTML = html;
-    comments.forEach((comment) => {
-        if (comment.isFromUser || admin) {
-            document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
-            document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
-        }
-    })
+    if (Array.isArray(comments) && comments.length > 0) {
+        let html = ''
+        comments.forEach((comment, index) => {
+            html += `<li id="comment_${comment.id}"><blockquote class="comments-bubble${index % 2 ? ' comments_odd' : ''}"><div class="comments_bubble_text"><p id="comment_text_${comment.id}" contenteditable="false">`
+            html += comment.text;
+            html += '</p></div><div class="comments_madeby">'
+            if (comment.hasEdit) {
+                html += 'Edit '
+            }
+            let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
+            if (timeString === 'just now') {
+                html += 'Just now by '
+            } else {
+                html += `${timeString} ago by `
+            }
+            if (comment.hasEdit) {
+                html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
+            }
+            if (typeof comment.user === 'anon') {
+                html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
+            } else {
+                html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
+            }
+            if (comment.isFromUser || admin) {
+                html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+                html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+            }
+            html += '</div></blockquote></li>'
+        })
+        commentsDiv.innerHTML = html;
+        comments.forEach((comment) => {
+            if (comment.isFromUser || admin) {
+                document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
+                document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+            }
+        })
+    } else {
+        commentsDiv.innerHTML = '<div style="margin-top: 30px;">Write the first comment!</div>'
+    }
 }
 
 function createComment() {

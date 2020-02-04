@@ -4,6 +4,10 @@ const Players = require('../models/Player');
 const {
     byCountry
 } = require('country-code-lookup')
+const {
+    sleep,
+    parseComments
+} = require('../functions.js')
 
 /**
  * Module that deals with the information of a team post request.
@@ -89,16 +93,101 @@ module.exports = function (api) {
         let id = req.params.id;
         Match.findOne({
             id: id
-        }, function (err, match) {
+        }, async function (err, match) {
             if (!err) {
-                Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)], getComments(id, req.session.userid)).then(data => {
-                    res.status(200).json({
-                        match: match,
-                        playersTeam1: data[0],
-                        playersTeam2: data[1],
-                        comments: data[2]
+                if (match) {
+                    Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)], getComments(id, req.session.userid)).then(data => {
+                        res.status(200).json({
+                            match: match,
+                            playersTeam1: data[0],
+                            playersTeam2: data[1],
+                            comments: data[2]
+                        })
                     })
-                })
+                } else {
+                    try {
+                        let match = await this.fetchMatchById(id)
+                        let mapsInfo = []
+                        for (const map of match.maps) {
+                            if (map.statsId) {
+                                await sleep(1000)
+                                let mapInfo = await this.fetchMatchMapStatsById(map.statsId)
+                                mapsInfo.push({
+                                    map: mapInfo.map,
+                                    team1: mapInfo.team1,
+                                    team2: mapInfo.team2,
+                                    overview: mapInfo.overview,
+                                    playerStats: mapInfo.playerStats,
+                                    performanceOverview: mapInfo.performanceOverview
+                                })
+                            }
+                        }
+                        let matchStats = {}
+                        if (mapsInfo.length > 1) {
+                            await sleep(1000)
+                            matchStats = await this.fetchMatchesStatsById(match.statsId)
+                        } else {
+                            let tempMapStats = mapsInfo[0]
+                            matchStats = {
+                                overview: tempMapStats.overview,
+                                playerStats: tempMapStats.playerStats
+                            }
+                        }
+                        let parsedMatch = {
+                            id: match.id,
+                            statsId: match.statsId,
+                            team1: match.team1,
+                            team2: match.team2,
+                            winnerTeam: match.winnerTeam,
+                            date: new Date(match.date),
+                            format: match.format,
+                            event: match.event.name,
+                            maps: mapsInfo.map(mapInfo => ({
+                                map: mapInfo.map,
+                                team1: mapInfo.team1,
+                                team2: mapInfo.team2,
+                                playerStats: mapInfo.playerStats,
+                                performanceOverview: mapInfo.performanceOverview
+                            })),
+                            players: match.players,
+                            status: match.status,
+                            title: match.title,
+                            highlightedPlayer: match.highlightedPlayer,
+                            vetoes: match.vetoes.map(veto => ({
+                                map: veto.map,
+                                team: {
+                                    name: veto.team.name,
+                                    id: veto.team.id
+                                },
+                                type: veto.type
+                            })),
+                            highlights: match.highlights,
+                            demos: match.demos,
+                            overview: {
+                                mostKills: matchStats.overview.mostKills,
+                                mostDamage: matchStats.overview.mostDamage,
+                                mostAssists: matchStats.overview.mostAssists,
+                                mostAWPKills: matchStats.overview.mostAWPKills,
+                                mostFirstKills: matchStats.overview.mostFirstKills,
+                                bestRating: matchStats.overview.bestRating
+                            },
+                            playerStats: matchStats.playerStats
+                        }
+                        let newMatch = new Match(parsedMatch)
+                        Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)],
+                            getComments(id, req.session.userid), newMatch.save()).then(data => {
+                            res.status(200).json({
+                                match: newMatch,
+                                playersTeam1: data[0],
+                                playersTeam2: data[1],
+                                comments: data[2]
+                            })
+                        })
+                    } catch (error) {
+                        console.log(error)
+                        res.status(200).send(false);
+                    }
+                }
             } else {
                 res.status(500).send('Error on server! Try again later!')
             }

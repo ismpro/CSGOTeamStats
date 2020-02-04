@@ -6,6 +6,8 @@ let comments = []
 function pageLoad(cb) {
     api.post(window.location.pathname).then(res => {
         loadData(res.data)
+        comments = res.data.comments
+        loadComments()
         cb()
     }).catch(err => console.log(err))
 }
@@ -13,6 +15,7 @@ function pageLoad(cb) {
 function loadData(data) {
 
     console.log(data)
+    document.title = data.match;
 
     let scoreTeam1 = 0
     let scoreTeam2 = 0
@@ -24,9 +27,9 @@ function loadData(data) {
         }
     }
 
-    let main_div = document.getElementById('main')
+    let main_div = document.getElementById('match_page')
 
-    let score = document.createElement('div')
+    let score = document.getElementById('score')
     score.classList.add('score')
 
     let team1 = document.createElement('div')
@@ -65,7 +68,8 @@ function loadData(data) {
 
     //------------------------------------------------------------------------------------------------//
 
-    let maps = document.createElement('div')
+    let maps = document.getElementById('maps')
+    let commentsDiv = document.getElementById('commentsdiv')
     maps.classList.add('maps')
 
     for (const map of data.match.maps) {
@@ -223,7 +227,7 @@ function loadData(data) {
         mapDiv.appendChild(statsTeam1)
         mapDiv.appendChild(statsTeam2)
 
-        maps.appendChild(mapDiv)
+        maps.insertBefore(mapDiv, commentsDiv);
     }
 
     // highlighted players
@@ -378,7 +382,7 @@ function loadData(data) {
 
             mostKillsDiv.appendChild(highlight)
             mostKillsDiv.appendChild(div)
-            
+
         }
         // guarda jogador MVP
         if (player.name === data.match.highlightedPlayer.name) {
@@ -453,25 +457,8 @@ function loadData(data) {
     highlightsDiv.appendChild(mostKillsDiv)
     highlightsDiv.appendChild(mvpDiv)
     highlightsDiv.appendChild(mostDamageDiv)
-    maps.appendChild(highlightsDiv)
-    /*
-    let comments_h3 = document.createElement("h3")
-    comments_h3.classList.add("comments_heading")
-    comments_h3.innerHTML = "Comments:"
-    let commentsDiv = document.createElement("div")
-    commentsDiv.id = "comments_area"
-    commentsDiv.classList.add("comments_area")
-    let p = document.createElement("p")
-    p.innerHTML = "You need to login to write comments"
-    commentsDiv.appendChild(p)
-    let comments = document.createElement("ul")
-    comments.id = "comments"
-    comments.classList.add("comments")
+    maps.insertBefore(highlightsDiv, commentsDiv);
 
-    maps.appendChild(comments_h3)
-    maps.appendChild(commentsDiv)
-    maps.appendChild(comments)
-    */
     main_div.appendChild(maps)
 }
 
@@ -531,41 +518,45 @@ function onlogout() {
 function loadComments() {
 
     let commentsDiv = document.getElementById('comments')
-    let html = ''
-    comments.forEach((comment, index) => {
-        html += `<li id="comment_${comment.id}"><blockquote class="comments-bubble${index % 2 ? ' comments_odd' : ''}"><div class="comments_bubble_text"><p id="comment_text_${comment.id}" contenteditable="false">`
-        html += comment.text;
-        html += '</p></div><div class="comments_madeby">'
-        if (comment.hasEdit) {
-            html += 'Edit '
-        }
-        let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
-        if (timeString === 'just now') {
-            html += 'Just now by '
-        } else {
-            html += `${timeString} ago by `
-        }
-        if (comment.hasEdit) {
-            html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
-        }
-        if (typeof comment.user === 'anon') {
-            html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
-        } else {
-            html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
-        }
-        if (comment.isFromUser || admin) {
-            html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
-            html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
-        }
-        html += '</div></blockquote></li>'
-    })
-    commentsDiv.innerHTML = html;
-    comments.forEach((comment) => {
-        if (comment.isFromUser || admin) {
-            document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
-            document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
-        }
-    })
+    if (Array.isArray(comments) && comments.length > 0) {
+        let html = ''
+        comments.forEach((comment, index) => {
+            html += `<li id="comment_${comment.id}"><blockquote class="comments-bubble${index % 2 ? ' comments_odd' : ''}"><div class="comments_bubble_text"><p id="comment_text_${comment.id}" contenteditable="false">`
+            html += comment.text;
+            html += '</p></div><div class="comments_madeby">'
+            if (comment.hasEdit) {
+                html += 'Edit '
+            }
+            let timeString = timeSince(comment.hasEdit ? comment.hasEdit.date : comment.date)
+            if (timeString === 'just now') {
+                html += 'Just now by '
+            } else {
+                html += `${timeString} ago by `
+            }
+            if (comment.hasEdit) {
+                html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
+            }
+            if (typeof comment.user === 'anon') {
+                html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
+            } else {
+                html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
+            }
+            if (comment.isFromUser || admin) {
+                html += `<div name="buttons_comments" class="comments_buttons_group"><span id="comment_buttons_${comment.id}" class="comments_buttons">`
+                html += `<button id="comment_edit_${comment.id}">edit</button>|<button id="comment_delete_${comment.id}">delete</button></span></div>`
+            }
+            html += '</div></blockquote></li>'
+        })
+        commentsDiv.innerHTML = html;
+        comments.forEach((comment) => {
+            if (comment.isFromUser || admin) {
+                document.getElementById(`comment_delete_${comment.id}`).onclick = deleteComment(comment.id)
+                document.getElementById(`comment_edit_${comment.id}`).onclick = editComment(comment.id)
+            }
+        })
+    } else {
+        commentsDiv.innerHTML = '<div style="margin-top: 30px;">Write the first comment!</div>'
+    }
 }
 
 function createComment() {

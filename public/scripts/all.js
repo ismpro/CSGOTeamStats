@@ -64,6 +64,7 @@ function authValidated() {
         // @ts-ignore
         onsession()
     } catch (error) {
+        console.log(error)
         console.warn('onsession not define')
     }
 }
@@ -76,6 +77,7 @@ function authNotSession() {
         // @ts-ignore
         onlogout()
     } catch (error) {
+        console.log(error)
         console.warn('onlogout not define')
     } finally {
         let button = document.getElementById('loginButton')

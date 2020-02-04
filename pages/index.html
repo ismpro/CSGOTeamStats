@@ -56,35 +56,34 @@
         </div>
 
         <div id="main">
-            <div style="text-align: center; width: 100%; display: flex; padding: 5px">
-                <div style="text-align: center; width: 100%; display: flex; padding: 5px">
-                    <!-- BARRA DE PROCURA -->
-                    <div class="searchDiv">
-                        <form onsubmit="javascript:search(event)">
-                            <input type="text" class="searchBar" onkeyup="javascript:search(event)" id="search_string">
-                        </form>
-                        <div id="search_list">
-                            <p>Type to search</p>
-                        </div>
-                    </div>
-
-                    <!-- JOGOS -->
-                    <div class="matches">
-                        <h1 style="color: black">Last Matches</h1>
-                        <div id="results">
-                            
-                        </div>
-                    </div>
-
-                    <!-- JOGADORES EM DESTAQUE -->
-                    <div class="players">
-                        <h1 style="color: black">Featured Players</h1>
-                        <div id="top_players">
-                            <span>Server Error</span>
-                        </div>
+            <div class="indexPage">
+                <!-- BARRA DE PROCURA -->
+                <div class="searchDiv">
+                    <form onsubmit="javascript:search(event)">
+                        <input type="text" class="searchBar" onkeyup="javascript:search(event)" id="search_string">
+                    </form>
+                    <div id="search_list">
+                        <p>Type to search</p>
                     </div>
                 </div>
-                <script src="/static/scripts/index.js"> </script>
+
+                <!-- JOGOS -->
+                <div class="matches">
+                    <h1 style="color: black">Last Matches</h1>
+                    <div id="results">
+
+                    </div>
+                </div>
+
+                <!-- JOGADORES EM DESTAQUE -->
+                <div class="players">
+                    <h1 style="color: black">Featured Players</h1>
+                    <div id="top_players">
+                        <span>Server Error</span>
+                    </div>
+                </div>
+            </div>
+            <script src="/static/scripts/index.js"> </script>
 </body>
 
 </html>
