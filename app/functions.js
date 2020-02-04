@@ -129,7 +129,6 @@ exports.sleep = function (time) {
  * @returns {Array}
  */
 exports.parseComments = async function (comments, id) {
-    console.log(comments)
     if (comments.length === 0) {
         return []
     }
@@ -172,6 +171,5 @@ exports.parseComments = async function (comments, id) {
         b = new Date(b.date);
         return a > b ? -1 : a < b ? 1 : 0;
     });
-    console.log(parseComments)
     return parseComments
 };

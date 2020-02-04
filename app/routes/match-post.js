@@ -93,8 +93,7 @@ module.exports = function (api) {
         }, async function (err, match) {
             if (!err) {
                 if (match) {
-                    Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)], getComments(id, req.session.userid)).then(data => {
-                        console.log(data[2])
+                    Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2), getComments(id, req.session.userid)]).then(data => {
                         res.status(200).json({
                             match: match,
                             playersTeam1: data[0],
@@ -174,8 +173,8 @@ module.exports = function (api) {
                             playerStats: matchStats.playerStats
                         }
                         let newMatch = new Match(parsedMatch)
-                        Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)],
-                            getComments(id, req.session.userid), newMatch.save()).then(data => {
+                        Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2),
+                        getComments(id, req.session.userid), newMatch.save()]).then(data => {
                             res.status(200).json({
                                 match: newMatch,
                                 playersTeam1: data[0],

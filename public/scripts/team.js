@@ -291,7 +291,7 @@ function loadComments() {
             if (comment.hasEdit) {
                 html += `<a href="#">${comment.hasEdit.user}</a> / Made by: `
             }
-            if (typeof comment.user === 'anon') {
+            if (typeof comment.user === 'string') {
                 html += comment.user === 'anon' ? 'Anonymous' : 'Deleted'
             } else {
                 html += `<a href="/profile/${comment.user.id}">${comment.user.name}</a>`
