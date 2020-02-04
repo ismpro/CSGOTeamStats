@@ -11,33 +11,37 @@ const CommentsSchema = new mongoose.Schema({
      */
     type: String,
     /**
-    * The ID of the type
-    */
+     * The ID of the type
+     */
     id: Number,
     /**
-    * The text of the comment
-    */
+     * The text of the comment
+     */
     text: String,
     /**
-    * The date of the comment
-    */
+     * The date of the comment
+     */
     date: Date,
     /**
-    * If is anonymous or not
-    */
+     * If is anonymous or not
+     */
     isAnon: Boolean,
     /**
-    * Information from last edit (Boolean|{user: Number, date: Date})
-    */
+     * Information from last edit (Boolean|{user: Number, date: Date})
+     */
     hasEdit: Types.Mixed,
     /**
-    * The ObjectId of the user that made this comment
-    */
+     * The ObjectId of the user that made this comment
+     */
     user: {
         type: Types.ObjectId,
         ref: 'User'
     }
+}, {
+    /**
+     * Warning: Ignore this!
+     */
+    collection: 'Comment'
 });
 
 module.exports = mongoose.model('Comment', CommentsSchema);
-

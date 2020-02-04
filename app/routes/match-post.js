@@ -1,9 +1,7 @@
 // @ts-nocheck
 const Match = require('../models/Match');
 const Players = require('../models/Player');
-const {
-    byCountry
-} = require('country-code-lookup')
+const Comment = require('../models/Comment')
 const {
     sleep,
     parseComments
@@ -52,7 +50,7 @@ module.exports = function (api) {
                             image: newPlayer.image,
                             country: newPlayer.country
                         })
-                    }).catch((err) => {
+                    }).catch(() => {
                         parsedPlayer.push({
                             id: 0,
                             name: '?',
@@ -73,19 +71,14 @@ module.exports = function (api) {
      */
     const getComments = (id, user_id) => {
         return new Promise((resolve, reject) => {
-            console.log(user_id)
             Comment.find({
                 type: 'match',
                 id: id
             }, function (err, comments) {
                 if (!err) {
-                    if (comments) {
-                        parseComments(comments, user_id)
-                            .then(parsedComments => resolve(parsedComments))
-                            .catch(err => reject(err.message))
-                    } else {
-                        resolve([])
-                    }
+                    parseComments(comments, user_id)
+                        .then(parsedComments => resolve(parsedComments))
+                        .catch(err => reject(err.message))
                 } else {
                     reject(err.message)
                 }
@@ -101,12 +94,15 @@ module.exports = function (api) {
             if (!err) {
                 if (match) {
                     Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2)], getComments(id, req.session.userid)).then(data => {
+                        console.log(data[2])
                         res.status(200).json({
                             match: match,
                             playersTeam1: data[0],
                             playersTeam2: data[1],
                             comments: data[2]
                         })
+                    }).catch(err => {
+                        console.log(err)
                     })
                 } else {
                     try {

@@ -89,7 +89,7 @@ module.exports = function (api) {
         return new Promise((resolve, reject) => {
             console.log(user_id)
             Comment.find({
-                type: 'match',
+                type: 'player',
                 id: id
             }, function (err, comments) {
                 if (!err) {

@@ -6,7 +6,9 @@ let comments = []
 function pageLoad(cb) {
     api.post(window.location.pathname).then(res => {
         loadData(res.data)
-        comments = res.data.comments
+        if (res.data.comments) {
+            comments = res.data.comments
+        }
         loadComments()
         cb()
     }).catch(err => console.log(err))
@@ -15,7 +17,7 @@ function pageLoad(cb) {
 function loadData(data) {
 
     console.log(data)
-    document.title = data.match;
+    document.title = data.match.event;
 
     let scoreTeam1 = 0
     let scoreTeam2 = 0
@@ -564,7 +566,7 @@ function createComment() {
     let isAnon = document.getElementById('anonymous_check').checked;
     let path = window.location.pathname
     api.post('/comment/create', {
-        type: 'player',
+        type: 'match',
         id: path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('')),
         text: text,
         isAnon: isAnon
