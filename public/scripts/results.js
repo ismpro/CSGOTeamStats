@@ -1,13 +1,33 @@
 function pageLoad(cb) {
-    api.post(window.location.pathname).then(res => {
+    /* api.post(window.location.pathname).then(res => {
         loadData(res.data)
         cb()
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err)) */
+    loadData()
+    cb()
 }
+
+
+
+window.onscroll = function (ev) {
+    // document.body.scrollTop alone should do the job but that actually works only in case of Chrome.
+    // With IE and Firefox it also works sometimes (seemingly with very simple pages where you have
+    // only a <pre> or something like that) but I don't know when. This hack seems to work always.
+    var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.getElementById('page').scrollTop;
+
+    // Grodriguez's fix for scrollHeight:
+    // accounting for cases where html/body are set to height:100%
+    var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.getElementById('page').scrollHeight;
+
+    if ((scrollTop + window.innerHeight) >= scrollHeight) {
+        // you're at the bottom of the page
+        console.log("Bottom of page");
+    }
+};
 
 function loadData(cb) {
 
-    Promise.all([api.post('/results', { limit: 12 })])
+    Promise.all([api.post('/results', { limit: 50 })])
         .then(res => {
             let lastRes = res[0]
             if (lastRes.status === 200) {
@@ -224,7 +244,7 @@ function loadData(cb) {
                     let k = 0
                     let limit = matchIndex + 6
 
-                    Promise.all([api.post('/results', { limit: matchIndex + 12, skip:  })]).then(res => {
+                    Promise.all([api.post('/results', { limit: matchIndex + 50 })]).then(res => {
                         let lastRes = res[0]
                         let results = lastRes.data;
                         if (lastRes.status === 200) {
