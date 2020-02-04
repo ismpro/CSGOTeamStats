@@ -1,3 +1,4 @@
+/* eslint-disable for-direction */
 const schedule = require('node-schedule')
 const functions = require('../functions.js')
 const {
@@ -57,7 +58,7 @@ class ApiControler {
                                 console.log('\nPlayers Saved: ' + playerSaved)
                                 resolve()
                             // @ts-ignore
-                            }).catch(err => resolve())
+                            }).catch(() => resolve())
                         })
                     })
                 })
@@ -73,7 +74,7 @@ class ApiControler {
                                 resolve()
                             })
                         // @ts-ignore
-                        }).catch(err => resolve())
+                        }).catch(() => resolve())
                     })
                 })
             Promise.all([playerUpdater, teamUpdater]).then(() => {
@@ -185,8 +186,6 @@ class ApiControler {
         teamids = teamids.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
         let teams = []
         let teamsIt = 0
-        // @ts-ignore
-        let teamsCount = 0
         for (const id of teamids) {
             try {
                 teamsIt++

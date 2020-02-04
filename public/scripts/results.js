@@ -224,7 +224,7 @@ function loadData(cb) {
                     let k = 0
                     let limit = matchIndex + 6
 
-                    Promise.all([api.post('/results', { limit: matchIndex + 12 })]).then(res => {
+                    Promise.all([api.post('/results', { limit: matchIndex + 12, skip:  })]).then(res => {
                         let lastRes = res[0]
                         let results = lastRes.data;
                         if (lastRes.status === 200) {

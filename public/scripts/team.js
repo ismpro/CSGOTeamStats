@@ -4,9 +4,18 @@ let comments = []
 
 function pageLoad(cb) {
     api.post(window.location.pathname).then(res => {
-        loadData(res.data)
-        comments = res.data.comments
-        loadComments()
+        console.log(res.data)
+        if (res.data) {
+            loadData(res.data)
+            comments = res.data.comments
+            loadComments()
+        } else {
+            let main = document.getElementById('main')
+            main.innerHTML = `<h2 class="team_not_found">Team Not found</h2>`
+            window.onclick = () => {
+                window.location.replace('/')
+            }
+        }
         cb()
     }).catch(err => console.log(err))
 }
