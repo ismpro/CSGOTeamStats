@@ -79,9 +79,13 @@ module.exports = function (api) {
                 id: id
             }, function (err, comments) {
                 if (!err) {
-                    parseComments(comments, user_id)
-                        .then(parsedComments => resolve(parsedComments))
-                        .catch(err => reject(err.message))
+                    if (comments) {
+                        parseComments(comments, user_id)
+                            .then(parsedComments => resolve(parsedComments))
+                            .catch(err => reject(err.message))
+                    } else {
+                        resolve([])
+                    }
                 } else {
                     reject(err.message)
                 }

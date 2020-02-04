@@ -89,13 +89,17 @@ module.exports = function (api) {
         return new Promise((resolve, reject) => {
             console.log(user_id)
             Comment.find({
-                type: 'player',
+                type: 'match',
                 id: id
             }, function (err, comments) {
                 if (!err) {
-                    parseComments(comments, user_id)
-                        .then(parsedComments => resolve(parsedComments))
-                        .catch(err => reject(err.message))
+                    if (comments) {
+                        parseComments(comments, user_id)
+                            .then(parsedComments => resolve(parsedComments))
+                            .catch(err => reject(err.message))
+                    } else {
+                        resolve([])
+                    }
                 } else {
                     reject(err.message)
                 }

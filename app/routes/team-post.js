@@ -110,21 +110,23 @@ module.exports = function (api) {
         return new Promise((resolve, reject) => {
             console.log(user_id)
             Comment.find({
-                type: 'player',
+                type: 'match',
                 id: id
             }, function (err, comments) {
                 if (!err) {
-                    parseComments(comments, user_id)
-                        .then(parsedComments => resolve(parsedComments))
-                        .catch(err => reject(err.message))
+                    if (comments) {
+                        parseComments(comments, user_id)
+                            .then(parsedComments => resolve(parsedComments))
+                            .catch(err => reject(err.message))
+                    } else {
+                        resolve([])
+                    }
                 } else {
                     reject(err.message)
                 }
             })
         })
     }
-
-
     return function (req, res) {
         let id = req.params.id;
         Teams.findOne({
@@ -137,9 +139,9 @@ module.exports = function (api) {
                         code: code.iso2,
                         name: code.country
                     } : {
-                            code: 'World',
-                            name: 'World'
-                        }
+                        code: 'World',
+                        name: 'World'
+                    }
                     Promise.all([getPlayer(team.players), getLastResults(team.recentResults), getComments(id, req.session.userid)]).then(data => {
                         res.status(200).json({
                             players: data[0],
