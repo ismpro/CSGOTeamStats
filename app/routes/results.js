@@ -11,7 +11,9 @@ module.exports = function () {
         let limit = req.body.limit || 0;
         let skip = req.body.skip || 0;
         Match.find()
-            .sort({ date: 'desc' })
+            .sort({
+                date: 'desc'
+            })
             .skip(skip)
             .limit(limit)
             .exec(function (err, docs) {

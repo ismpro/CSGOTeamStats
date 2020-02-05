@@ -93,16 +93,20 @@ module.exports = function (api) {
         }, async function (err, match) {
             if (!err) {
                 if (match) {
-                    Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2), getComments(id, req.session.userid)]).then(data => {
-                        res.status(200).json({
-                            match: match,
-                            playersTeam1: data[0],
-                            playersTeam2: data[1],
-                            comments: data[2]
+                    if (match.broke) {
+                        res.status(200).send(false);
+                    } else {
+                        Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2), getComments(id, req.session.userid)]).then(data => {
+                            res.status(200).json({
+                                match: match,
+                                playersTeam1: data[0],
+                                playersTeam2: data[1],
+                                comments: data[2]
+                            })
+                        }).catch(err => {
+                            console.log(err)
                         })
-                    }).catch(err => {
-                        console.log(err)
-                    })
+                    }
                 } else {
                     try {
                         let match = await this.fetchMatchById(id)
@@ -174,7 +178,8 @@ module.exports = function (api) {
                         }
                         let newMatch = new Match(parsedMatch)
                         Promise.all([getPlayers(match.players.team1), getPlayers(match.players.team2),
-                        getComments(id, req.session.userid), newMatch.save()]).then(data => {
+                            getComments(id, req.session.userid), newMatch.save()
+                        ]).then(data => {
                             res.status(200).json({
                                 match: newMatch,
                                 playersTeam1: data[0],
