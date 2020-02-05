@@ -71,6 +71,7 @@
 .playerNick {
     grid-area: d;
     margin: 0;
+    margin-top: -13px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis
@@ -79,6 +80,7 @@
 .playerReal {
     grid-area: f;
     white-space: nowrap;
+    margin-top: -3px;
     overflow: hidden;
     text-overflow: ellipsis
 }
@@ -173,6 +175,7 @@ span:active {
 
 .teamLink:hover {
     color: black;
+    background-color: transparent !important;
     text-decoration: underline;
 }
 
@@ -328,6 +331,10 @@ span:active {
 
 .pageNumbers button:active {
     background-color: #d30000;
+}
+
+.commentsDiv {
+    margin-bottom: 150px;
 }
 
 .comments_heading {

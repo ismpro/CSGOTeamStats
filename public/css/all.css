@@ -1,5 +1,5 @@
 html {
-    font-family: Open Sans,sans-serif;
+    font-family: Open Sans, sans-serif;
     line-height: 1.66667;
 }
 
@@ -195,15 +195,15 @@ body {
 }
 
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  border-top: 1px solid rgb(128, 120, 120);
-  background-color: rgb(175, 175, 175);
-  padding: 10px;
-  z-index: 9999;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid rgb(128, 120, 120);
+    background-color: rgb(175, 175, 175);
+    padding: 0.5px;
+    z-index: 9999;
 }
 
 .footer p {
@@ -211,15 +211,15 @@ body {
 }
 
 .footer-container {
-  position: relative;
+    position: relative;
 }
 
 .footer-container .left {
     margin-left: 10%;
-  float: left;
+    float: left;
 }
 
 .footer-container .right {
     margin-right: 10%;
-  float: right;
+    float: right;
 }

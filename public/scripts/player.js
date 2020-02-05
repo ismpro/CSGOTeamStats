@@ -117,21 +117,24 @@ function loadData(data) {
     socialDiv.innerHTML = ""
     if (data.twitch) {
         let tag = document.createElement("a");
-        tag.href = data.twitch
+        tag.href = data.twitch;
+        tag.target = '_blank';
         tag.classList.add("fa", "fa-twitch")
         socialDiv.appendChild(tag)
     }
     if (data.twitter) {
         let tag = document.createElement("a");
-        tag.href = data.twitter
-        tag.classList.add("fa", "fa-twitter")
-        socialDiv.appendChild(tag)
+        tag.href = data.twitter;
+        tag.target = '_blank';
+        tag.classList.add("fa", "fa-twitter");
+        socialDiv.appendChild(tag);
     }
     if (data.facebook) {
         let tag = document.createElement("a");
-        tag.href = data.facebook
-        tag.classList.add("fa", "fa-facebook")
-        socialDiv.appendChild(tag)
+        tag.href = data.facebook;
+        tag.target = '_blank';
+        tag.classList.add("fa", "fa-facebook");
+        socialDiv.appendChild(tag);
     }
     document.getElementById('player_age').innerHTML = data.age || '00'
     let teamtag = document.getElementById('team_flag')

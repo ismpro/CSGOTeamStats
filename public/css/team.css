@@ -253,6 +253,7 @@ span:active {
 
 .teamLink:hover {
     color: black;
+    background-color: transparent !important;
     text-decoration: underline;
 }
 
@@ -309,6 +310,10 @@ span:active {
 .pageNumbers {
     display: flex;
     flex-direction: row;
+}
+
+.commentsDiv {
+    margin-bottom: 150px;
 }
 
 .comments_heading {

@@ -85,10 +85,23 @@ module.exports = function (api) {
                 let teamInfo = await Teams.findOne({
                     id: results.enemyTeam.id
                 })
+                let score = ''
+                if (resultInfo.maps.length === 1) {
+                    let scores = results.result.split(':')
+                    if (Number(scores[0]) < Number(scores[1])) {
+                        score = '0 : 1'
+                    } else if (Number(scores[0]) > Number(scores[1])) {
+                        score = '1 : 0'
+                    } else {
+                        score = '0 : 0'
+                    }
+                } else {
+                    score = results.result
+                }
                 parsedLastResults.push({
                     id: resultInfo.id,
                     date: formatDate(resultInfo.date),
-                    score: results.result,
+                    score: score,
                     enemyTeam: {
                         id: teamInfo.id,
                         name: teamInfo.name,
@@ -108,7 +121,6 @@ module.exports = function (api) {
      */
     const getComments = (id, user_id) => {
         return new Promise((resolve, reject) => {
-            console.log(user_id)
             Comment.find({
                 type: 'match',
                 id: id

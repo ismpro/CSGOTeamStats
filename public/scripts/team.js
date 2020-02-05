@@ -118,19 +118,22 @@ function loadData(data) {
     socialDiv.innerHTML = ""
     if (data.twitch) {
         let tag = document.createElement("a");
-        tag.href = data.twitch
+        tag.href = data.twitch;
+        tag.target = '_blank';
         tag.classList.add("fa", "fa-twitch")
         socialDiv.appendChild(tag)
     }
     if (data.twitter) {
         let tag = document.createElement("a");
-        tag.href = data.twitter
+        tag.href = data.twitter;
+        tag.target = '_blank';
         tag.classList.add("fa", "fa-twitter")
         socialDiv.appendChild(tag)
     }
     if (data.facebook) {
         let tag = document.createElement("a");
-        tag.href = data.facebook
+        tag.href = data.facebook;
+        tag.target = '_blank';
         tag.classList.add("fa", "fa-facebook")
         socialDiv.appendChild(tag)
     }
