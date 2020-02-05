@@ -8,24 +8,28 @@ if ('scrollRestoration' in history) {
 }
 
 window.onscroll = function () {
-    if (isNotLoadingMore && !finalDoc) {
-        var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.getElementById('page').scrollTop;
-        var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.getElementById('page').scrollHeight;
-        if ((scrollTop + window.innerHeight) >= scrollHeight - 1000) {
-            isNotLoadingMore = false;
-            api.post('/results', {
-                limit: 100,
-                skip: matchesCount
-            }).then(res => {
-                if (res.status === 200) {
-                    loadData(res.data)
-                }
-                isNotLoadingMore = true;
-            }).catch((err) => {
-                console.log(err)
-                isNotLoadingMore = true;
-            })
-        }
+    let scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.getElementById('page').scrollTop;
+    let scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.getElementById('page').scrollHeight;
+    let buttonTop = document.getElementById("buttonTop");
+    if (scrollTop > 100) {
+        buttonTop.style.display = "block";
+    } else {
+        buttonTop.style.display = "none";
+    }
+    if ((scrollTop + window.innerHeight) >= scrollHeight - 1000 && isNotLoadingMore && !finalDoc) {
+        isNotLoadingMore = false;
+        api.post('/results', {
+            limit: 100,
+            skip: matchesCount
+        }).then(res => {
+            if (res.status === 200) {
+                loadData(res.data)
+            }
+            isNotLoadingMore = true;
+        }).catch((err) => {
+            console.log(err)
+            isNotLoadingMore = true;
+        })
     }
 };
 
@@ -243,5 +247,9 @@ function loadData(results) {
 
     if (results.length < 100) {
         finalDoc = true;
+        let div = document.createElement('div');
+        div.setAttribute("style", "margin-bottom: 100px; margin-top: 50px;")
+        div.innerHTML = '<button onclick="javascript:window.scrollTo(0,0);">Back to the top</button>'
+        main_div.appendChild(div)
     }
 }
