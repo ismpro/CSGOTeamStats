@@ -319,6 +319,18 @@ textarea.input100 {
   background-color: #1b3815;
 }
 
+.mgs {
+  display: inline-block;
+  position: relative;
+  padding-top: 32px;
+  cursor: pointer;
+  font-family: Oswald-Medium;
+  font-size: 15px;
+  color: #1b3815;
+  line-height: 1.2;
+  margin: 0;
+}
+
 /*------------------------------------------------------------------
 [ Responsive ]*/
 

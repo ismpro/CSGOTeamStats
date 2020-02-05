@@ -24,8 +24,8 @@ module.exports = function (transporter) {
                         address: 'noreply.csgoteamstats@gmail.com'
                     },
                     to: selecteduser.email,
-                    subject: "Contact from " + data.name,
-                    html: '<p>Email:</p><p>' + data.email + '</p><p>Message:</p><p>' + data.text + '</p>'
+                    subject: "Contact from " + data.name || 'Not specifed',
+                    html: '<p>Email:</p><p>' + data.email || 'Not specifed' + '</p><p>Message:</p><p>' + data.text || 'Not specifed' + '</p>'
                 };
                 promiseArray.push(transporter.sendMail(messageAdmin))
                 if (data.check) {
@@ -35,26 +35,33 @@ module.exports = function (transporter) {
                             address: 'noreply.csgoteamstats@gmail.com'
                         },
                         to: data.email,
-                        subject: "Contact from " + data.name + " - Copy",
-                        html: '<p>Email:</p><p>' + data.email + '</p><p>Message:</p><p>' + data.text + '</p>'
+                        subject: "Contact from " + data.name || 'Not specifed' + " - Copy",
+                        html: '<p>Email:</p><p>' + data.email || 'Not specifed' + '</p><p>Message:</p><p>' + data.text || 'Not specifed' + '</p>'
                     };
 
                     promiseArray.push(transporter.sendMail(messageCopy))
                 }
 
                 Promise.all(promiseArray).then(data => {
-                    let accepted = data.reduce((accumulator, email) => accumulator + email.accepted.length)
-                    let rejected = data.reduce((accumulator, email) => accumulator + email.rejected.length)
-                    if (accepted.length >= data.length && rejected.length === 0) {
-                        res.status(200).send('All emails have been sent')
-                    } else if (rejected.length !== 0) {
-                        res.status(200).send(`${rejected.length} have been denied`)
-                    } else {
-                        res.status(200).send(`Error on sending emails`)
-                    }
 
+                    let rejected = data.reduce((accumulator, email) => accumulator + email.rejected.length, 0)
+
+                    if (rejected === 0) {
+                        res.status(200).json({
+                            status: true,
+                            text: 'All emails have been sent!'
+                        })
+                    } else {
+                        res.status(200).json({
+                            status: false,
+                            text: `${rejected} have been denied!`
+                        })
+                    }
                 }).catch(err => {
-                    res.status(200).send(`Error on sending emails - Err: ${err.message} `)
+                    res.status(200).json({
+                        status: false,
+                        text: `Error on sending emails - Err: ${err.message}!`
+                    })
                 })
             } else {
                 res.status(500).send('Server Error')
