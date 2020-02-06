@@ -109,41 +109,18 @@ module.exports = function (api) {
 
     return function (req, res) {
         let id = req.params.id;
-        Players.findOne({
-            id: id
-        }, function (err, player) {
-            if (!err) {
-                if (player) {
-                    if (player.team) {
-                        Promise.all([getTeam(player.team.id), getComments(player.id, req.session.userid)])
-                            .then(data => {
-                                console.log(data[1])
-                                res.status(200).json({
-                                    player: player,
-                                    team: data[0],
-                                    comments: data[1]
-                                })
-                            })
-                            .catch(err => {
-                                console.log(err)
-                                res.status(500).send(err)
-                            })
-                    } else {
-                        getComments(player.id, req.session.userid).then(data => {
-                            res.status(200).json({
-                                player: player,
-                                comments: data
-                            })
-                        }).catch(err => {
-                            res.status(500).send(err)
-                        })
-                    }
-                } else {
-                    api.fetchPlayerById(id)
-                        .then(player => {
-                            let newPlayer = new Players(player)
-                            Promise.all([newPlayer.save(), player.team ? getTeam(player.team.id) : null, getComments(player.id, req.session.userid)])
+        if (id === 0) {
+            res.status(200).send(false);
+        } else {
+            Players.findOne({
+                id: id
+            }, function (err, player) {
+                if (!err) {
+                    if (player) {
+                        if (player.team) {
+                            Promise.all([getTeam(player.team.id), getComments(player.id, req.session.userid)])
                                 .then(data => {
+                                    console.log(data[1])
                                     res.status(200).json({
                                         player: player,
                                         team: data[0],
@@ -151,15 +128,43 @@ module.exports = function (api) {
                                     })
                                 })
                                 .catch(err => {
+                                    console.log(err)
                                     res.status(500).send(err)
                                 })
-                        }).catch(() => {
-                            res.status(200).send(false)
-                        })
+                        } else {
+                            getComments(player.id, req.session.userid).then(data => {
+                                res.status(200).json({
+                                    player: player,
+                                    comments: data
+                                })
+                            }).catch(err => {
+                                res.status(500).send(err)
+                            })
+                        }
+                    } else {
+                        api.fetchPlayerById(id)
+                            .then(player => {
+                                let newPlayer = new Players(player)
+                                Promise.all([newPlayer.save(), player.team ? getTeam(player.team.id) : null, getComments(player.id, req.session.userid)])
+                                    .then(data => {
+                                        res.status(200).json({
+                                            player: player,
+                                            team: data[0],
+                                            comments: data[1]
+                                        })
+                                    })
+                                    .catch(err => {
+                                        res.status(500).send(err)
+                                    })
+                            }).catch(() => {
+                                res.status(200).send(false)
+                            })
+                    }
+                } else {
+                    res.status(500).send('Error on server! Try again later!')
                 }
-            } else {
-                res.status(500).send('Error on server! Try again later!')
-            }
-        })
+            })
+
+        }
     }
 }
