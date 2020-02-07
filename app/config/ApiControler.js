@@ -57,9 +57,8 @@ class ApiControler {
                                 playerSaved++
                                 console.log('\nPlayers Saved: ' + playerSaved)
                                 resolve()
-                                // @ts-ignore
-                            }).catch(() => resolve())
-                        })
+                            })
+                        }).catch(() => resolve())
                     })
                 })
                 .then(() => console.log('Players all updated'));
@@ -73,7 +72,6 @@ class ApiControler {
                                 console.log('\nTeams Saved: ' + teamSaved)
                                 resolve()
                             })
-                            // @ts-ignore
                         }).catch(() => resolve())
                     })
                 })
@@ -151,7 +149,10 @@ class ApiControler {
                 highlightedPlayer: match.highlightedPlayer,
                 vetoes: match.vetoes.map(veto => ({
                     map: veto.map,
-                    team: { name: veto.team.name, id: veto.team.id },
+                    team: {
+                        name: veto.team.name,
+                        id: veto.team.id
+                    },
                     type: veto.type
                 })),
                 highlights: match.highlights,
@@ -255,7 +256,10 @@ class ApiControler {
                 players: players
             }
         } else {
-            let newMatch = new Match({ id: id, broke: true })
+            let newMatch = new Match({
+                id: id,
+                broke: true
+            })
             await newMatch.save()
             throw Error('Match Broke')
         }
@@ -300,8 +304,8 @@ class ApiControler {
     fetchPlayerById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayer({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -315,8 +319,8 @@ class ApiControler {
     fetchTeamById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getTeam({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -331,8 +335,8 @@ class ApiControler {
     fetchResultsByPages(pages) {
         return new Promise((resolve, reject) => {
             HLTV.getResults({
-                pages: pages
-            })
+                    pages: pages
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -346,8 +350,8 @@ class ApiControler {
     fetchMatchById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatch({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -360,7 +364,9 @@ class ApiControler {
      */
     fetchMatchesStatsById(id) {
         return new Promise((resolve, reject) => {
-            HLTV.getMatchStats({ id: id })
+            HLTV.getMatchStats({
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -374,8 +380,8 @@ class ApiControler {
     fetchMatchMapStatsById(id) {
         return new Promise((resolve, reject) => {
             HLTV.getMatchMapStats({
-                id: id
-            })
+                    id: id
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -392,13 +398,13 @@ class ApiControler {
     fetchPlayerRanking(startDate, endDate, matchType, rankingFilter) {
         return new Promise((resolve, reject) => {
             HLTV.getPlayerRanking({
-                startDate: startDate,
-                endDate: endDate,
-                // @ts-ignore
-                matchType: matchType,
-                // @ts-ignore
-                rankingFilter: rankingFilter
-            })
+                    startDate: startDate,
+                    endDate: endDate,
+                    // @ts-ignore
+                    matchType: matchType,
+                    // @ts-ignore
+                    rankingFilter: rankingFilter
+                })
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -410,15 +416,26 @@ class ApiControler {
      * @returns {Promise<void>}
      */
     async removeDuplicates() {
-        const aggTeam = await Team.aggregate([
-            {
+        const aggTeam = await Team.aggregate([{
                 "$group": {
-                    "_id": { "id": "$id" },
-                    "dups": { "$push": "$_id" },
-                    "count": { "$sum": 1 }
+                    "_id": {
+                        "id": "$id"
+                    },
+                    "dups": {
+                        "$push": "$_id"
+                    },
+                    "count": {
+                        "$sum": 1
+                    }
                 }
             },
-            { "$match": { "count": { "$gt": 1 } } }
+            {
+                "$match": {
+                    "count": {
+                        "$gt": 1
+                    }
+                }
+            }
         ]);
         for await (const doc of aggTeam) {
             Team.findByIdAndDelete(doc.dups[0], function (err, deletedTeam) {
@@ -431,15 +448,26 @@ class ApiControler {
             })
         }
 
-        const aggPlayers = await Player.aggregate([
-            {
+        const aggPlayers = await Player.aggregate([{
                 "$group": {
-                    "_id": { "id": "$id" },
-                    "dups": { "$push": "$_id" },
-                    "count": { "$sum": 1 }
+                    "_id": {
+                        "id": "$id"
+                    },
+                    "dups": {
+                        "$push": "$_id"
+                    },
+                    "count": {
+                        "$sum": 1
+                    }
                 }
             },
-            { "$match": { "count": { "$gt": 1 } } }
+            {
+                "$match": {
+                    "count": {
+                        "$gt": 1
+                    }
+                }
+            }
         ]);
         for await (const doc of aggPlayers) {
             Player.findByIdAndDelete(doc.dups[0], function (err, deletedPlayer) {
@@ -452,15 +480,26 @@ class ApiControler {
             })
         }
 
-        const aggMatch = await Match.aggregate([
-            {
+        const aggMatch = await Match.aggregate([{
                 "$group": {
-                    "_id": { "id": "$id" },
-                    "dups": { "$push": "$_id" },
-                    "count": { "$sum": 1 }
+                    "_id": {
+                        "id": "$id"
+                    },
+                    "dups": {
+                        "$push": "$_id"
+                    },
+                    "count": {
+                        "$sum": 1
+                    }
                 }
             },
-            { "$match": { "count": { "$gt": 1 } } }
+            {
+                "$match": {
+                    "count": {
+                        "$gt": 1
+                    }
+                }
+            }
         ]);
         for await (const doc of aggMatch) {
             Match.findByIdAndDelete(doc.dups[0], function (err, deletedMatch) {

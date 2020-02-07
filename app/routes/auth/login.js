@@ -19,10 +19,10 @@ module.exports = function () {
             if (!err) {
                 if (user) {
                     if (user.validPassword(data.password)) {
-                        let sessionId = createid(64)
-                        req.session.userid = user._id
-                        req.session.sessionId = sessionId
-                        user.atribuitesessionid = sessionId
+                        let sessionId = createid(64);
+                        req.session.userid = user._id;
+                        req.session.sessionId = sessionId;
+                        user.atribuitesessionid = sessionId;
                         let userSave = user.save()
                         let sessionSave = req.session.save()
                         Promise.all([userSave, sessionSave]).then(() => {
