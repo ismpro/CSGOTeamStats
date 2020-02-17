@@ -112,8 +112,9 @@ db.once('open', function () {
         console.log(chalk.green(`\n  Server Listing on: ${server.address().address === '::' ? 'localhost' : server.address().address}:${server.address().port}`));
         api.removeDuplicates();
     })
-    api.updateAll().then(() => {
-        api.fetchAllInfo(1).then(() => {
+    //Updating information on the database with new matches and updating teams and players
+    api.fetchAllInfo(1).then(() => {
+        api.updateAll().then(() => {
             api.removeDuplicates();
         });
     });
