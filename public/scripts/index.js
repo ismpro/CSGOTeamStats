@@ -139,7 +139,7 @@ function pageLoad(cb) {
                         a.href = "/player/" + player.id
                         a.title = player.name
                         a.innerHTML = player.name
-                        a.setAttribute("style", "text-decoration: none; color: white")
+                        a.setAttribute("style", "text-decoration: none; color: black")
                         //a.classList.add('')
                         tr.appendChild(a)
                         team1Players.appendChild(tr)
@@ -151,7 +151,7 @@ function pageLoad(cb) {
                         a.href = "/player/" + player.id
                         a.title = player.name
                         a.innerHTML = player.name
-                        a.setAttribute("style", "text-decoration: none; color: white;")
+                        a.setAttribute("style", "text-decoration: none; color: black;")
                         //a.classList.add('')
                         tr.appendChild(a)
                         team2Players.appendChild(tr)

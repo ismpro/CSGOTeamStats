@@ -57,9 +57,19 @@ function loadData(data) {
 
     result.innerHTML = "<span class=\"team1\">" + scoreTeam1 + "</span><span class=\"team2\">" + scoreTeam2 + "</span>"
 
-    team1.appendChild(logoTeam1)
+    // href's equipas
+    let aTeam1 = document.createElement("a")
+    aTeam1.href = "/team/" + data.match.team1.id
+    aTeam1.title = data.match.team1.name
+    aTeam1.appendChild(logoTeam1)
+    let aTeam2 = document.createElement("a")
+    aTeam2.href = "/team/" + data.match.team2.id
+    aTeam2.title = data.match.team2.name
+    aTeam2.appendChild(logoTeam2)
+
+    team1.appendChild(aTeam1)
     team1.appendChild(nameTeam1)
-    team2.appendChild(logoTeam2)
+    team2.appendChild(aTeam2)
     team2.appendChild(nameTeam2)
 
     score.appendChild(team1)
@@ -178,11 +188,20 @@ function loadData(data) {
                 }
             }
             td1.appendChild(countryFlag)
-            td2.innerHTML = player.name
+            //td2.innerHTML = player.name
             td3.innerHTML = player.kills + "/" + player.deaths
             td4.innerHTML = player.assists
             td5.innerHTML = player.ADR
             td6.innerHTML = player.rating
+
+            // href jogador
+            let a1Player = document.createElement("a")
+            a1Player.href = "/player/" + player.id
+            a1Player.title = player.name
+            a1Player.innerHTML = player.name
+            a1Player.setAttribute('style','text-decoration: none; color: black')
+            td2.appendChild(a1Player)
+
             tr.appendChild(td1)
             tr.appendChild(td2)
             tr.appendChild(td3)
@@ -208,11 +227,20 @@ function loadData(data) {
                 }
             }
             td1.appendChild(countryFlag)
-            td2.innerHTML = player.name
+            //td2.innerHTML = player.name
             td3.innerHTML = player.kills + "/" + player.deaths
             td4.innerHTML = player.assists
             td5.innerHTML = player.ADR
             td6.innerHTML = player.rating
+
+            // href jogador
+            let a2Player = document.createElement("a")
+            a2Player.href = "/player/" + player.id
+            a2Player.title = player.name
+            a2Player.innerHTML = player.name
+            a2Player.setAttribute('style','text-decoration: none; color: black')
+            td2.appendChild(a2Player)
+
             tr.appendChild(td1)
             tr.appendChild(td2)
             tr.appendChild(td3)
@@ -270,10 +298,16 @@ function loadData(data) {
             value.innerHTML = "Total kills: " + data.match.overview.mostKills.value
             value.setAttribute("style", "color: red")
 
+            let aPlayer = document.createElement("a")
+            aPlayer.href = "/player/" + player.id
+            aPlayer.title = player.name
+            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.appendChild(playerImg)
+
             playerDiv.appendChild(countryImg)
             playerDiv.appendChild(nameTag)
 
-            div.appendChild(playerImg)
+            div.appendChild(aPlayer)
             div.appendChild(playerDiv)
             div.appendChild(value)
 
@@ -302,10 +336,16 @@ function loadData(data) {
             countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
             nameTag.innerHTML = player.name
 
+            let aPlayer = document.createElement("a")
+            aPlayer.href = "/player/" + player.id
+            aPlayer.title = player.name
+            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.appendChild(playerImg)
+
             playerDiv.appendChild(countryImg)
             playerDiv.appendChild(nameTag)
 
-            div.appendChild(playerImg)
+            div.appendChild(aPlayer)
             div.appendChild(playerDiv)
 
             mvpDiv.appendChild(highlight)
@@ -336,10 +376,16 @@ function loadData(data) {
             value.innerHTML = "ADR: " + data.match.overview.mostDamage.value.toFixed(1).toString()
             value.setAttribute("style", "color: blue")
 
+            let aPlayer = document.createElement("a")
+            aPlayer.href = "/player/" + player.id
+            aPlayer.title = player.name
+            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.appendChild(playerImg)
+
             playerDiv.appendChild(countryImg)
             playerDiv.appendChild(nameTag)
 
-            div.appendChild(playerImg)
+            div.appendChild(aPlayer)
             div.appendChild(playerDiv)
             div.appendChild(value)
 
@@ -375,10 +421,16 @@ function loadData(data) {
             value.innerHTML = "Total kills: " + data.match.overview.mostKills.value
             value.setAttribute("style", "color: red")
 
+            let aPlayer = document.createElement("a")
+            aPlayer.href = "/player/" + player.id
+            aPlayer.title = player.name
+            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.appendChild(playerImg)
+
             playerDiv.appendChild(countryImg)
             playerDiv.appendChild(nameTag)
 
-            div.appendChild(playerImg)
+            div.appendChild(aPlayer)
             div.appendChild(playerDiv)
             div.appendChild(value)
 
@@ -409,10 +461,16 @@ function loadData(data) {
             countryImg.src = "https://www.countryflags.io/" + player.country.code + "/shiny/24.png"
             nameTag.innerHTML = player.name
 
+            let aPlayer = document.createElement("a")
+            aPlayer.href = "/player/" + player.id
+            aPlayer.title = player.name
+            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.appendChild(playerImg)
+
             playerDiv.appendChild(countryImg)
             playerDiv.appendChild(nameTag)
 
-            div.appendChild(playerImg)
+            div.appendChild(aPlayer)
             div.appendChild(playerDiv)
 
             mvpDiv.appendChild(highlight)
@@ -444,10 +502,16 @@ function loadData(data) {
             value.innerHTML = "ADR: " + data.match.overview.mostDamage.value.toFixed(1).toString()
             value.setAttribute("style", "color: blue")
 
+            let aPlayer = document.createElement("a")
+            aPlayer.href = "/player/" + player.id
+            aPlayer.title = player.name
+            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.appendChild(playerImg)
+
             playerDiv.appendChild(countryImg)
             playerDiv.appendChild(nameTag)
 
-            div.appendChild(playerImg)
+            div.appendChild(aPlayer)
             div.appendChild(playerDiv)
             div.appendChild(value)
 

@@ -1,13 +1,20 @@
 .score {
-    height: 150px;
-    width: 400px;
-    font-size: 30px;
+    font-size: 20px;
     margin-top: 30px;
     height: 230px;
     width: 600px;
-    left: calc(50% - 300px);
+    left: calc(50% - 350px);
     z-index: 2;
     position: absolute;
+    font-weight: bold;
+    color: black;
+
+    box-shadow: 0 8px 6px -6px black;
+    background-color: gray;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    border-radius: 25px;
 }
 
 .score .result {
@@ -21,12 +28,14 @@
     float: left;
     text-align: center;
     margin-left: 40px;
+    font-weight: normal;
 }
 
 .score .result .team2 {
     float: right;
     text-align: center;
     margin-right: 40px;
+    font-weight: normal;
 }
 
 .score .team1 {
@@ -58,21 +67,25 @@
 
 .maps {
     height: auto;
-    width: 740px;
-    left: calc(50% - 370px);
+    width: 800px;
+    left: calc(50% - 400px);
     z-index: 2;
     position: absolute;
     margin-top: 300px;
+    
 }
 
 .map {
-    margin-bottom: 70px;
+    margin-bottom: 30px;
     position: relative;
+
+    box-shadow: 0 8px 6px -6px black;
+    background-color: darkgray;
+    padding: 20px;
+    
 }
 
-.maps table,
-th,
-td {
+.maps table, th, td {
     margin-top: 10px;
     background-color: #fff;
     box-shadow: 0 1px 2px 0 rgba(50, 50, 50, .4);
@@ -99,7 +112,7 @@ td {
 
 .map_name {
     position: absolute;
-    top: 5%;
+    top: 12%;
     left: 42%;
     /*
     transform: translate(-50%, -50%);
@@ -111,7 +124,7 @@ td {
 
 .team1_score {
     position: absolute;
-    top: 10%;
+    top: 15%;
     left: 30%;
     transform: translate(-50%, -50%);
     color: white;
@@ -120,7 +133,7 @@ td {
 
 .team2_score {
     position: absolute;
-    top: 10%;
+    top: 15%;
     left: 70%;
     transform: translate(-50%, -50%);
     color: white;

@@ -12,10 +12,14 @@
     /*border: 2px solid black;*/
     display: inline-block;
     width: 350px;
-    height: 700px;
+    height: 780px;
     margin: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    box-shadow: 0 8px 6px -6px black;
+    background-color: rgb(53, 53, 53);
+    border-radius: 25px;
 }
 
 .players .player {
@@ -23,7 +27,7 @@
     flex-direction: row;
     align-items: center;
     min-width: 250px;
-    background-color: gray;
+    background-color: lightgray;
     color: black;
     font-size: 15px;
     padding: 3px;
@@ -73,16 +77,20 @@
     background-color: lightgray;
     display: inline-block;
     color: #16a085;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     width: 740px;
-    height: 700px;
+    height: 780px;
     margin: 10px;
+
+    box-shadow: 0 8px 6px -6px black;
+    background-color: rgb(53, 53, 53);
+    border-radius: 25px;
 }
 
 .matches .match {
     display: block;
-    background-color: gray;
+    background-color: lightgray;
     /* background-image: linear-gradient(to right, white, gray, white); */
     color: black;
     font-size: 15px;
@@ -103,14 +111,16 @@
 }
 
 .details {
-    background-color: rgb(53, 53, 53);
+    background-color: lightgray;
     max-height: 0;
     overflow: hidden;
-    color: #16a085;
+    color: white;
     font-size: 15px;
-    box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 2px 0 #16a085;
     transition: max-height 0.2s ease-out;
-    background-image: linear-gradient(to right, black, darkgray, black);
+    width: 99%;
+    margin-left: 4px;
+    /*background-image: linear-gradient(to right, black, darkgray, black);*/
 }
 
 .details .team1 {
@@ -131,7 +141,7 @@ details .team2 {
     float: left;
     font-size: 30px;
     margin-top: 50px;
-    color: white;
+    color: black;
 }
 
 .details .result span {
@@ -166,7 +176,7 @@ details .team2 {
     border: 1px solid white;
     */
     table-layout: fixed;
-    color: white;
+    color: black;
 }
 
 
@@ -176,8 +186,10 @@ details .team2 {
     /*border: 2px solid black;*/
     display: inline-block;
     min-width: 500px;
-    height: 700px;
+    height: 780px;
     margin: 5px;
+
+    border-radius: 25px;
 }
 
 .searchBar {
