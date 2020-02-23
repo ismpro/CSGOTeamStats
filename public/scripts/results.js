@@ -47,7 +47,6 @@ function pageLoad(cb) {
 };
 
 function loadData(results) {
-    console.log(formatDate(results[0].date))
     let main_div = document.getElementById('main')
 
     main_div.setAttribute('style','box-shadow: 0 8px 6px -6px black; background-color: #16a085; border-radius: 25px;')

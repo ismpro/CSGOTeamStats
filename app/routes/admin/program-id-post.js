@@ -10,8 +10,6 @@ module.exports = function () {
     return function (req, res) {
         let id = req.params.id;
         let type = req.query.type;
-        console.log(id)
-        console.log(type)
         if ((id && type) && (type === 'accept' || type === 'deny')) {
             Link.findOne({
                 link: id

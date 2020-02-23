@@ -44,7 +44,6 @@ function pageLoad(cb) {
             }
             if (lastRes.status === 200) {
                 let results = lastRes.data;
-                console.log(results)
                 let main_div = document.getElementById('results')
                 for (const result of results) {
                     let matchDiv = document.createElement('div')
@@ -342,7 +341,6 @@ var matchesDetails = document.getElementsByClassName("match");
 var i;
 
 for (i = 0; i < matchesDetails.length; i++) {
-    console.log("entrou")
 
     matchesDetails[i].addEventListener("click", function () {
         if (!isOpen) {

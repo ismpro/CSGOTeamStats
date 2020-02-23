@@ -10,7 +10,6 @@ const User = require('../../models/User');
 module.exports = function () {
     return function (req, res) {
         let data = req.body;
-        console.log(data)
         User.findOne({
             email: data.email
         }, function (err, user) {

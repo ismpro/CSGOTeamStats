@@ -16,7 +16,6 @@ function pageLoad(cb) {
 
 function loadData(data) {
 
-    console.log(data)
     document.title = data.match.event;
 
     let scoreTeam1 = 0

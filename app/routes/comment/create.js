@@ -13,7 +13,6 @@ const Comment = require('../../models/Comment');
 module.exports = function () {
     return function (req, res) {
         let comment = req.body
-        console.log(comment)
         if (req.session.userid) {
             let newComment = new Comment();
             newComment.type = comment.type;

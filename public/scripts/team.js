@@ -4,7 +4,6 @@ let comments = []
 
 function pageLoad(cb) {
     api.post(window.location.pathname).then(res => {
-        console.log(res.data)
         if (res.data) {
             loadData(res.data)
             comments = res.data.comments

@@ -87,7 +87,6 @@ module.exports = function (api) {
      */
     const getComments = (id, user_id) => {
         return new Promise((resolve, reject) => {
-            console.log(user_id)
             Comment.find({
                 type: 'player',
                 id: id
@@ -120,7 +119,6 @@ module.exports = function (api) {
                         if (player.team) {
                             Promise.all([getTeam(player.team.id), getComments(player.id, req.session.userid)])
                                 .then(data => {
-                                    console.log(data[1])
                                     res.status(200).json({
                                         player: player,
                                         team: data[0],
