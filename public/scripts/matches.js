@@ -534,44 +534,10 @@ function onsession() {
         <div>Anonymous? <input type = "checkbox" id="anonymous_check"> \
         <button onclick="javascript:createComment()" id="comment_button" >Comment</button></div>'
     document.getElementById('comment_button').onclick = () => createComment()
-    /* api.post('/fav', {
-        type: 'match',
-        id: id
-    }).then((res) => {
-        if (typeof (res.data) !== "string") {
-            document.getElementById("playerFav").innerHTML = '<div class="clickFav"> \
-    <span class= "fa star fa-star-o"></span><p id="fav_text" class="info">&nbsp;&nbsp;Added!</p></div>'
-            let fav = document.getElementsByClassName('clickFav')[0]
-            fav.addEventListener('click', () => {
-                if (!favController) {
-                    favController = true
-                    api.post('/fav/player', {
-                        id: id
-                    }).then((data) => {
-                        if (data.status === 200) {
-                            data = data.data
-                            favAnimation(data === 'added', fav)
-                        }
-                    }).catch(err => console.log(err))
-                }
-            })
-            let star = document.getElementsByClassName('clickFav')[0].firstElementChild
-            if (res.data) {
-                star.classList.add('fa-star')
-                star.classList.remove('fa-star-o')
-            } else {
-                star.classList.remove("fa-star")
-                star.classList.add("fa-star-o")
-            }
-        } else {
-            location.replace()
-        }
-    }) */
 }
 
 function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
-    /* document.getElementById("playerFav").innerHTML = '' */
     let group_buttons = document.getElementsByName('buttons_comments')
     if (group_buttons.length > 0) {
         for (const group_button of Array.from(group_buttons)) {
