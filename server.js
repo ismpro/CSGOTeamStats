@@ -114,8 +114,6 @@ db.once('open', function () {
     })
     //Updating information on the database with new matches and updating teams and players
     api.fetchAllInfo(1).then(() => {
-        api.updateAll().then(() => {
-            api.removeDuplicates();
-        });
+        api.removeDuplicates();
     });
 });

@@ -66,7 +66,7 @@ function onlogout() {
     document.getElementById("teamFav").innerHTML = ''
     let group_buttons = document.getElementsByName('buttons_comments')
     if (group_buttons.length > 0) {
-        for (const group_button of group_buttons) {
+        for (const group_button of Array.from(group_buttons)) {
             group_button.remove()
         }
     }

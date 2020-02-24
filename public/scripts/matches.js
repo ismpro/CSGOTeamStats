@@ -198,7 +198,7 @@ function loadData(data) {
             a1Player.href = "/player/" + player.id
             a1Player.title = player.name
             a1Player.innerHTML = player.name
-            a1Player.setAttribute('style','text-decoration: none; color: black')
+            a1Player.setAttribute('style', 'text-decoration: none; color: black')
             td2.appendChild(a1Player)
 
             tr.appendChild(td1)
@@ -237,7 +237,7 @@ function loadData(data) {
             a2Player.href = "/player/" + player.id
             a2Player.title = player.name
             a2Player.innerHTML = player.name
-            a2Player.setAttribute('style','text-decoration: none; color: black')
+            a2Player.setAttribute('style', 'text-decoration: none; color: black')
             td2.appendChild(a2Player)
 
             tr.appendChild(td1)
@@ -300,7 +300,7 @@ function loadData(data) {
             let aPlayer = document.createElement("a")
             aPlayer.href = "/player/" + player.id
             aPlayer.title = player.name
-            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.setAttribute('style', 'text-decoration: none; color: black')
             aPlayer.appendChild(playerImg)
 
             playerDiv.appendChild(countryImg)
@@ -338,7 +338,7 @@ function loadData(data) {
             let aPlayer = document.createElement("a")
             aPlayer.href = "/player/" + player.id
             aPlayer.title = player.name
-            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.setAttribute('style', 'text-decoration: none; color: black')
             aPlayer.appendChild(playerImg)
 
             playerDiv.appendChild(countryImg)
@@ -378,7 +378,7 @@ function loadData(data) {
             let aPlayer = document.createElement("a")
             aPlayer.href = "/player/" + player.id
             aPlayer.title = player.name
-            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.setAttribute('style', 'text-decoration: none; color: black')
             aPlayer.appendChild(playerImg)
 
             playerDiv.appendChild(countryImg)
@@ -423,7 +423,7 @@ function loadData(data) {
             let aPlayer = document.createElement("a")
             aPlayer.href = "/player/" + player.id
             aPlayer.title = player.name
-            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.setAttribute('style', 'text-decoration: none; color: black')
             aPlayer.appendChild(playerImg)
 
             playerDiv.appendChild(countryImg)
@@ -463,7 +463,7 @@ function loadData(data) {
             let aPlayer = document.createElement("a")
             aPlayer.href = "/player/" + player.id
             aPlayer.title = player.name
-            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.setAttribute('style', 'text-decoration: none; color: black')
             aPlayer.appendChild(playerImg)
 
             playerDiv.appendChild(countryImg)
@@ -504,7 +504,7 @@ function loadData(data) {
             let aPlayer = document.createElement("a")
             aPlayer.href = "/player/" + player.id
             aPlayer.title = player.name
-            aPlayer.setAttribute('style','text-decoration: none; color: black')
+            aPlayer.setAttribute('style', 'text-decoration: none; color: black')
             aPlayer.appendChild(playerImg)
 
             playerDiv.appendChild(countryImg)
@@ -574,7 +574,7 @@ function onlogout() {
     /* document.getElementById("playerFav").innerHTML = '' */
     let group_buttons = document.getElementsByName('buttons_comments')
     if (group_buttons.length > 0) {
-        for (const group_button of group_buttons) {
+        for (const group_button of Array.from(group_buttons)) {
             group_button.remove()
         }
     }

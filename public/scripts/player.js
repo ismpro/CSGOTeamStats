@@ -66,8 +66,11 @@ function onlogout() {
     document.getElementById('comments_area').innerHTML = '<p>You need to login to write comments</p>'
     document.getElementById("playerFav").innerHTML = ''
     let group_buttons = document.getElementsByName('buttons_comments')
+    console.log(group_buttons)
+    console.log(group_buttons.length)
     if (group_buttons.length > 0) {
-        for (const group_button of group_buttons) {
+        for (const group_button of Array.from(group_buttons)) {
+            console.log(group_button)
             group_button.remove()
         }
     }
