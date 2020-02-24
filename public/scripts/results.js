@@ -49,7 +49,7 @@ function pageLoad(cb) {
 function loadData(results) {
     let main_div = document.getElementById('main')
 
-    main_div.setAttribute('style','box-shadow: 0 8px 6px -6px black; background-color: #16a085; border-radius: 25px;')
+    main_div.setAttribute('style', 'box-shadow: 0 8px 6px -6px black; background-color: #16a085; border-radius: 25px; padding-bottom: 50px')
     if (results.length < 100) {
         finalDoc = true;
     }
@@ -57,11 +57,11 @@ function loadData(results) {
     // a variável "gameDate" fica com a data do primeiro jogo inicialmente
     let gameDate = formatDate(results[0].date)
     let gameDateChanged = true
-    
+
     for (const result of results) {
         matchesCount++
 
-       // se a data do próximo jogo mudar, a gameDate também muda para essa data
+        // se a data do próximo jogo mudar, a gameDate também muda para essa data
         if (gameDate !== formatDate(result.date)) {
             gameDate = formatDate(result.date)
             gameDateChanged = true
@@ -72,7 +72,7 @@ function loadData(results) {
             if (gameDateChanged) {
                 let matchDayDiv = document.createElement('div')
                 matchDayDiv.classList.add('match')
-                matchDayDiv.setAttribute('style','background-color: rgb(53, 53, 53); margin-top: 20px; color: white;')
+                matchDayDiv.setAttribute('style', 'background-color: rgb(53, 53, 53); margin-top: 20px; color: white;')
                 let matchDaySpan = document.createElement('span')
                 matchDaySpan.innerHTML = gameDate
 
