@@ -22,66 +22,63 @@ function pageLoad(cb) {
 }
 
 function buttonEdit() {
-    let button = document.createElement('button')
-    button.id = 'editbutton'
-    button.onclick = () => {
-        let pass_div = document.getElementById('user_pass')
-        let name_div = document.getElementById('user_name')
-        let email_div = document.getElementById('user_email')
+    let pass_div = document.getElementById('user_pass')
+    let name_div = document.getElementById('user_name')
+    let email_div = document.getElementById('user_email')
 
-        let email = email_div.innerHTML
-        let name = name_div.innerHTML
-        email_div.innerHTML = `<input id="email_form" type="text" placeholder="Email..." value="${email}" >`
-        name_div.innerHTML = `<input id="name_form" type="text" placeholder="Name..." value="${name}" >`
-        pass_div.innerHTML = `<input id="old_pass_form" type="password" placeholder="Old Password..."> <input id="new_pass_form" type="password" placeholder="New Password...">`
-        document.getElementById('editbutton').remove()
-        let span = document.createElement('span')
-        let buttonSave = document.createElement('button')
-        buttonSave.textContent = 'Save'
-        buttonSave.onclick = () => {
-            let emailV = document.getElementById('email_form').value
-            let nameV = document.getElementById('name_form').value
-            let oldV = document.getElementById('old_pass_form').value
-            let newV = document.getElementById('new_pass_form').value
-            if (emailV.length > 0 && nameV.length > 0) {
-                span.remove()
-                buttonEdit()
-                let nameSpLit = nameV.split(" ")
-                api.post(window.location.pathname + '/set', {
-                    email: emailV,
-                    name: [nameSpLit[0], nameSpLit[1]],
-                    password: [oldV, newV]
-                }).then((res) => {
-                    if (typeof res.data === 'object') {
-                        document.getElementById('user_name').textContent = res.data.name
-                        document.getElementById('user_email').textContent = res.data.email
-                        document.getElementById('user_pass').textContent = res.data.pass
-                    }
-                })
-            }
-        }
-        let buttonCancel = document.createElement('button')
-        buttonCancel.textContent = 'Cancel'
-        buttonCancel.onclick = () => {
+    let email = email_div.innerHTML
+    let name = name_div.innerHTML
+    email_div.innerHTML = `<input id="email_form" type="text" placeholder="Email..." value="${email}" >`
+    name_div.innerHTML = `<input id="name_form" type="text" placeholder="Name..." value="${name}" >`
+    pass_div.innerHTML = `<input id="old_pass_form" type="password" placeholder="Old Password..."> <input id="new_pass_form" type="password" placeholder="New Password...">`
+    document.getElementById('editbutton').remove()
+    let span = document.createElement('span')
+    let buttonSave = document.createElement('button')
+    buttonSave.textContent = 'Save'
+    buttonSave.onclick = () => {
+        let emailV = document.getElementById('email_form').value
+        let nameV = document.getElementById('name_form').value
+        let oldV = document.getElementById('old_pass_form').value
+        let newV = document.getElementById('new_pass_form').value
+        if (emailV.length > 0 && nameV.length > 0) {
             span.remove()
             buttonEdit()
-            document.getElementById('user_pass').innerHTML = ''
-            document.getElementById('user_name').textContent = name
-            document.getElementById('user_email').textContent = email
+            let nameSpLit = nameV.split(" ")
+            api.post(window.location.pathname + '/set', {
+                email: emailV,
+                name: [nameSpLit[0], nameSpLit[1]],
+                password: [oldV, newV]
+            }).then((res) => {
+                if (typeof res.data === 'object') {
+                    document.getElementById('user_name').textContent = res.data.name
+                    document.getElementById('user_email').textContent = res.data.email
+                    document.getElementById('user_pass').textContent = res.data.pass
+                }
+            })
         }
-        span.appendChild(buttonSave)
-        span.appendChild(buttonCancel)
-        document.getElementById('user_img').appendChild(span)
-
     }
-    button.textContent = 'Edit Profile'
-    document.getElementById('user_img').appendChild(button)
+    let buttonCancel = document.createElement('button')
+    buttonCancel.textContent = 'Cancel'
+    buttonCancel.onclick = () => {
+        span.remove()
+        buttonEdit()
+        document.getElementById('user_pass').innerHTML = ''
+        document.getElementById('user_name').textContent = name
+        document.getElementById('user_email').textContent = email
+    }
+    span.appendChild(buttonSave)
+    span.appendChild(buttonCancel)
+    document.getElementById('user_img').appendChild(span)
 }
 
 function onsession() {
-    buttonEdit()
     if (favs) {
         loadFavs(favs)
+        let button = document.createElement('button')
+        button.onclick = () => buttonEdit()
+        button.id = 'editbutton'
+        button.textContent = 'Edit Profile'
+        document.getElementById('user_img').appendChild(button)
         favs = {}
         document.getElementById('user_info_container').style.marginTop = "25px";
         document.getElementById('favorites').style.display = "block"
@@ -91,6 +88,11 @@ function onsession() {
             if (favs) {
                 clearInterval(ti)
                 loadFavs(favs)
+                let button = document.createElement('button')
+                button.onclick = () => buttonEdit()
+                button.id = 'editbutton'
+                button.textContent = 'Edit Profile'
+                document.getElementById('user_img').appendChild(button)
                 document.getElementById('user_info_container').style.marginTop = "25px";
                 document.getElementById('favorites').style.display = "block"
                 favs = {}
@@ -107,6 +109,8 @@ function onlogout() {
     document.getElementById('player_fav').innerHTML = ''
     document.getElementById('team_fav').innerHTML = ''
     document.getElementById('match_fav').innerHTML = ''
+    let button = document.createElement('button')
+    button.remove();
 }
 
 function loadData(data) {
